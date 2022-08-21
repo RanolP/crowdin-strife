@@ -4,7 +4,7 @@ use worker::{wasm_bindgen::JsValue, Fetch, Headers, Method, Request, RequestInit
 pub struct CfWorkerClient;
 
 impl CfWorkerClient {
-    pub async fn get<Req: ClientRequest>(
+    pub async fn call<Req: ClientRequest>(
         &self,
         client_request: Req,
     ) -> Result<Req::Response, worker::Error> {
@@ -19,9 +19,10 @@ impl CfWorkerClient {
             .with_method(match client_request.method() {
                 &HttpMethod::Get => Method::Get,
                 &HttpMethod::Post => Method::Post,
+                &HttpMethod::Delete => Method::Delete,
             })
             .with_headers(headers)
-            .with_body(client_request.body().map(JsValue::from_str));
+            .with_body(client_request.body().map(|s| JsValue::from_str(&s)));
 
         let request = Fetch::Request(Request::new_with_init(
             &client_request.url(),

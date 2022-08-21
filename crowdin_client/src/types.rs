@@ -9,10 +9,6 @@ pub struct UserId(pub String);
 #[serde(transparent)]
 pub struct LanguageId(#[serde_as(as = "DisplayFromStr")] pub u32);
 
-impl LanguageId {
-    pub const KOREAN: LanguageId = LanguageId(27);
-}
-
 #[derive(Serialize, Deserialize)]
 pub struct CrowdinResponse<T> {
     success: bool,

@@ -13,7 +13,7 @@ pub trait ClientRequest {
 
     fn url(&self) -> Cow<str>;
 
-    fn body(&self) -> Option<&str> {
+    fn body(&self) -> Option<String> {
         None
     }
 

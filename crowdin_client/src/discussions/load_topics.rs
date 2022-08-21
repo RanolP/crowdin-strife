@@ -79,10 +79,6 @@ impl ClientRequest for LoadTopics<'_> {
         Cow::Owned(url.to_string())
     }
 
-    fn body(&self) -> Option<&str> {
-        None
-    }
-
     fn method(&self) -> &HttpMethod {
         &HttpMethod::Get
     }
