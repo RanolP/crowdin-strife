@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "deploy": "wrangler publish build/worker/shim.mjs",
+    "dev": "wrangler dev build/worker/shim.mjs --local"
+  },
+  "devDependencies": {
+    "@miniflare/core": "^2.7.0",
+    "@miniflare/durable-objects": "^2.7.0",
+    "wrangler": "^2.0.26"
+  },
+  "packageManager": "yarn@3.2.2"
+}

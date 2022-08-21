@@ -1,0 +1,13 @@
+name = "crowdin-strife"
+workers_dev = true
+
+main = "build/worker/shim.mjs"
+compatibility_date = "2022-01-20"
+
+[vars]
+CROWDIN_TOKEN=""
+DISCORD_TOKEN=""
+TELEGRAM_TOKEN=""
+
+[build]
+command = "cargo install -q worker-build && worker-build --release"

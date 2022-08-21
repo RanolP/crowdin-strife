@@ -1,0 +1,31 @@
+[package]
+name = "crowdin_strife"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = ["console_error_panic_hook"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+worker = "0.0.10"
+serde_json = "1.0.67"
+
+reqores = { path = "./reqores" }
+reqores_client_cf_worker = { path = "./reqores/reqores_client_cf_worker" }
+
+crowdin_client = { path = "./crowdin_client" }
+
+# The `console_error_panic_hook` crate provides better debugging of panics by
+# logging them with `console.error`. This is great for development, but requires
+# all the `std::fmt` and `std::panicking` infrastructure, so isn't great for
+# code size when deploying.
+console_error_panic_hook = { version = "0.1.1", optional = true }
+
+
+[profile.release]
+opt-level = "s"
