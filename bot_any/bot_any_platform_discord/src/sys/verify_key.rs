@@ -21,16 +21,8 @@ impl VerifyKey {
             client_public_key: PublicKey::from_bytes(&hex::decode(client_public_key)?)?,
         })
     }
-}
 
-/**
- * Creates a middleware function for use in Express-compatible web servers.
- *
- * @param clientPublicKey - The public key from the Discord developer dashboard
- * @returns The middleware function
- */
-impl VerifyKey {
-    fn accept(&self, req: impl ServerRequest) -> Result<ServerResponse, VerifyKeyError> {
+    pub async fn accept(&self, req: &impl ServerRequest) -> Result<ServerResponse, VerifyKeyError> {
         let timestamp = req.header("X-Signature-Timestamp").unwrap_or_default();
         let timestamp = timestamp.as_bytes();
 

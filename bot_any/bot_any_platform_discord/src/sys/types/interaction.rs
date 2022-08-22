@@ -32,7 +32,7 @@ pub struct RawInteraction {
 }
 
 impl RawInteraction {
-    pub fn process(self) -> Option<Interaction> {
+    pub fn transform(self) -> Option<Interaction> {
         match (self.kind, self.data) {
             (RawInteractionKind::Ping, _) => Some(Interaction::Ping),
             (
