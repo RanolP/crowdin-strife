@@ -1,5 +1,8 @@
+use client_response::CfWorkerClientResponse;
 use reqores::{ClientRequest, HttpMethod};
 use worker::{wasm_bindgen::JsValue, Fetch, Headers, Method, Request, RequestInit};
+
+mod client_response;
 
 pub struct CfWorkerClient;
 
@@ -28,16 +31,13 @@ impl CfWorkerClient {
             &client_request.url(),
             &request_init,
         )?);
-        let mut response = request.send().await?;
+        let response = request.send().await?;
+        let client_response = CfWorkerClientResponse::new(response).await?;
 
-        if let Some(header_processor) = client_request.header_processor() {
-            for (k, v) in response.headers() {
-                if let Some(v) = header_processor(&k, &v) {
-                    return Ok(v);
-                }
-            }
-        }
+        let result = client_request
+            .deserialize(&client_response)
+            .map_err(worker::Error::RustError)?;
 
-        response.json().await
+        Ok(result)
     }
 }

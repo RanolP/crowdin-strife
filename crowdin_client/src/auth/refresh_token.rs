@@ -15,16 +15,18 @@ impl ClientRequest for RefreshToken {
         &HttpMethod::Get
     }
 
-    fn header_processor(&self) -> Option<fn(&str, &str) -> Option<Self::Response>> {
-        fn process(key: &str, value: &str) -> Option<String> {
-            if key == "set-cookie" && value.starts_with("CSRF-TOKEN=") {
-                let key = value.find("CSRF-TOKEN=")?;
-                let semi = value[key..].find(";")?;
-                Some(value[key + "CSRF-TOKEN=".len()..semi].to_string())
-            } else {
-                None
-            }
+    fn deserialize(
+        &self,
+        response: &impl reqores::ClientResponse,
+    ) -> Result<Self::Response, String> {
+        if let Some(value) = response.header("set-cookie") {
+            let key = value
+                .find("CSRF-TOKEN=")
+                .ok_or("Failed to find csrf token cookie".to_string())?;
+            let semi = value[key..].find(";").unwrap_or(value.len());
+            Ok(value[key + "CSRF-TOKEN=".len()..semi].to_string())
+        } else {
+            Err("Failed to receive set-cookie header".to_string())
         }
-        Some(process)
     }
 }

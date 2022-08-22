@@ -1,4 +1,7 @@
+use client_response::SurfClientResponse;
 use reqores::{ClientRequest, HttpMethod};
+
+mod client_response;
 
 pub struct SurfClient;
 
@@ -6,7 +9,7 @@ impl SurfClient {
     pub async fn call<Req: ClientRequest>(
         &self,
         client_request: Req,
-    ) -> Result<Req::Response, surf::Error> {
+    ) -> surf::Result<Req::Response> {
         let mut request = match client_request.method() {
             &HttpMethod::Get => surf::get(&client_request.url()),
             &HttpMethod::Post => surf::post(&client_request.url()),
@@ -20,16 +23,11 @@ impl SurfClient {
         if let Some(body) = client_request.body() {
             request = request.body(body);
         }
-        let mut response = request.send().await?;
+        let response = request.send().await?;
+        let client_response = SurfClientResponse::new(response).await?;
 
-        if let Some(header_processor) = client_request.header_processor() {
-            for (name, value) in response.iter() {
-                if let Some(v) = header_processor(&name.as_str(), &value.as_str()) {
-                    return Ok(v);
-                }
-            }
-        }
-
-        response.body_json().await
+        client_request
+            .deserialize(&client_response)
+            .map_err(|s| surf::Error::from_str(500, s))
     }
 }
