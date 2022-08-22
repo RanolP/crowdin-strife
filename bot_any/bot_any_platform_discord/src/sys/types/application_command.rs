@@ -13,14 +13,16 @@ pub enum ApplicationCommandKind {
 
 #[derive(Serialize, Deserialize)]
 pub struct ApplicationCommand {
-    pub id: Option<Snowflake>,
+    /*
+    pub id: Snowflake,
     #[serde(rename = "type")]
     pub kind: Option<ApplicationCommandKind>,
-    pub application_id: Snowflake,
+    pub application_id: Option<Snowflake>,
     pub guild_id: Option<Snowflake>,
-    pub name: String,
+    pub name: Option<String>,
     pub options: Option<Vec<ApplicationCommandOption>>,
-    pub description: String,
+    pub description: Option<String>,
+    */
 }
 
 #[derive(Serialize, Deserialize)]

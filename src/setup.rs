@@ -31,11 +31,11 @@ async fn main() -> eyre::Result<()> {
             command: ApplicationCommand {
                 id: None,
                 kind: Some(ApplicationCommandKind::ChatInput),
-                application_id: Snowflake(discord_application_id.clone()),
+                application_id: Some(Snowflake(discord_application_id.clone())),
                 guild_id: None,
-                name: "잔업".to_string(),
+                name: Some("잔업".to_string()),
                 options: None,
-                description: "아직 기능이 없어요 ㅠ".to_string(),
+                description: Some("아직 기능이 없어요 ㅠ".to_string()),
             },
         })
         .await?;

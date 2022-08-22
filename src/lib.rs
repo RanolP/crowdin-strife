@@ -17,7 +17,13 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
     let router = Router::new();
     router
         .post_async("/discord/interactions", |req, context| async move {
-            let garden = DiscordGarden::new(&context.var("DISCORD_PUBLIC_KEY")?.to_string())
+            let debug = context.var("ENVIRONMENT")?.to_string() == "development";
+            let public_key = if debug {
+                None
+            } else {
+                Some(context.var("DISCORD_PUBLIC_KEY")?.to_string())
+            };
+            let garden = DiscordGarden::new(public_key.as_deref())
                 .map_err(|e| worker::Error::from(e.to_string()))?;
 
             let request = CfWorkerServerRequest::new(req).await?;

@@ -12,7 +12,7 @@ pub enum DiscordPlant {
 }
 
 pub struct DiscordGarden {
-    verify_key: VerifyKey,
+    verify_key: Option<VerifyKey>,
 }
 
 #[derive(Debug, Error)]
@@ -24,9 +24,9 @@ pub enum DiscordGardenError {
 }
 
 impl DiscordGarden {
-    pub fn new(client_public_key: &str) -> Result<Self, VerifyKeyError> {
+    pub fn new(client_public_key: Option<&str>) -> Result<Self, VerifyKeyError> {
         Ok(DiscordGarden {
-            verify_key: VerifyKey::new(client_public_key)?,
+            verify_key: client_public_key.map(VerifyKey::new).transpose()?,
         })
     }
 
@@ -34,7 +34,11 @@ impl DiscordGarden {
         &self,
         req: &impl ServerRequest,
     ) -> Result<(ServerResponse, DiscordPlant), DiscordGardenError> {
-        let response = self.verify_key.accept(req).await?;
+        let response = if let Some(verify_key) = &self.verify_key {
+            verify_key.accept(req).await?
+        } else {
+            ServerResponseBuilder::new().build()
+        };
         let interaction: RawInteraction = req.body_json()?;
         let response = match interaction.transform() {
             Some(Interaction::Ping) => (

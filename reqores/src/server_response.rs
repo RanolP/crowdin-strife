@@ -68,7 +68,7 @@ impl ServerResponseBuilder {
     pub fn body_json<T: Serialize>(self, body: &T) -> serde_json::Result<ServerResponse> {
         Ok(self
             .header(
-                "Cotent-Type".to_string(),
+                "Content-Type".to_string(),
                 "application/json; charset=UTF-8".to_string(),
             )
             .body(serde_json::to_vec(body)?))
