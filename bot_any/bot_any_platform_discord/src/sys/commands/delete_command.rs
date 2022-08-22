@@ -28,10 +28,10 @@ impl ClientRequest for DeleteCommand<'_> {
         &HttpMethod::Delete
     }
 
-    fn header_processor(&self) -> Option<fn(&str, &str) -> Option<Self::Response>> {
-        fn header_processor(_: &str, _: &str) -> Option<()> {
-            Some(())
-        }
-        Some(header_processor)
+    fn deserialize(
+        &self,
+        response: &impl reqores::ClientResponse,
+    ) -> Result<Self::Response, String> {
+        Ok(())
     }
 }

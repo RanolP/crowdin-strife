@@ -21,7 +21,7 @@ bot_any_platform_discord = { path = "./bot_any/bot_any_platform_discord" }
 
 crowdin_client = { path = "./crowdin_client" }
 
-[target.'cfg(target_arch = "wasm32")'.dependencies]
+# [target.'cfg(target_arch = "wasm32")'.dependencies]
 worker = "0.0.10"
 reqores_client_cf_worker = { path = "./reqores/reqores_client_cf_worker" }
 reqores_server_cf_worker = { path = "./reqores/reqores_server_cf_worker" }

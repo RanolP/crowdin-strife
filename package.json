@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "deploy": "wrangler publish build/worker/shim.mjs",
-    "dev": "wrangler dev build/worker/shim.mjs --local"
+    "dev": "wrangler dev build/worker/shim.mjs --local",
+    "wrangler": "wrangler"
   },
   "devDependencies": {
     "@miniflare/core": "^2.7.0",

@@ -7,7 +7,7 @@ use crowdin_client::{DiscussionStatus, LanguageId, LoadTopics, RefreshToken};
 use reqores::{ServerResponse, ServerResponseBuilder, StatusCode};
 use reqores_client_cf_worker::CfWorkerClient;
 use reqores_server_cf_worker::{make_response, CfWorkerServerRequest};
-use worker::{event, Env, Request, Response, Result, Router};
+use worker::{event, Env, Request, Response, Result, RouteContext, Router};
 
 #[event(fetch)]
 pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Response> {
@@ -21,7 +21,7 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
             let public_key = if debug {
                 None
             } else {
-                Some(context.var("DISCORD_PUBLIC_KEY")?.to_string())
+                Some(context.secret("DISCORD_PUBLIC_KEY")?.to_string())
             };
             let garden = DiscordGarden::new(public_key.as_deref())
                 .map_err(|e| worker::Error::from(e.to_string()))?;
@@ -33,7 +33,7 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
                 .map_err(|e| worker::Error::from(e.to_string()))?
             {
                 (res, DiscordPlant::EarlyReturn) => res,
-                (res, DiscordPlant::Command(command)) => res.then(execute(command).await?),
+                (res, DiscordPlant::Command(command)) => res.then(execute(command, context).await?),
             };
 
             make_response(response)
@@ -60,16 +60,36 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
         .await
 }
 
-async fn execute(command: ApplicationCommand) -> worker::Result<ServerResponse> {
+async fn execute(
+    command: ApplicationCommand,
+    context: RouteContext<()>,
+) -> worker::Result<ServerResponse> {
     Ok(ServerResponseBuilder::new()
         .status(StatusCode::Ok)
         .body_json(&InteractionResponse::message_with_source(
-            works_left().await.into(),
+            (match command.name.as_ref() {
+                "잔업" => works_left(context).await,
+                "버전" => version(context).await,
+                _ => unknown(context).await,
+            }?
+            .into()),
         ))?)
 }
 
-async fn works_left() -> MessageOutput {
-    MessageOutput {
-        content: Some("Hello, world!".to_string()),
-    }
+async fn works_left(context: RouteContext<()>) -> worker::Result<MessageOutput> {
+    Ok(MessageOutput {
+        content: Some("잔업은 언젠가 완료될 것입니다.".to_string()),
+    })
+}
+
+async fn version(context: RouteContext<()>) -> worker::Result<MessageOutput> {
+    Ok(MessageOutput {
+        content: Some(format!("버전 : {}", context.var("VERSION")?.to_string())),
+    })
+}
+
+async fn unknown(context: RouteContext<()>) -> worker::Result<MessageOutput> {
+    Ok(MessageOutput {
+        content: Some("알 수 없는 명령어입니다.".to_string()),
+    })
 }

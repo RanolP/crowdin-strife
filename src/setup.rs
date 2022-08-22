@@ -20,7 +20,8 @@ async fn main() -> eyre::Result<()> {
             token: &discord_token,
             command_id: Snowflake("1010918050310135960".to_string()),
         })
-        .await?;
+        .await
+        .map_err(|e| eyre::eyre!("{}", e))?;
 
     let result = client
         .call(UpdateCommand {
@@ -33,13 +34,33 @@ async fn main() -> eyre::Result<()> {
                 kind: Some(ApplicationCommandKind::ChatInput),
                 application_id: Some(Snowflake(discord_application_id.clone())),
                 guild_id: None,
-                name: Some("잔업".to_string()),
-                options: None,
+                name: "잔업".to_string(),
+                // options: None,
                 description: Some("아직 기능이 없어요 ㅠ".to_string()),
             },
         })
-        .await?;
+        .await
+        .map_err(|e| eyre::eyre!("{}", e))?;
+    println!("{}", serde_json::to_string_pretty(&result)?);
 
+    let result = client
+        .call(UpdateCommand {
+            application_id: &discord_application_id,
+            token: &discord_token,
+            // guild_id: None,
+            guild_id: Some(Snowflake("898200418146988072".to_string())),
+            command: ApplicationCommand {
+                id: None,
+                kind: Some(ApplicationCommandKind::ChatInput),
+                application_id: Some(Snowflake(discord_application_id.clone())),
+                guild_id: None,
+                name: "버전".to_string(),
+                // options: None,
+                description: Some("버전 정보를 가져옵니다.".to_string()),
+            },
+        })
+        .await
+        .map_err(|e| eyre::eyre!("{}", e))?;
     println!("{}", serde_json::to_string_pretty(&result)?);
 
     Ok(())
