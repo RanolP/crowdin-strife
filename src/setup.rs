@@ -5,11 +5,12 @@ use bot_any_platform_discord::sys::{
 use reqores_client_surf::SurfClient;
 
 #[tokio::main]
-async fn main() {
+async fn main() -> eyre::Result<()> {
     dotenvy::dotenv().ok();
+    color_eyre::install();
 
-    let discord_application_id = dotenvy::var("DISCORD_APPLICATION_ID").unwrap();
-    let discord_token = dotenvy::var("DISCORD_TOKEN").unwrap();
+    let discord_application_id = dotenvy::var("DISCORD_APPLICATION_ID")?;
+    let discord_token = dotenvy::var("DISCORD_TOKEN")?;
 
     let client = SurfClient;
 
@@ -19,8 +20,7 @@ async fn main() {
             token: &discord_token,
             command_id: Snowflake("1010918050310135960".to_string()),
         })
-        .await
-        .unwrap();
+        .await?;
 
     let result = client
         .call(UpdateCommand {
@@ -38,8 +38,9 @@ async fn main() {
                 description: "아직 기능이 없어요 ㅠ".to_string(),
             },
         })
-        .await
-        .unwrap();
+        .await?;
 
-    println!("{}", serde_json::to_string_pretty(&result).unwrap());
+    println!("{}", serde_json::to_string_pretty(&result)?);
+
+    Ok(())
 }
