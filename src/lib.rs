@@ -1,6 +1,9 @@
-use bot_any_platform_discord::sys::{
-    types::{Interaction, InteractionCallbackMessage, InteractionResponse, RawInteraction},
-    verify_key::VerifyKey,
+use bot_any_platform_discord::{
+    sys::{
+        types::{Interaction, InteractionCallbackMessage, InteractionResponse, RawInteraction},
+        verify_key::VerifyKey,
+    },
+    DiscordGarden,
 };
 use crowdin_client::{DiscussionStatus, LanguageId, LoadTopics, RefreshToken};
 use reqores::{ServerRequest, ServerResponse, ServerResponseBuilder, StatusCode};
@@ -15,17 +18,11 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
 
     let router = Router::new();
     router
-        .post_async("/discord/interactions", |req, _| async move {
-            let verify_key = VerifyKey::new(env.var("DISCORD_PUBLIC_KEY")?)?;
+        .post_async("/discord/interactions", |req, context| async move {
+            let discord_garden = DiscordGarden::new(context.var("DISCORD_PUBLIC_KEY")?)?;
 
-            let server_request = CfWorkerServerRequest::new(req).await?;
-            let server_response = verify_key
-                .accept(&server_request)
-                .await?
-                .then(discord(&server_request).await?);
-            let response = make_response(server_response)?;
-
-            response
+            let request = CfWorkerServerRequest::new(req).await?;
+            make_response(discord_garden.accept(&request).await?)
         })
         .get_async("/discussions/list", |_, _| async {
             let client = CfWorkerClient;
@@ -57,15 +54,17 @@ async fn discord(request: &impl ServerRequest) -> worker::Result<ServerResponse>
             .body_json(&InteractionResponse::pong())?),
         Some(Interaction::ApplicationCommand(_)) => Ok(ServerResponseBuilder::new()
             .status(StatusCode::Ok)
-            .body_json(&InteractionResponse::message_with_source(
-                InteractionCallbackMessage {
-                    tts: None,
-                    content: Some("Hello, world!".to_string()),
-                    embeds: vec![],
-                },
-            ))?),
+            .body_json(&InteractionResponse::message_with_source(works_left()))?),
         None => Ok(ServerResponseBuilder::new()
             .status(StatusCode::BadRequest)
             .body("wtf".as_bytes().to_vec())),
+    }
+}
+
+async fn works_left() -> InteractionCallbackMessage {
+    InteractionCallbackMessage {
+        tts: None,
+        content: Some("Hello, world!".to_string()),
+        embeds: vec![],
     }
 }

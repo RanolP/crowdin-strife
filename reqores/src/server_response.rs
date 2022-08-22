@@ -20,11 +20,15 @@ pub struct ServerResponse {
 
 impl ServerResponse {
     pub fn then(self, other: ServerResponse) -> ServerResponse {
-        let mut parts = self.parts;
-        parts.extend(other.parts);
-        ServerResponse {
-            parts,
-            body: other.body.or(self.body),
+        if self.body.is_some() {
+            self
+        } else {
+            let mut parts = self.parts;
+            parts.extend(other.parts);
+            ServerResponse {
+                parts,
+                body: other.body,
+            }
         }
     }
 }
@@ -55,6 +59,10 @@ impl ServerResponseBuilder {
     pub fn body(mut self, body: Vec<u8>) -> ServerResponse {
         self.body = Some(body);
         self.build()
+    }
+    
+    pub fn body_str(mut self, body: &str) -> ServerResponse {
+        self.body(body.as_bytes().to_vec())
     }
 
     pub fn body_json<T: Serialize>(mut self, body: &T) -> serde_json::Result<ServerResponse> {

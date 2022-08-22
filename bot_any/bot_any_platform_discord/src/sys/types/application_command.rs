@@ -25,12 +25,15 @@ pub struct ApplicationCommand {
 
 #[derive(Serialize, Deserialize)]
 pub struct ApplicationCommandOption {
-    // type	one of application command option type	Type of option
-    // name	string	1-32 character name
-    // name_localizations?	?dictionary with keys in available locales	Localization dictionary for the name field. Values follow the same restrictions as name
-    // description	string	1-100 character description
-    // description_localizations?	?dictionary with keys in available locales	Localization dictionary for the description field. Values follow the same restrictions as description
-    // required?	boolean	If the parameter is required or optional--default false
+    /// Type of option
+    // type: one of application command option type
+
+    /// 1-32 character name
+    name: String,
+    /// 1-100 character description
+    description: String,
+    /// If the parameter is required or optional--default false
+    required: Option<bool>,
     // choices?	array of application command option choice	Choices for STRING, INTEGER, and NUMBER types for the user to pick from, max 25
     // options?	array of application command option	If the option is a subcommand or subcommand group type, these nested options will be the parameters
     // channel_types?	array of channel types	If the option is a channel type, the channels shown will be restricted to these types
