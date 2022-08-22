@@ -1,22 +1,17 @@
-use reqores::{ServerResponse, ServerResponsePart, StatusCode};
+use reqores::{ServerResponse, ServerResponsePart};
 use worker::Response;
 
 pub fn make_response(server_response: ServerResponse) -> worker::Result<Response> {
-    let mut response = Response::from_bytes(server_response.body)?;
+    let mut response = Response::from_bytes(server_response.body.unwrap_or_default())?;
 
-    for server_response in server_responses {
-        for part in server_response.parts {
-            match part {
-                ServerResponsePart::Header(name, value) => {
-                    response.headers_mut().set(&name, &value);
-                }
-                ServerResponsePart::StatusCode(code) => {
-                    response = response.with_status(code as u16);
-                }
+    for part in server_response.parts {
+        match part {
+            ServerResponsePart::Header(name, value) => {
+                response.headers_mut().set(&name, &value)?;
             }
-        }
-        if server_response.is_complete {
-            break;
+            ServerResponsePart::StatusCode(code) => {
+                response = response.with_status(code as u16);
+            }
         }
     }
 

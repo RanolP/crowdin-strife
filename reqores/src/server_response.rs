@@ -60,18 +60,18 @@ impl ServerResponseBuilder {
         self.body = Some(body);
         self.build()
     }
-    
-    pub fn body_str(mut self, body: &str) -> ServerResponse {
+
+    pub fn body_str(self, body: &str) -> ServerResponse {
         self.body(body.as_bytes().to_vec())
     }
 
-    pub fn body_json<T: Serialize>(mut self, body: &T) -> serde_json::Result<ServerResponse> {
+    pub fn body_json<T: Serialize>(self, body: &T) -> serde_json::Result<ServerResponse> {
         Ok(self
             .header(
                 "Cotent-Type".to_string(),
                 "application/json; charset=UTF-8".to_string(),
             )
-            .body(serde_json::to_vec(value)?))
+            .body(serde_json::to_vec(body)?))
     }
 
     pub fn build(self) -> ServerResponse {

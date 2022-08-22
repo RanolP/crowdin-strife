@@ -2,7 +2,7 @@ use std::borrow::Cow;
 
 use reqores::{ClientRequest, HttpMethod};
 
-use crate::sys::types::{ApplicationCommand, Snowflake};
+use crate::sys::types::Snowflake;
 
 pub struct DeleteCommand<'a> {
     pub application_id: &'a str,
@@ -29,7 +29,7 @@ impl ClientRequest for DeleteCommand<'_> {
     }
 
     fn header_processor(&self) -> Option<fn(&str, &str) -> Option<Self::Response>> {
-        fn header_processor(name: &str, value: &str) -> Option<()> {
+        fn header_processor(_: &str, _: &str) -> Option<()> {
             Some(())
         }
         Some(header_processor)

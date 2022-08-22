@@ -28,7 +28,6 @@ pub struct RawInteraction {
     channel_id: Option<Snowflake>,
     member: Option<Member>,
     user: Option<User>,
-    token: String,
 }
 
 impl RawInteraction {

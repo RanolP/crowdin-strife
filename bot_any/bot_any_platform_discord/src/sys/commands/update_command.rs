@@ -1,7 +1,6 @@
 use std::borrow::Cow;
 
 use reqores::{ClientRequest, HttpMethod};
-use serde::Deserialize;
 
 use crate::sys::types::{ApplicationCommand, Snowflake};
 

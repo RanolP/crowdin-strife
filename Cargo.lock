@@ -275,6 +275,7 @@ version = "0.1.0"
 name = "bot_any_platform_discord"
 version = "0.1.0"
 dependencies = [
+ "bot_any",
  "ed25519-dalek",
  "hex",
  "reqores",
