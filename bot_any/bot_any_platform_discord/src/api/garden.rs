@@ -2,13 +2,13 @@ use reqores::{ServerRequest, ServerResponse, ServerResponseBuilder, StatusCode};
 use thiserror::Error;
 
 use crate::sys::{
-    types::{ApplicationCommand, Interaction, InteractionResponse, RawInteraction},
+    types::{Interaction, InteractionApplicationCommand, InteractionResponse, RawInteraction},
     verify_key::{VerifyKey, VerifyKeyError},
 };
 
 pub enum DiscordPlant {
     EarlyReturn,
-    Command(ApplicationCommand),
+    Command(InteractionApplicationCommand),
 }
 
 pub struct DiscordGarden {

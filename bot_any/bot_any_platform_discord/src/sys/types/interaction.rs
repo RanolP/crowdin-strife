@@ -30,14 +30,30 @@ pub struct RawInteraction {
     user: Option<User>,
 }
 
+pub struct InteractionRest {
+    pub guild_id: Option<Snowflake>,
+    pub channel_id: Option<Snowflake>,
+    pub member: Option<Member>,
+    pub user: Option<User>,
+}
+
 impl RawInteraction {
     pub fn transform(self) -> Option<Interaction> {
+        let rest = InteractionRest {
+            guild_id: self.guild_id,
+            channel_id: self.channel_id,
+            member: self.member,
+            user: self.user,
+        };
+
         match (self.kind, self.data) {
             (RawInteractionKind::Ping, _) => Some(Interaction::Ping),
             (
                 RawInteractionKind::ApplicationCommand,
                 Some(RawInteractionData::ApplicationCommand(data)),
-            ) => Some(Interaction::ApplicationCommand(data)),
+            ) => Some(Interaction::ApplicationCommand(
+                InteractionApplicationCommand { data, rest },
+            )),
             _ => None,
         }
     }
@@ -45,5 +61,10 @@ impl RawInteraction {
 
 pub enum Interaction {
     Ping,
-    ApplicationCommand(ApplicationCommand),
+    ApplicationCommand(InteractionApplicationCommand),
+}
+
+pub struct InteractionApplicationCommand {
+    pub data: ApplicationCommand,
+    pub rest: InteractionRest,
 }

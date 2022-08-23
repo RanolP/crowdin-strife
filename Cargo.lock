@@ -272,10 +272,18 @@ name = "bot_any"
 version = "0.1.0"
 
 [[package]]
+name = "bot_any_cal"
+version = "0.1.0"
+dependencies = [
+ "bot_any",
+]
+
+[[package]]
 name = "bot_any_platform_discord"
 version = "0.1.0"
 dependencies = [
  "bot_any",
+ "bot_any_cal",
  "ed25519-dalek",
  "hex",
  "reqores",
@@ -489,6 +497,7 @@ name = "crowdin_strife"
 version = "0.1.0"
 dependencies = [
  "bot_any",
+ "bot_any_cal",
  "bot_any_platform_discord",
  "color-eyre",
  "console_error_panic_hook",

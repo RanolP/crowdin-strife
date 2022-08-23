@@ -16,6 +16,8 @@ ed25519-dalek = "*"
 
 thiserror = "*"
 
+reqores = { path = "../../reqores" }
+
 bot_any = { path = "../" }
 
-reqores = { path = "../../reqores" }
+bot_any_cal = { path = "../bot_any_cal" }

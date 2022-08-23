@@ -30,7 +30,7 @@ impl ClientRequest for DeleteCommand<'_> {
 
     fn deserialize(
         &self,
-        response: &impl reqores::ClientResponse,
+        _: &impl reqores::ClientResponse,
     ) -> Result<Self::Response, String> {
         Ok(())
     }

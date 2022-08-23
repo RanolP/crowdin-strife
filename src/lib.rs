@@ -1,8 +1,8 @@
+#![cfg(target_arch = "wasm32")]
+
 use bot_any::types::MessageOutput;
-use bot_any_platform_discord::{
-    sys::types::{ApplicationCommand, InteractionResponse},
-    DiscordGarden, DiscordPlant,
-};
+use bot_any_cal::Command;
+use bot_any_platform_discord::{sys::types::InteractionResponse, DiscordGarden, DiscordPlant};
 use crowdin_client::{DiscussionStatus, LanguageId, LoadTopics, RefreshToken};
 use reqores::{ServerResponse, ServerResponseBuilder, StatusCode};
 use reqores_client_cf_worker::CfWorkerClient;
@@ -33,7 +33,9 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
                 .map_err(|e| worker::Error::from(e.to_string()))?
             {
                 (res, DiscordPlant::EarlyReturn) => res,
-                (res, DiscordPlant::Command(command)) => res.then(execute(command, context).await?),
+                (res, DiscordPlant::Command(command)) => {
+                    res.then(execute(command.into(), context).await?)
+                }
             };
 
             make_response(response)
@@ -61,34 +63,37 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
 }
 
 async fn execute(
-    command: ApplicationCommand,
+    command: Command<()>,
     context: RouteContext<()>,
 ) -> worker::Result<ServerResponse> {
     Ok(ServerResponseBuilder::new()
         .status(StatusCode::Ok)
         .body_json(&InteractionResponse::message_with_source(
-            (match command.name.as_ref() {
-                "잔업" => works_left(context).await,
-                "버전" => version(context).await,
-                _ => unknown(context).await,
+            match command.label.as_ref() {
+                "잔업" => works_left(command, context).await,
+                "버전" => version(command, context).await,
+                _ => unknown(command, context).await,
             }?
-            .into()),
+            .into(),
         ))?)
 }
 
-async fn works_left(context: RouteContext<()>) -> worker::Result<MessageOutput> {
+async fn works_left(
+    command: Command<()>,
+    context: RouteContext<()>,
+) -> worker::Result<MessageOutput> {
     Ok(MessageOutput {
         content: Some("잔업은 언젠가 완료될 것입니다.".to_string()),
     })
 }
 
-async fn version(context: RouteContext<()>) -> worker::Result<MessageOutput> {
+async fn version(command: Command<()>, context: RouteContext<()>) -> worker::Result<MessageOutput> {
     Ok(MessageOutput {
         content: Some(format!("버전 : {}", context.var("VERSION")?.to_string())),
     })
 }
 
-async fn unknown(context: RouteContext<()>) -> worker::Result<MessageOutput> {
+async fn unknown(command: Command<()>, context: RouteContext<()>) -> worker::Result<MessageOutput> {
     Ok(MessageOutput {
         content: Some("알 수 없는 명령어입니다.".to_string()),
     })
