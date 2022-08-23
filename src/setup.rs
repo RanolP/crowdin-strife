@@ -12,7 +12,7 @@ use reqores_client_surf::SurfClient;
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
     dotenvy::dotenv().ok();
-    color_eyre::install();
+    color_eyre::install().ok();
 
     let discord_application_id = dotenvy::var("DISCORD_APPLICATION_ID")?;
     let discord_token = dotenvy::var("DISCORD_TOKEN")?;
