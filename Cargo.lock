@@ -276,6 +276,18 @@ name = "bot_any_cal"
 version = "0.1.0"
 dependencies = [
  "bot_any",
+ "bot_any_cal_derive",
+ "serde",
+ "thiserror",
+]
+
+[[package]]
+name = "bot_any_cal_derive"
+version = "0.1.0"
+dependencies = [
+ "darling",
+ "quote",
+ "syn",
 ]
 
 [[package]]

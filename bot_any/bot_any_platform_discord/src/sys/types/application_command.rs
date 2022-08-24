@@ -24,7 +24,7 @@ pub struct ApplicationCommand {
     pub description: Option<String>,
 }
 
-#[derive(Serialize_repr, Deserialize_repr)]
+#[derive(Serialize_repr, Deserialize_repr, PartialEq)]
 #[repr(u32)]
 pub enum ApplicationCommandOptionKind {
     SubCommand = 1,

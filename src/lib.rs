@@ -1,16 +1,51 @@
-#![cfg(target_arch = "wasm32")]
+pub mod commands;
 
-use bot_any::types::MessageOutput;
-use bot_any_cal::Command;
-use bot_any_platform_discord::{sys::types::InteractionResponse, DiscordGarden, DiscordPlant};
-use crowdin_client::{DiscussionStatus, LanguageId, LoadTopics, RefreshToken};
-use reqores::{ServerResponse, ServerResponseBuilder, StatusCode};
-use reqores_client_cf_worker::CfWorkerClient;
-use reqores_server_cf_worker::{make_response, CfWorkerServerRequest};
-use worker::{event, Env, Request, Response, Result, RouteContext, Router};
+#[cfg(target_arch = "wasm32")]
+#[worker::event(fetch)]
+pub async fn main(
+    req: worker::Request,
+    env: worker::Env,
+    _ctx: worker::Context,
+) -> worker::Result<worker::Response> {
+    use bot_any::types::MessageOutput;
+    use bot_any_platform_discord::{sys::types::InteractionResponse, DiscordGarden, DiscordPlant};
+    use crowdin_client::{DiscussionStatus, LanguageId, LoadTopics, RefreshToken};
+    use reqores::{ServerResponse, ServerResponseBuilder, StatusCode};
+    use reqores_client_cf_worker::CfWorkerClient;
+    use reqores_server_cf_worker::{make_response, CfWorkerServerRequest};
+    use worker::{Response, RouteContext, Router};
 
-#[event(fetch)]
-pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Response> {
+    async fn execute(context: RouteContext<()>) -> worker::Result<ServerResponse> {
+        Ok(ServerResponseBuilder::new()
+            .status(StatusCode::Ok)
+            .body_json(&InteractionResponse::message_with_source(
+                match command.label.as_ref() {
+                    "잔업" => works_left(command, context).await,
+                    "버전" => version(command, context).await,
+                    _ => unknown(command, context).await,
+                }?
+                .into(),
+            ))?)
+    }
+
+    async fn works_left(context: RouteContext<()>) -> worker::Result<MessageOutput> {
+        Ok(MessageOutput {
+            content: Some("잔업은 언젠가 완료될 것입니다.".to_string()),
+        })
+    }
+
+    async fn version(context: RouteContext<()>) -> worker::Result<MessageOutput> {
+        Ok(MessageOutput {
+            content: Some(format!("버전 : {}", context.var("VERSION")?.to_string())),
+        })
+    }
+
+    async fn unknown(context: RouteContext<()>) -> worker::Result<MessageOutput> {
+        Ok(MessageOutput {
+            content: Some("알 수 없는 명령어입니다.".to_string()),
+        })
+    }
+
     #[cfg(feature = "console_error_panic_hook")]
     console_error_panic_hook::set_once();
 
@@ -60,41 +95,4 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
         })
         .run(req, env)
         .await
-}
-
-async fn execute(
-    command: Command<()>,
-    context: RouteContext<()>,
-) -> worker::Result<ServerResponse> {
-    Ok(ServerResponseBuilder::new()
-        .status(StatusCode::Ok)
-        .body_json(&InteractionResponse::message_with_source(
-            match command.label.as_ref() {
-                "잔업" => works_left(command, context).await,
-                "버전" => version(command, context).await,
-                _ => unknown(command, context).await,
-            }?
-            .into(),
-        ))?)
-}
-
-async fn works_left(
-    command: Command<()>,
-    context: RouteContext<()>,
-) -> worker::Result<MessageOutput> {
-    Ok(MessageOutput {
-        content: Some("잔업은 언젠가 완료될 것입니다.".to_string()),
-    })
-}
-
-async fn version(command: Command<()>, context: RouteContext<()>) -> worker::Result<MessageOutput> {
-    Ok(MessageOutput {
-        content: Some(format!("버전 : {}", context.var("VERSION")?.to_string())),
-    })
-}
-
-async fn unknown(command: Command<()>, context: RouteContext<()>) -> worker::Result<MessageOutput> {
-    Ok(MessageOutput {
-        content: Some("알 수 없는 명령어입니다.".to_string()),
-    })
 }

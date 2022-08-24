@@ -1,7 +1,5 @@
-use crate::CommandSender;
+use crate::{CommandSender, CommandSpec, Context};
 
-pub struct Command<Args> {
-    pub sender: CommandSender,
-    pub label: String,
-    pub arguments: Args,
+pub trait Command {
+    fn spec() -> CommandSpec;
 }
