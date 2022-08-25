@@ -75,3 +75,27 @@ impl TryFrom<CommandArgumentValue> for f64 {
         }
     }
 }
+
+impl TryFrom<CommandArgumentValue> for Option<String> {
+    type Error = CommandArgumentValueTypeMismatchError;
+
+    fn try_from(value: CommandArgumentValue) -> Result<Self, Self::Error> {
+        Ok(String::try_from(value).ok())
+    }
+}
+
+impl TryFrom<CommandArgumentValue> for Option<i64> {
+    type Error = CommandArgumentValueTypeMismatchError;
+
+    fn try_from(value: CommandArgumentValue) -> Result<Self, Self::Error> {
+        Ok(i64::try_from(value).ok())
+    }
+}
+
+impl TryFrom<CommandArgumentValue> for Option<f64> {
+    type Error = CommandArgumentValueTypeMismatchError;
+
+    fn try_from(value: CommandArgumentValue) -> Result<Self, Self::Error> {
+        Ok(f64::try_from(value).ok())
+    }
+}
