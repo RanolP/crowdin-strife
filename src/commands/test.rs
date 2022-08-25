@@ -21,15 +21,6 @@ pub enum TestCommand {
         #[argument(name = "arg2")]
         arg2: Option<i64>,
         #[argument(name = "arg3")]
-        arg3: Option<f64>,
-    },
-    #[command(self)]
-    Command {
-        #[argument(name = "arg1")]
-        arg1: String,
-        #[argument(name = "arg2")]
-        arg2: i64,
-        #[argument(name = "arg3")]
         arg3: f64,
     },
 }
@@ -45,9 +36,6 @@ impl TestCommand {
             },
             TestCommand::Hack { arg1, arg2, arg3 } => MessageOutput {
                 content: Some(format!("hack {arg1:?} {arg2:?} {arg3:?}")),
-            },
-            TestCommand::Command { arg1, arg2, arg3 } => MessageOutput {
-                content: Some(format!("weird no sub command {arg1} {arg2} {arg3}")),
             },
         }
     }

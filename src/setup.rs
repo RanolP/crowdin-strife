@@ -2,13 +2,13 @@
 
 use bot_any_cal::Command;
 use bot_any_platform_discord::sys::{
-    commands::{DeleteCommand, UpdateCommand},
+    commands::{DeleteCommand, ListCommands, UpdateCommand},
     types::{
         ApplicationCommand, ApplicationCommandKind, ApplicationCommandOption,
         ApplicationCommandOptionKind, Snowflake,
     },
 };
-use crowdin_strife::commands::{TestCommand, Version, WorksLeft};
+use crowdin_strife::commands::{RootCommand, TestCommand, Version, WorksLeft};
 use reqores_client_surf::SurfClient;
 
 #[tokio::main]
@@ -18,61 +18,81 @@ async fn main() -> eyre::Result<()> {
 
     let discord_application_id = dotenvy::var("DISCORD_APPLICATION_ID")?;
     let discord_token = dotenvy::var("DISCORD_TOKEN")?;
+    let guild_id = Some("898200418146988072".to_string());
+
+    let guild_id = guild_id.map(Snowflake);
 
     let client = SurfClient;
 
-    client
-        .call(DeleteCommand {
+    let old_commands = client
+        .call(ListCommands {
             application_id: &discord_application_id,
             token: &discord_token,
-            command_id: Snowflake("1010918050310135960".to_string()),
+            guild_id: guild_id.clone(),
         })
         .await
         .map_err(|e| eyre::eyre!("{}", e))?;
+
+    for command in old_commands {
+        if RootCommand::contains(&command.name) {
+            continue;
+        }
+        println!("Deleting {}", command.name);
+        client
+            .call(DeleteCommand {
+                application_id: &discord_application_id,
+                token: &discord_token,
+                command_id: command.id.unwrap(),
+            })
+            .await
+            .map_err(|e| eyre::eyre!("{}", e))?;
+    }
+
+    println!();
 
     let result = client
         .call(UpdateCommand {
             application_id: &discord_application_id,
             token: &discord_token,
             // guild_id: None,
-            guild_id: Some(Snowflake("898200418146988072".to_string())),
+            guild_id: guild_id.clone(),
             command: ApplicationCommand {
                 application_id: Some(Snowflake(discord_application_id.clone())),
                 description: Some("아직 기능이 없어요 ㅠ".to_string()),
-                ..ApplicationCommand::from(WorksLeft::spec())
+                ..ApplicationCommand::try_from(WorksLeft::spec())?
             },
         })
         .await
         .map_err(|e| eyre::eyre!("{}", e))?;
-    println!("{}", serde_json::to_string_pretty(&result)?);
+    println!("Registering /{}", result.name);
 
     let result = client
         .call(UpdateCommand {
             application_id: &discord_application_id,
             token: &discord_token,
             // guild_id: None,
-            guild_id: Some(Snowflake("898200418146988072".to_string())),
+            guild_id: guild_id.clone(),
             command: ApplicationCommand {
                 application_id: Some(Snowflake(discord_application_id.clone())),
                 description: Some("버전 정보를 가져옵니다.".to_string()),
-                ..ApplicationCommand::from(Version::spec())
+                ..ApplicationCommand::try_from(Version::spec())?
             },
         })
         .await
         .map_err(|e| eyre::eyre!("{}", e))?;
-    println!("{}", serde_json::to_string_pretty(&result)?);
+    println!("Registering /{}", result.name);
 
     let result = client
         .call(UpdateCommand {
             application_id: &discord_application_id,
             token: &discord_token,
             // guild_id: None,
-            guild_id: Some(Snowflake("898200418146988072".to_string())),
-            command: ApplicationCommand::from(TestCommand::spec()),
+            guild_id: guild_id.clone(),
+            command: ApplicationCommand::try_from(TestCommand::spec())?,
         })
         .await
         .map_err(|e| eyre::eyre!("{}", e))?;
-    println!("{}", serde_json::to_string_pretty(&result)?);
+    println!("Registering /{}", result.name);
 
     Ok(())
 }

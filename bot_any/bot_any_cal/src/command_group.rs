@@ -5,9 +5,15 @@ macro_rules! command_group {
             $($children($children)),*
         }
 
+        impl $name {
+            pub fn contains(name: &str) -> bool {
+                matches!(name, $(<$children as ::bot_any_cal::Command>::NAME)|*)
+            }
+        }
+
         impl ::bot_any_cal::Command for $name {
             const NAME: &'static str = "<root>";
-            
+
             fn spec() -> ::bot_any_cal::CommandSpec {
                 ::bot_any_cal::CommandSpec {
                     name: Self::NAME,

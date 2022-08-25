@@ -23,6 +23,7 @@ impl SurfClient {
         if let Some(body) = client_request.body() {
             request = request.body(body);
         }
+
         let response = request.send().await?;
         let client_response = SurfClientResponse::new(response).await?;
 

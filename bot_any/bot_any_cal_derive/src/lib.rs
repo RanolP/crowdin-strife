@@ -163,10 +163,11 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                                 ::bot_any_cal::CommandSpec {
                                     name: #command_name,
                                     // TODO
-                                    description: ::std::option::Option::None,
+                                    description: ::std::option::Option::Some("how to parse rustdoc"),
                                     options: vec![#(::bot_any_cal::CommandOption {
                                         name: #inner_option_names,
-                                        description: None,
+                                        // TODO
+                                        description: ::std::option::Option::Some("how to parse rustdoc"),
                                         value: <
                                             #inner_option_types as ::bot_any_cal::GetCommandOptionValueKind
                                         >::get_command_option_value_kind(),
@@ -194,7 +195,7 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                             }
                         });
                         subcommands.push(quote! {
-                            <#ty as ::bot_any_cal::Command>.spec()
+                            <#ty as ::bot_any_cal::Command>::spec()
                         });
                     }
                     Fields::Unit => {
@@ -218,7 +219,7 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                         subcommands.push(quote! {
                             ::bot_any_cal::CommandSpec {
                                 name: #command_name,
-                                description: None,
+                                description: ::std::option::Option::Some("how to parse rustdoc"),
                                 options: ::std::vec::Vec::new(),
                                 subcommands: ::std::vec::Vec::new(),
                             }
@@ -288,16 +289,16 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                 bot_any_cal::CommandSpec {
                     name: #root_command_name,
                     // TODO
-                    description: ::std::option::Option::None,
+                    description: ::std::option::Option::Some("how to parse rustdoc"),
                     options: ::std::vec![#(
                         ::bot_any_cal::CommandOption {
                             name: #option_names,
-                            description: None,
+                            description: ::std::option::Option::Some("how to parse rustdoc"),
                             value: <
                                 #option_types as ::bot_any_cal::GetCommandOptionValueKind
                             >::get_command_option_value_kind(),
                         }),*],
-                    subcommands: ::std::vec::Vec::new(),
+                    subcommands: ::std::vec![#(#subcommands),*],
                 }
             }
             fn parse(preflights: &[bot_any_cal::CommandPreflight]) -> Option<Self> {

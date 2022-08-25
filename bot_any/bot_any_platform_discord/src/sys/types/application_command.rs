@@ -13,14 +13,24 @@ pub enum ApplicationCommandKind {
 
 #[derive(Serialize, Deserialize)]
 pub struct ApplicationCommand {
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<Snowflake>,
+
     #[serde(rename = "type")]
     pub kind: Option<ApplicationCommandKind>,
+
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub application_id: Option<Snowflake>,
+
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub guild_id: Option<Snowflake>,
+
     pub name: String,
+
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub options: Vec<ApplicationCommandOption>,
+
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
 }
 
@@ -55,9 +65,11 @@ pub struct ApplicationCommandOption {
     pub name: String,
 
     /// 1-100 character description
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
 
     /// If the parameter is required or optional--default false
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub required: Option<bool>,
 
     // Choices for STRING, INTEGER, and NUMBER types for the user to pick from, max 25

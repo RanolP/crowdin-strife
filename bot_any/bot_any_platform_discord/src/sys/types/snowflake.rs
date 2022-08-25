@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Hash)]
+#[derive(Clone, Serialize, Deserialize, Hash)]
 #[serde(transparent)]
 pub struct Snowflake(pub String);
