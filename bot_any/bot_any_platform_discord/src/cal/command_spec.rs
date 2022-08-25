@@ -16,12 +16,12 @@ impl TryFrom<CommandSpec> for ApplicationCommand {
     fn try_from(spec: CommandSpec) -> Result<Self, Self::Error> {
         let options = match (spec.subcommands.is_empty(), spec.options.is_empty()) {
             (false, false) => return Err(CommandSpecError),
-            (true, false) => spec
+            (false, true) => spec
                 .subcommands
                 .into_iter()
                 .map(ApplicationCommandOption::try_from)
                 .collect::<Result<_, _>>()?,
-            (false, true) => spec
+            (true, false) => spec
                 .options
                 .into_iter()
                 .map(ApplicationCommandOption::from)
@@ -46,12 +46,12 @@ impl TryFrom<CommandSpec> for ApplicationCommandOption {
     fn try_from(spec: CommandSpec) -> Result<Self, Self::Error> {
         let options = match (spec.subcommands.is_empty(), spec.options.is_empty()) {
             (false, false) => return Err(CommandSpecError),
-            (true, false) => spec
+            (false, true) => spec
                 .subcommands
                 .into_iter()
                 .map(ApplicationCommandOption::try_from)
                 .collect::<Result<_, _>>()?,
-            (false, true) => spec
+            (true, false) => spec
                 .options
                 .into_iter()
                 .map(ApplicationCommandOption::from)
