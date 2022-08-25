@@ -291,6 +291,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "bot_any_env_cf_worker"
+version = "0.1.0"
+dependencies = [
+ "bot_any_cal",
+ "worker",
+]
+
+[[package]]
 name = "bot_any_platform_discord"
 version = "0.1.0"
 dependencies = [
@@ -510,6 +518,7 @@ version = "0.1.0"
 dependencies = [
  "bot_any",
  "bot_any_cal",
+ "bot_any_env_cf_worker",
  "bot_any_platform_discord",
  "color-eyre",
  "console_error_panic_hook",

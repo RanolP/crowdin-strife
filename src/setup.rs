@@ -1,5 +1,6 @@
 #![cfg(not(target_arch = "wasm32"))]
 
+use bot_any_cal::Command;
 use bot_any_platform_discord::sys::{
     commands::{DeleteCommand, UpdateCommand},
     types::{
@@ -7,6 +8,7 @@ use bot_any_platform_discord::sys::{
         ApplicationCommandOptionKind, Snowflake,
     },
 };
+use crowdin_strife::commands::{TestCommand, Version, WorksLeft};
 use reqores_client_surf::SurfClient;
 
 #[tokio::main]
@@ -35,13 +37,9 @@ async fn main() -> eyre::Result<()> {
             // guild_id: None,
             guild_id: Some(Snowflake("898200418146988072".to_string())),
             command: ApplicationCommand {
-                id: None,
-                kind: Some(ApplicationCommandKind::ChatInput),
                 application_id: Some(Snowflake(discord_application_id.clone())),
-                guild_id: None,
-                name: "잔업".to_string(),
-                options: vec![],
                 description: Some("아직 기능이 없어요 ㅠ".to_string()),
+                ..ApplicationCommand::from(WorksLeft::spec())
             },
         })
         .await
@@ -55,13 +53,9 @@ async fn main() -> eyre::Result<()> {
             // guild_id: None,
             guild_id: Some(Snowflake("898200418146988072".to_string())),
             command: ApplicationCommand {
-                id: None,
-                kind: Some(ApplicationCommandKind::ChatInput),
                 application_id: Some(Snowflake(discord_application_id.clone())),
-                guild_id: None,
-                name: "버전".to_string(),
-                options: vec![],
                 description: Some("버전 정보를 가져옵니다.".to_string()),
+                ..ApplicationCommand::from(Version::spec())
             },
         })
         .await
@@ -74,39 +68,7 @@ async fn main() -> eyre::Result<()> {
             token: &discord_token,
             // guild_id: None,
             guild_id: Some(Snowflake("898200418146988072".to_string())),
-            command: ApplicationCommand {
-                id: None,
-                kind: Some(ApplicationCommandKind::ChatInput),
-                application_id: Some(Snowflake(discord_application_id.clone())),
-                guild_id: None,
-                name: "cmdframework".to_string(),
-                options: vec![
-                    ApplicationCommandOption {
-                        kind: ApplicationCommandOptionKind::SubCommand,
-                        name: "sc1".to_string(),
-                        description: Some("서브커맨드1".to_string()),
-                        required: Some(false),
-                        choices: vec![],
-                        options: vec![],
-                    },
-                    ApplicationCommandOption {
-                        kind: ApplicationCommandOptionKind::SubCommand,
-                        name: "sc2".to_string(),
-                        description: Some("서브커맨드2".to_string()),
-                        required: Some(false),
-                        choices: vec![],
-                        options: vec![ApplicationCommandOption {
-                            kind: ApplicationCommandOptionKind::Integer,
-                            name: "test".to_string(),
-                            description: Some("테스트값".to_string()),
-                            required: Some(false),
-                            choices: vec![],
-                            options: vec![],
-                        }],
-                    },
-                ],
-                description: Some("버전 정보를 가져옵니다.".to_string()),
-            },
+            command: ApplicationCommand::from(TestCommand::spec()),
         })
         .await
         .map_err(|e| eyre::eyre!("{}", e))?;

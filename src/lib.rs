@@ -9,6 +9,7 @@ pub async fn main(
 ) -> worker::Result<worker::Response> {
     use crate::commands::{handle_unknown, RootCommand};
     use bot_any_cal::Command;
+    use bot_any_env_cf_worker::CfWorkerEnv;
     use bot_any_platform_discord::{
         cal::parse_command, sys::types::InteractionResponse, DiscordGarden, DiscordPlant,
     };
@@ -42,20 +43,19 @@ pub async fn main(
                 (res, DiscordPlant::EarlyReturn) => res,
                 (res, DiscordPlant::Command(command)) => {
                     let (sender, preflights) = parse_command(command);
+                    let env = CfWorkerEnv(context.env);
                     let message_output = if let Some(command) = RootCommand::parse(&preflights) {
                         match command {
                             RootCommand::TestCommand(command) => {
-                                command.execute(sender, &context.env).await?
+                                command.execute(sender, &env).await
                             }
                             RootCommand::WorksLeft(works_left) => {
-                                works_left.execute(sender, &context.env).await?
+                                works_left.execute(sender, &env).await
                             }
-                            RootCommand::Version(version) => {
-                                version.execute(sender, &context.env).await?
-                            }
+                            RootCommand::Version(version) => version.execute(sender, &env).await,
                         }
                     } else {
-                        handle_unknown(sender, &context.env).await?
+                        handle_unknown(sender, &env).await
                     };
 
                     res.then(
