@@ -7,49 +7,16 @@ pub async fn main(
     env: worker::Env,
     _ctx: worker::Context,
 ) -> worker::Result<worker::Response> {
-    use bot_any::types::MessageOutput;
+    use crate::commands::{handle_unknown, RootCommand};
     use bot_any_cal::Command;
     use bot_any_platform_discord::{
         cal::parse_command, sys::types::InteractionResponse, DiscordGarden, DiscordPlant,
     };
     use crowdin_client::{DiscussionStatus, LanguageId, LoadTopics, RefreshToken};
-    use reqores::{ServerResponse, ServerResponseBuilder, StatusCode};
+    use reqores::{ServerResponseBuilder, StatusCode};
     use reqores_client_cf_worker::CfWorkerClient;
     use reqores_server_cf_worker::{make_response, CfWorkerServerRequest};
-    use worker::{Response, RouteContext, Router};
-
-    use crate::commands::TestCommand;
-
-    async fn execute(label: &str, context: RouteContext<()>) -> worker::Result<ServerResponse> {
-        Ok(ServerResponseBuilder::new()
-            .status(StatusCode::Ok)
-            .body_json(&InteractionResponse::message_with_source(
-                match label {
-                    "잔업" => works_left(context).await,
-                    "버전" => version(context).await,
-                    _ => unknown(context).await,
-                }?
-                .into(),
-            ))?)
-    }
-
-    async fn works_left(context: RouteContext<()>) -> worker::Result<MessageOutput> {
-        Ok(MessageOutput {
-            content: Some("잔업은 언젠가 완료될 것입니다.".to_string()),
-        })
-    }
-
-    async fn version(context: RouteContext<()>) -> worker::Result<MessageOutput> {
-        Ok(MessageOutput {
-            content: Some(format!("버전 : {}", context.var("VERSION")?.to_string())),
-        })
-    }
-
-    async fn unknown(context: RouteContext<()>) -> worker::Result<MessageOutput> {
-        Ok(MessageOutput {
-            content: Some("알 수 없는 명령어입니다.".to_string()),
-        })
-    }
+    use worker::{Response, Router};
 
     #[cfg(feature = "console_error_panic_hook")]
     console_error_panic_hook::set_once();
@@ -68,21 +35,36 @@ pub async fn main(
 
             let request = CfWorkerServerRequest::new(req).await?;
             let response = match garden
-                .accept(&request)
+                .seed(&request)
                 .await
                 .map_err(|e| worker::Error::from(e.to_string()))?
             {
                 (res, DiscordPlant::EarlyReturn) => res,
                 (res, DiscordPlant::Command(command)) => {
                     let (sender, preflights) = parse_command(command);
-                    if let Some(command) = TestCommand::parse(&preflights) {
-                        command.execute(sender).await;
+                    let message_output = if let Some(command) = RootCommand::parse(&preflights) {
+                        match command {
+                            RootCommand::TestCommand(command) => {
+                                command.execute(sender, &context.env).await?
+                            }
+                            RootCommand::WorksLeft(works_left) => {
+                                works_left.execute(sender, &context.env).await?
+                            }
+                            RootCommand::Version(version) => {
+                                version.execute(sender, &context.env).await?
+                            }
+                        }
                     } else {
-                        unknown(context).await?;
-                    }
-                    
-                    // res.then(execute(preflights.into(), context).await?)
-                    res
+                        handle_unknown(sender, &context.env).await?
+                    };
+
+                    res.then(
+                        ServerResponseBuilder::new()
+                            .status(StatusCode::Ok)
+                            .body_json(&InteractionResponse::message_with_source(
+                                message_output.into(),
+                            ))?,
+                    )
                 }
             };
 

@@ -30,7 +30,7 @@ impl DiscordGarden {
         })
     }
 
-    pub async fn accept(
+    pub async fn seed(
         &self,
         req: &impl ServerRequest,
     ) -> Result<(ServerResponse, DiscordPlant), DiscordGardenError> {

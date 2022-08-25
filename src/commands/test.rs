@@ -1,4 +1,6 @@
-use bot_any_cal::{Command, CommandSender, Context};
+use bot_any::types::MessageOutput;
+use bot_any_cal::{Command, CommandSender};
+use worker::Env;
 
 #[derive(Command)]
 #[command(name = "sc1")]
@@ -34,20 +36,20 @@ pub enum TestCommand {
 }
 
 impl TestCommand {
-    pub async fn execute(self, sender: CommandSender) {
+    pub async fn execute(self, sender: CommandSender, env: &Env) -> worker::Result<MessageOutput> {
         match self {
-            TestCommand::Subcommand1(sc) => {
-                // sc.execute(sender, label, context);
-            }
-            TestCommand::Subcommand2(sc) => {
-                // sc.execute(sender, label, context);
-            }
-            TestCommand::Hack { arg1, arg2, arg3 } => {
-                // todo
-            }
-            TestCommand::Command { arg1, arg2, arg3 } => {
-                // sender.reply(format!("{} {} {}", arg1, arg2, arg3));
-            }
+            TestCommand::Subcommand1(sc) => Ok(MessageOutput {
+                content: Some("sc1".to_string()),
+            }),
+            TestCommand::Subcommand2(sc) => Ok(MessageOutput {
+                content: Some("sc2".to_string()),
+            }),
+            TestCommand::Hack { arg1, arg2, arg3 } => Ok(MessageOutput {
+                content: Some(format!("hack {arg1} {arg2} {arg3}")),
+            }),
+            TestCommand::Command { arg1, arg2, arg3 } => Ok(MessageOutput {
+                content: Some(format!("weird no sub command {arg1} {arg2} {arg3}")),
+            }),
         }
     }
 }
