@@ -137,8 +137,7 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                                     )*
             
                                     for argument in arguments {
-                                        let name: &str = &argument.name;
-                                        match name {
+                                        match argument.name.as_str() {
                                             #(
                                                 #inner_option_names => {
                                                     #inner_option_idents = ::std::option::Option::Some(argument.value.clone().try_into().ok()?);
@@ -156,14 +155,15 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                                                 #(#inner_option_idents),*
                                             })
                                         }
-                                        _ => None,
+                                        _ => ::std::option::Option::None,
                                     }
                                 }
                             });
                             subcommands.push(quote! {
                                 ::bot_any_cal::CommandSpec {
                                     name: #command_name,
-                                    description: None,
+                                    // TODO
+                                    description: ::std::option::Option::None,
                                     options: vec![#(::bot_any_cal::CommandOption {
                                         name: #inner_option_names,
                                         description: None,
@@ -171,7 +171,7 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                                             #inner_option_types as ::bot_any_cal::GetCommandOptionValueKind
                                         >::get_command_option_value_kind(),
                                     }),*],
-                                    subcommands: vec![]
+                                    subcommands: ::std::vec::Vec::new(),
                                 }
                             });
                         }
@@ -190,10 +190,7 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                         let ty = &fields.unnamed[0].ty;
                         subcommand_match_arms.push(quote! {
                             <#ty as ::bot_any_cal::Command>::NAME => {
-                                <#ty as ::bot_any_cal::Command>::parse(
-                                    &[]
-                                    // ::std::slice::from_ref(execute)
-                                ).map(#name::#variant_name)
+                                <#ty as ::bot_any_cal::Command>::parse(rest).map(#name::#variant_name)
                             }
                         });
                         subcommands.push(quote! {
@@ -222,8 +219,8 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                             ::bot_any_cal::CommandSpec {
                                 name: #command_name,
                                 description: None,
-                                options: vec![],
-                                subcommands: vec![]
+                                options: ::std::vec::Vec::new(),
+                                subcommands: ::std::vec::Vec::new(),
                             }
                         })
                     }
@@ -257,8 +254,7 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                 )*
 
                 for argument in arguments {
-                    let name: &str = &argument.name;
-                    match name {
+                    match argument.name.as_str() {
                         #(
                             #option_names => {
                                 #option_idents = ::std::option::Option::Some(argument.value.clone().try_into().ok()?);
@@ -276,7 +272,7 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                             #(#option_idents),*
                         })
                     }
-                    _ => None,
+                    _ => ::std::option::Option::None,
                 }
             }
         })
@@ -291,8 +287,9 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
             fn spec() -> bot_any_cal::CommandSpec {
                 bot_any_cal::CommandSpec {
                     name: #root_command_name,
-                    description: None,
-                    options: vec![#(
+                    // TODO
+                    description: ::std::option::Option::None,
+                    options: ::std::vec![#(
                         ::bot_any_cal::CommandOption {
                             name: #option_names,
                             description: None,
@@ -300,7 +297,7 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                                 #option_types as ::bot_any_cal::GetCommandOptionValueKind
                             >::get_command_option_value_kind(),
                         }),*],
-                    subcommands: vec![],
+                    subcommands: ::std::vec::Vec::new(),
                 }
             }
             fn parse(preflights: &[bot_any_cal::CommandPreflight]) -> Option<Self> {
@@ -308,24 +305,23 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                     [
                         ::bot_any_cal::CommandPreflight::Select(name),
                         execute @ ::bot_any_cal::CommandPreflight::Execute(arguments),
-                        rest @ ..
+                        ..
                     ] => {
-                        let name: &str = &name;
-                        match name {
+                        let rest = ::std::slice::from_ref(execute);
+                        match name.as_str() {
                             #(#subcommands_named_fields_match_arms),*
                             #(#subcommand_match_arms),*
-                            _ => None,
+                            _ => ::std::option::Option::None,
                         }
                     }
                     [::bot_any_cal::CommandPreflight::Select(name), rest @ ..] => {
-                        let name: &str = &name;
-                        match name {
+                        match name.as_str() {
                             #(#subcommand_match_arms),*
-                            _ => None,
+                            _ => ::std::option::Option::None,
                         }
                     }
                     #self_arm
-                    _ => None,
+                    _ => ::std::option::Option::None,
                 }
             }
         }
