@@ -1,12 +1,6 @@
 use serde::Serialize;
 
-#[repr(u16)]
-pub enum StatusCode {
-    Ok = 200,
-    BadRequest = 400,
-    Forbidden = 403,
-    Notfound = 404,
-}
+use crate::StatusCode;
 
 pub enum ServerResponsePart {
     Header(String, String),
