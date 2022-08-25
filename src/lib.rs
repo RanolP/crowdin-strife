@@ -55,7 +55,7 @@ pub async fn main(
                             RootCommand::Version(version) => version.execute(sender, &env).await,
                         }
                     } else {
-                        handle_unknown(sender, &env).await
+                        handle_unknown(sender, &preflights, &env).await
                     };
 
                     res.then(
