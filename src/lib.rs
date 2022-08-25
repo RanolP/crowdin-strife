@@ -8,21 +8,26 @@ pub async fn main(
     _ctx: worker::Context,
 ) -> worker::Result<worker::Response> {
     use bot_any::types::MessageOutput;
-    use bot_any_platform_discord::{sys::types::InteractionResponse, DiscordGarden, DiscordPlant};
+    use bot_any_cal::Command;
+    use bot_any_platform_discord::{
+        cal::parse_command, sys::types::InteractionResponse, DiscordGarden, DiscordPlant,
+    };
     use crowdin_client::{DiscussionStatus, LanguageId, LoadTopics, RefreshToken};
     use reqores::{ServerResponse, ServerResponseBuilder, StatusCode};
     use reqores_client_cf_worker::CfWorkerClient;
     use reqores_server_cf_worker::{make_response, CfWorkerServerRequest};
     use worker::{Response, RouteContext, Router};
 
-    async fn execute(context: RouteContext<()>) -> worker::Result<ServerResponse> {
+    use crate::commands::TestCommand;
+
+    async fn execute(label: &str, context: RouteContext<()>) -> worker::Result<ServerResponse> {
         Ok(ServerResponseBuilder::new()
             .status(StatusCode::Ok)
             .body_json(&InteractionResponse::message_with_source(
-                match command.label.as_ref() {
-                    "잔업" => works_left(command, context).await,
-                    "버전" => version(command, context).await,
-                    _ => unknown(command, context).await,
+                match label {
+                    "잔업" => works_left(context).await,
+                    "버전" => version(context).await,
+                    _ => unknown(context).await,
                 }?
                 .into(),
             ))?)
@@ -69,7 +74,15 @@ pub async fn main(
             {
                 (res, DiscordPlant::EarlyReturn) => res,
                 (res, DiscordPlant::Command(command)) => {
-                    res.then(execute(command.into(), context).await?)
+                    let (sender, preflights) = parse_command(command);
+                    if let Some(command) = TestCommand::parse(&preflights) {
+                        command.execute(sender).await;
+                    } else {
+                        unknown(context).await?;
+                    }
+                    
+                    // res.then(execute(preflights.into(), context).await?)
+                    res
                 }
             };
 

@@ -1,5 +1,9 @@
-use crate::{CommandSender, CommandSpec, Context};
+use crate::{CommandPreflight, CommandSpec};
 
-pub trait Command {
+pub trait Command: Sized {
+    const NAME: &'static str;
+
     fn spec() -> CommandSpec;
+
+    fn parse(preflights: &[CommandPreflight]) -> Option<Self>;
 }

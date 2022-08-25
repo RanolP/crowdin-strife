@@ -1,35 +1,51 @@
-use darling::{FromDeriveInput, FromField};
+use darling::{FromDeriveInput, FromField, FromVariant};
 use proc_macro::TokenStream;
 use quote::quote;
-use syn::{parse_macro_input, DeriveInput, Ident, Type};
+use syn::{parse_macro_input, DeriveInput, Fields};
 
-#[derive(FromDeriveInput)]
+#[derive(FromDeriveInput, FromVariant)]
 #[darling(attributes(command))]
-struct RootConfig {
-    name: String,
+struct CommandConfig {
+    name: Option<String>,
+    #[darling(rename = "self")]
+    for_self: Option<bool>,
 }
 
 #[derive(FromField)]
-#[darling(attributes(command))]
+#[darling(attributes(argument))]
 struct ArgumentConfig {
     name: String,
-    value: Ident,
 }
 
 #[proc_macro_derive(Command, attributes(command, argument))]
 pub fn derive_command(item: TokenStream) -> TokenStream {
     let derive_input = parse_macro_input!(item as DeriveInput);
 
-    let root_config = match RootConfig::from_derive_input(&derive_input) {
+    let root_command_config = match CommandConfig::from_derive_input(&derive_input) {
         Ok(root_config) => root_config,
         Err(e) => return TokenStream::from(e.write_errors()),
     };
-    let root_name = root_config.name;
+    let root_command_name = match root_command_config.name {
+        Some(command_name) => command_name,
+        None => {
+            return TokenStream::from(
+                syn::Error::new_spanned(derive_input.ident, "#[command] attribute requires a name")
+                    .into_compile_error(),
+            )
+        }
+    };
 
     let name = derive_input.ident;
 
-    let mut options = Vec::new();
+    let mut option_idents = Vec::new();
+    let mut option_names = Vec::new();
+    let mut option_types = Vec::new();
+
     let mut subcommands = Vec::new();
+    let mut subcommands_named_fields_match_arms = Vec::new();
+    let mut subcommand_match_arms = Vec::new();
+
+    let mut self_discovered = Vec::new();
 
     match derive_input.data {
         syn::Data::Struct(data) => {
@@ -38,25 +54,180 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                     Ok(argument_config) => argument_config,
                     Err(e) => return TokenStream::from(e.write_errors()),
                 };
-                let name = argument_config.name;
-                let field_type = field.ty;
-
-                options.push(quote!(
-                    bot_any_cal::CommandOption {
-                        name: #name,
-                        description: None,
-                        value: <
-                            #field_type as bot_any_cal::GetCommandOptionValueKind
-                        >.get_command_option_value_kind(),
+                let ident = match field.ident {
+                    Some(name) => name,
+                    None => {
+                        return TokenStream::from(
+                            syn::Error::new_spanned(field, "enum variant field must have a name")
+                                .into_compile_error(),
+                        )
                     }
-                ));
+                };
+
+                self_discovered.push(quote! {
+                    #ident
+                });
+                option_idents.push(ident);
+                option_names.push(argument_config.name);
+                option_types.push(field.ty);
             }
         }
         syn::Data::Enum(data) => {
             for variant in data.variants {
-                if variant.
+                let command_config = CommandConfig::from_variant(&variant);
 
-                subcommands.push(quote!());
+                match variant.fields {
+                    Fields::Named(fields) => {
+                        let mut inner_option_idents = Vec::new();
+                        let mut inner_option_names = Vec::new();
+                        let mut inner_option_types = Vec::new();
+                        for field in fields.named {
+                            let argument_config = match ArgumentConfig::from_field(&field) {
+                                Ok(argument_config) => argument_config,
+                                Err(e) => return TokenStream::from(e.write_errors()),
+                            };
+                            let ident = match field.ident {
+                                Some(name) => name,
+                                None => {
+                                    return TokenStream::from(
+                                        syn::Error::new_spanned(
+                                            field,
+                                            "enum variant field must have a name",
+                                        )
+                                        .into_compile_error(),
+                                    )
+                                }
+                            };
+                            inner_option_idents.push(ident);
+                            inner_option_names.push(argument_config.name);
+                            inner_option_types.push(field.ty);
+                        }
+
+                        let command_config = match command_config {
+                            Ok(config) => config,
+                            Err(e) => return TokenStream::from(e.write_errors()),
+                        };
+
+                        let variant_name = variant.ident;
+
+                        if command_config.for_self.unwrap_or(false) {
+                            self_discovered.push(quote! {
+                                #name::#variant_name
+                            });
+                            option_idents.extend(inner_option_idents);
+                            option_names.extend(inner_option_names);
+                            option_types.extend(inner_option_types);
+                        } else {
+                            let command_name = match command_config.name {
+                                Some(command_name) => command_name,
+                                None => {
+                                    return TokenStream::from(
+                                        syn::Error::new_spanned(
+                                            variant_name,
+                                            "#[command] attribute requires a name",
+                                        )
+                                        .into_compile_error(),
+                                    )
+                                }
+                            };
+                            subcommands_named_fields_match_arms.push(quote! {
+                                #command_name => {
+                                    #(
+                                        let mut #inner_option_idents: ::std::option::Option<#inner_option_types> = ::std::option::Option::None;
+                                    )*
+            
+                                    for argument in arguments {
+                                        let name: &str = &argument.name;
+                                        match name {
+                                            #(
+                                                #inner_option_names => {
+                                                    #inner_option_idents = ::std::option::Option::Some(argument.value.clone().try_into().ok()?);
+                                                }
+                                            )*
+                                            _ => {
+                                                continue;
+                                            }
+                                        }
+                                    }
+            
+                                    match (#(#inner_option_idents),*) {
+                                        (#(::std::option::Option::Some(#inner_option_idents)),*) => {
+                                            ::std::option::Option::Some(#name::#variant_name {
+                                                #(#inner_option_idents),*
+                                            })
+                                        }
+                                        _ => None,
+                                    }
+                                }
+                            });
+                            subcommands.push(quote! {
+                                ::bot_any_cal::CommandSpec {
+                                    name: #command_name,
+                                    description: None,
+                                    options: vec![#(::bot_any_cal::CommandOption {
+                                        name: #inner_option_names,
+                                        description: None,
+                                        value: <
+                                            #inner_option_types as ::bot_any_cal::GetCommandOptionValueKind
+                                        >::get_command_option_value_kind(),
+                                    }),*],
+                                    subcommands: vec![]
+                                }
+                            });
+                        }
+                    }
+                    Fields::Unnamed(fields) => {
+                        if fields.unnamed.len() != 1 {
+                            return TokenStream::from(
+                                syn::Error::new_spanned(
+                                    fields,
+                                    "Unnamed enum variant must have one field",
+                                )
+                                .into_compile_error(),
+                            );
+                        }
+                        let variant_name = variant.ident;
+                        let ty = &fields.unnamed[0].ty;
+                        subcommand_match_arms.push(quote! {
+                            <#ty as ::bot_any_cal::Command>::NAME => {
+                                <#ty as ::bot_any_cal::Command>::parse(
+                                    &[]
+                                    // ::std::slice::from_ref(execute)
+                                ).map(#name::#variant_name)
+                            }
+                        });
+                        subcommands.push(quote! {
+                            <#ty as ::bot_any_cal::Command>.spec()
+                        });
+                    }
+                    Fields::Unit => {
+                        let command_config = match command_config {
+                            Ok(root_config) => root_config,
+                            Err(e) => return TokenStream::from(e.write_errors()),
+                        };
+
+                        let command_name = match command_config.name {
+                            Some(command_name) => command_name,
+                            None => {
+                                return TokenStream::from(
+                                    syn::Error::new_spanned(
+                                        variant.ident,
+                                        "#[command] attribute requires a name",
+                                    )
+                                    .into_compile_error(),
+                                )
+                            }
+                        };
+                        subcommands.push(quote! {
+                            ::bot_any_cal::CommandSpec {
+                                name: #command_name,
+                                description: None,
+                                options: vec![],
+                                subcommands: vec![]
+                            }
+                        })
+                    }
+                };
             }
         }
         syn::Data::Union(data) => {
@@ -67,17 +238,97 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
         }
     };
 
-    quote!(
+
+    if self_discovered.len() > 1 {
+        return TokenStream::from(
+            syn::Error::new_spanned(
+                &self_discovered[0],
+                "Cannot set #[command(self)] more than once",
+            )
+            .into_compile_error(),
+        );
+    }
+
+    let self_arm = if let Some(self_token) = self_discovered.first() {
+        Some(quote! {
+            [::bot_any_cal::CommandPreflight::Execute(arguments)] => {
+                #(
+                    let mut #option_idents: ::std::option::Option<#option_types> = ::std::option::Option::None;
+                )*
+
+                for argument in arguments {
+                    let name: &str = &argument.name;
+                    match name {
+                        #(
+                            #option_names => {
+                                #option_idents = ::std::option::Option::Some(argument.value.clone().try_into().ok()?);
+                            }
+                        )*
+                        _ => {
+                            continue;
+                        }
+                    }
+                }
+
+                match (#(#option_idents),*) {
+                    (#(::std::option::Option::Some(#option_idents)),*) => {
+                        ::std::option::Option::Some(#self_token {
+                            #(#option_idents),*
+                        })
+                    }
+                    _ => None,
+                }
+            }
+        })
+    } else {
+        None
+    };
+
+    quote! {
         impl Command for #name {
+            const NAME: &'static str = #root_command_name;
+
             fn spec() -> bot_any_cal::CommandSpec {
                 bot_any_cal::CommandSpec {
-                    name: #root_name,
+                    name: #root_command_name,
                     description: None,
-                    options: vec![#(#options,)*],
+                    options: vec![#(
+                        ::bot_any_cal::CommandOption {
+                            name: #option_names,
+                            description: None,
+                            value: <
+                                #option_types as ::bot_any_cal::GetCommandOptionValueKind
+                            >::get_command_option_value_kind(),
+                        }),*],
                     subcommands: vec![],
                 }
             }
+            fn parse(preflights: &[bot_any_cal::CommandPreflight]) -> Option<Self> {
+                match preflights {
+                    [
+                        ::bot_any_cal::CommandPreflight::Select(name),
+                        execute @ ::bot_any_cal::CommandPreflight::Execute(arguments),
+                        rest @ ..
+                    ] => {
+                        let name: &str = &name;
+                        match name {
+                            #(#subcommands_named_fields_match_arms),*
+                            #(#subcommand_match_arms),*
+                            _ => None,
+                        }
+                    }
+                    [::bot_any_cal::CommandPreflight::Select(name), rest @ ..] => {
+                        let name: &str = &name;
+                        match name {
+                            #(#subcommand_match_arms),*
+                            _ => None,
+                        }
+                    }
+                    #self_arm
+                    _ => None,
+                }
+            }
         }
-    )
+    }
     .into()
 }

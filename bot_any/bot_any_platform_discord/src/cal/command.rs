@@ -1,14 +1,15 @@
-use bot_any_cal::{Command, CommandHandler, CommandSender};
+use bot_any_cal::{
+    Command, CommandArgument, CommandArgumentValue, CommandPreflight, CommandSender,
+};
 
 use crate::sys::types::{
     ApplicationCommandOption, ApplicationCommandOptionChoiceValue, ApplicationCommandOptionKind,
     InteractionApplicationCommand,
 };
 
-fn parse_command<T: Command>(
-    mut handler: impl CommandHandler<T>,
+pub fn parse_command(
     command: InteractionApplicationCommand,
-) -> Option<(T, CommandSender)> {
+) -> (CommandSender, Vec<CommandPreflight>) {
     let sender = if let Some(member) = command.rest.member {
         CommandSender::User(member.into())
     } else if let Some(user) = command.rest.user {
@@ -18,7 +19,9 @@ fn parse_command<T: Command>(
     };
     let label = command.data.name;
 
-    handler = handler.visit_subcommand(&label)?;
+    let mut preflights = Vec::new();
+
+    preflights.push(CommandPreflight::Select(label));
     let mut current_options = command.data.options.as_slice();
     loop {
         match current_options {
@@ -29,24 +32,37 @@ fn parse_command<T: Command>(
                 ..
             }] => {
                 current_options = options.as_slice();
-                handler = handler.visit_subcommand(&name)?;
+                preflights.push(CommandPreflight::Select(name.clone()));
             }
             _ => {
+                let mut arguments = Vec::new();
                 for choice in current_options.iter().flat_map(|opt| opt.choices.iter()) {
-                    handler = match &choice.value {
+                    match &choice.value {
                         ApplicationCommandOptionChoiceValue::String(s) => {
-                            handler.visit_argument_str(choice.name.clone(), s.clone())
+                            arguments.push(CommandArgument {
+                                name: choice.name.clone(),
+                                value: CommandArgumentValue::String(s.clone()),
+                            })
                         }
                         ApplicationCommandOptionChoiceValue::Int(i) => {
-                            handler.visit_argument_i64(choice.name.clone(), i.clone())
+                            arguments.push(CommandArgument {
+                                name: choice.name.clone(),
+                                value: CommandArgumentValue::I64(i.clone()),
+                            })
                         }
                         ApplicationCommandOptionChoiceValue::Double(d) => {
-                            handler.visit_argument_f64(choice.name.clone(), d.clone())
+                            arguments.push(CommandArgument {
+                                name: choice.name.clone(),
+                                value: CommandArgumentValue::F64(d.clone()),
+                            })
                         }
                     };
                 }
-                break Some((handler.parse(), sender));
+                preflights.push(CommandPreflight::Execute(arguments));
+                break;
             }
         }
     }
+
+    (sender, preflights)
 }
