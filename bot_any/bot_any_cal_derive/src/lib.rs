@@ -49,12 +49,15 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
 
     match derive_input.data {
         syn::Data::Struct(data) => {
+            self_discovered.push(quote! {
+                #name
+            });
             for field in data.fields {
                 let argument_config = match ArgumentConfig::from_field(&field) {
                     Ok(argument_config) => argument_config,
                     Err(e) => return TokenStream::from(e.write_errors()),
                 };
-                let ident = match field.ident {
+                let field_ident = match field.ident {
                     Some(name) => name,
                     None => {
                         return TokenStream::from(
@@ -64,10 +67,7 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                     }
                 };
 
-                self_discovered.push(quote! {
-                    #ident
-                });
-                option_idents.push(ident);
+                option_idents.push(field_ident);
                 option_names.push(argument_config.name);
                 option_types.push(field.ty);
             }
