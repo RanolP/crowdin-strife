@@ -7,6 +7,8 @@ use syn::{parse_macro_input, DeriveInput, Fields};
 #[darling(attributes(command))]
 struct CommandConfig {
     name: Option<String>,
+    description: Option<String>,
+
     #[darling(rename = "self")]
     for_self: Option<bool>,
 }
@@ -15,6 +17,7 @@ struct CommandConfig {
 #[darling(attributes(argument))]
 struct ArgumentConfig {
     name: String,
+    description: String,
 }
 
 #[proc_macro_derive(Command, attributes(command, argument))]
@@ -34,11 +37,21 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
             )
         }
     };
+    let root_command_description = match root_command_config.description {
+        Some(command_description) => command_description,
+        None => {
+            return TokenStream::from(
+                syn::Error::new_spanned(derive_input.ident, "#[command] attribute requires a description")
+                    .into_compile_error(),
+            )
+        }
+    };
 
     let name = derive_input.ident;
 
     let mut option_idents = Vec::new();
     let mut option_names = Vec::new();
+    let mut option_descriptions = Vec::new();
     let mut option_types = Vec::new();
 
     let mut subcommands = Vec::new();
@@ -69,6 +82,7 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
 
                 option_idents.push(field_ident);
                 option_names.push(argument_config.name);
+                option_descriptions.push(argument_config.description);
                 option_types.push(field.ty);
             }
         }
@@ -80,6 +94,7 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                     Fields::Named(fields) => {
                         let mut inner_option_idents = Vec::new();
                         let mut inner_option_names = Vec::new();
+                        let mut inner_option_descriptions = Vec::new();
                         let mut inner_option_types = Vec::new();
                         for field in fields.named {
                             let argument_config = match ArgumentConfig::from_field(&field) {
@@ -100,6 +115,7 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                             };
                             inner_option_idents.push(ident);
                             inner_option_names.push(argument_config.name);
+                            inner_option_descriptions.push(argument_config.description);
                             inner_option_types.push(field.ty);
                         }
 
@@ -116,6 +132,7 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                             });
                             option_idents.extend(inner_option_idents);
                             option_names.extend(inner_option_names);
+                            option_descriptions.extend(inner_option_descriptions);
                             option_types.extend(inner_option_types);
                         } else {
                             let command_name = match command_config.name {
@@ -125,6 +142,18 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                                         syn::Error::new_spanned(
                                             variant_name,
                                             "#[command] attribute requires a name",
+                                        )
+                                        .into_compile_error(),
+                                    )
+                                }
+                            };
+                            let command_description = match command_config.description {
+                                Some(command_description) => command_description,
+                                None => {
+                                    return TokenStream::from(
+                                        syn::Error::new_spanned(
+                                            variant_name,
+                                            "#[command] attribute requires a description",
                                         )
                                         .into_compile_error(),
                                     )
@@ -162,12 +191,10 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                             subcommands.push(quote! {
                                 ::bot_any_cal::CommandSpec {
                                     name: #command_name,
-                                    // TODO
-                                    description: ::std::option::Option::Some("how to parse rustdoc"),
+                                    description: #command_description,
                                     options: vec![#(::bot_any_cal::CommandOption {
                                         name: #inner_option_names,
-                                        // TODO
-                                        description: ::std::option::Option::Some("how to parse rustdoc"),
+                                        description: #inner_option_descriptions,
                                         value: <
                                             #inner_option_types as ::bot_any_cal::GetCommandOptionValueKind
                                         >::get_command_option_value_kind(),
@@ -216,10 +243,22 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                                 )
                             }
                         };
+                        let command_description = match command_config.description {
+                            Some(command_description) => command_description,
+                            None => {
+                                return TokenStream::from(
+                                    syn::Error::new_spanned(
+                                        variant.ident,
+                                        "#[command] attribute requires a description",
+                                    )
+                                    .into_compile_error(),
+                                )
+                            }
+                        };
                         subcommands.push(quote! {
                             ::bot_any_cal::CommandSpec {
                                 name: #command_name,
-                                description: ::std::option::Option::Some("how to parse rustdoc"),
+                                description: #command_description,
                                 options: ::std::vec::Vec::new(),
                                 subcommands: ::std::vec::Vec::new(),
                             }
@@ -285,15 +324,14 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
         impl Command for #name {
             const NAME: &'static str = #root_command_name;
 
-            fn spec() -> bot_any_cal::CommandSpec {
-                bot_any_cal::CommandSpec {
+            fn spec() -> ::bot_any_cal::CommandSpec {
+                ::bot_any_cal::CommandSpec {
                     name: #root_command_name,
-                    // TODO
-                    description: ::std::option::Option::Some("how to parse rustdoc"),
+                    description: #root_command_description,
                     options: ::std::vec![#(
                         ::bot_any_cal::CommandOption {
                             name: #option_names,
-                            description: ::std::option::Option::Some("how to parse rustdoc"),
+                            description: #option_descriptions,
                             value: <
                                 #option_types as ::bot_any_cal::GetCommandOptionValueKind
                             >::get_command_option_value_kind(),
@@ -301,7 +339,7 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                     subcommands: ::std::vec![#(#subcommands),*],
                 }
             }
-            fn parse(preflights: &[bot_any_cal::CommandPreflight]) -> Option<Self> {
+            fn parse(preflights: &[::bot_any_cal::CommandPreflight]) -> ::std::option::Option<Self> {
                 match preflights {
                     [
                         ::bot_any_cal::CommandPreflight::Select(name),

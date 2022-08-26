@@ -1,4 +1,4 @@
-use reqores::ClientResponse;
+use reqores::{ClientResponse, StatusCode};
 use worker::Response;
 
 pub struct CfWorkerClientResponse {
@@ -18,6 +18,17 @@ impl CfWorkerClientResponse {
 impl ClientResponse for CfWorkerClientResponse {
     fn body(&self) -> &[u8] {
         &self.body
+    }
+
+    fn status(&self) -> StatusCode {
+        match self.response.status_code() {
+            200 => StatusCode::Ok,
+            204 => StatusCode::NoContent,
+            400 => StatusCode::BadRequest,
+            403 => StatusCode::Forbidden,
+            404 => StatusCode::Notfound,
+            _ => todo!(),
+        }
     }
 
     fn header(&self, key: &str) -> Option<String> {

@@ -2,7 +2,7 @@ use bot_any::types::MessageOutput;
 use bot_any_cal::{Command, CommandSender, Env};
 
 #[derive(Command)]
-#[command(name = "잔업")]
+#[command(name = "잔업", description = "남은 잔업을 가져올까요?")]
 pub struct WorksLeft;
 
 impl WorksLeft {

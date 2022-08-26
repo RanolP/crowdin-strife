@@ -1,6 +1,4 @@
-use bot_any_cal::{
-    Command, CommandArgument, CommandArgumentValue, CommandPreflight, CommandSender,
-};
+use bot_any_cal::{CommandArgument, CommandArgumentValue, CommandPreflight, CommandSender};
 
 use crate::sys::types::{
     ApplicationCommandOption, ApplicationCommandOptionChoiceValue, ApplicationCommandOptionKind,

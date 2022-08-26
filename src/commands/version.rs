@@ -2,7 +2,7 @@ use bot_any::types::MessageOutput;
 use bot_any_cal::{Command, CommandSender, Env};
 
 #[derive(Command)]
-#[command(name = "버전")]
+#[command(name = "버전", description = "현재 실행 중인 봇의 버전을 가져옵니다.")]
 pub struct Version;
 
 impl Version {

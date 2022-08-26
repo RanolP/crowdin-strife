@@ -52,16 +52,8 @@ async fn main() -> eyre::Result<()> {
     println!();
 
     let commands = vec![
-        ApplicationCommand {
-            application_id: Some(Snowflake(discord_application_id.clone())),
-            description: Some("아직 기능이 없어요 ㅠ".to_string()),
-            ..ApplicationCommand::try_from(WorksLeft::spec())?
-        },
-        ApplicationCommand {
-            application_id: Some(Snowflake(discord_application_id.clone())),
-            description: Some("버전 정보를 가져옵니다.".to_string()),
-            ..ApplicationCommand::try_from(Version::spec())?
-        },
+        ApplicationCommand::try_from(WorksLeft::spec())?,
+        ApplicationCommand::try_from(Version::spec())?,
         ApplicationCommand::try_from(TestCommand::spec())?,
     ];
 

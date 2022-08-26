@@ -35,7 +35,7 @@ impl TryFrom<CommandSpec> for ApplicationCommand {
             guild_id: None,
             name: spec.name.to_string(),
             options,
-            description: spec.description.map(|s| s.to_string()),
+            description: Some(spec.description.to_string()),
         })
     }
 }
@@ -61,7 +61,7 @@ impl TryFrom<CommandSpec> for ApplicationCommandOption {
         Ok(ApplicationCommandOption {
             kind: ApplicationCommandOptionKind::SubCommand,
             name: spec.name.to_string(),
-            description: spec.description.map(|s| s.to_string()),
+            description: Some(spec.description.to_string()),
             required: None,
             choices: Vec::new(),
             options,
@@ -80,7 +80,7 @@ impl From<CommandOption> for ApplicationCommandOption {
                 }
             },
             name: option.name.to_string(),
-            description: option.description.map(|s| s.to_string()),
+            description: Some(option.description.to_string()),
             required: Some(option.value.is_optional()),
             choices: vec![],
             options: vec![],

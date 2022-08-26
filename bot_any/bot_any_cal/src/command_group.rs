@@ -17,7 +17,7 @@ macro_rules! command_group {
             fn spec() -> ::bot_any_cal::CommandSpec {
                 ::bot_any_cal::CommandSpec {
                     name: Self::NAME,
-                    description: ::std::option::Option::None,
+                    description: "",
                     options: ::std::vec::Vec::new(),
                     subcommands: ::std::vec![
                         $(

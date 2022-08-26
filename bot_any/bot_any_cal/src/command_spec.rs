@@ -1,6 +1,6 @@
 pub struct CommandSpec {
     pub name: &'static str,
-    pub description: Option<&'static str>,
+    pub description: &'static str,
     pub options: Vec<CommandOption>,
 
     pub subcommands: Vec<CommandSpec>,
@@ -8,7 +8,7 @@ pub struct CommandSpec {
 
 pub struct CommandOption {
     pub name: &'static str,
-    pub description: Option<&'static str>,
+    pub description: &'static str,
     pub value: CommandOptionValueKind,
 }
 
