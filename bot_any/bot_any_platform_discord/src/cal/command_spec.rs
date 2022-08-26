@@ -14,7 +14,7 @@ impl TryFrom<CommandSpec> for ApplicationCommand {
     type Error = CommandSpecError;
 
     fn try_from(spec: CommandSpec) -> Result<Self, Self::Error> {
-        let options = match (spec.subcommands.is_empty(), spec.options.is_empty()) {
+        let mut options = match (spec.subcommands.is_empty(), spec.options.is_empty()) {
             (false, false) => return Err(CommandSpecError),
             (false, true) => spec
                 .subcommands
@@ -28,6 +28,10 @@ impl TryFrom<CommandSpec> for ApplicationCommand {
                 .collect(),
             (true, true) => Vec::new(),
         };
+        options.sort_by_key(|opt| match &opt.required {
+            Some(true) => 0,
+            None | Some(false) => 1,
+        });
         Ok(ApplicationCommand {
             id: None,
             kind: Some(ApplicationCommandKind::ChatInput),
@@ -44,7 +48,7 @@ impl TryFrom<CommandSpec> for ApplicationCommandOption {
     type Error = CommandSpecError;
 
     fn try_from(spec: CommandSpec) -> Result<Self, Self::Error> {
-        let options = match (spec.subcommands.is_empty(), spec.options.is_empty()) {
+        let mut options = match (spec.subcommands.is_empty(), spec.options.is_empty()) {
             (false, false) => return Err(CommandSpecError),
             (false, true) => spec
                 .subcommands
@@ -58,9 +62,14 @@ impl TryFrom<CommandSpec> for ApplicationCommandOption {
                 .collect(),
             (true, true) => Vec::new(),
         };
+        options.sort_by_key(|opt| match &opt.required {
+            Some(true) => 0,
+            None | Some(false) => 1,
+        });
         Ok(ApplicationCommandOption {
             kind: ApplicationCommandOptionKind::SubCommand,
             name: spec.name.to_string(),
+            value: None,
             description: Some(spec.description.to_string()),
             required: None,
             choices: Vec::new(),
@@ -80,8 +89,9 @@ impl From<CommandOption> for ApplicationCommandOption {
                 }
             },
             name: option.name.to_string(),
+            value: None,
             description: Some(option.description.to_string()),
-            required: Some(option.value.is_optional()),
+            required: Some(!option.value.is_optional()),
             choices: vec![],
             options: vec![],
         }

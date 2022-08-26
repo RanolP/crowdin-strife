@@ -1,7 +1,7 @@
 use bot_any_cal::{CommandArgument, CommandArgumentValue, CommandPreflight, CommandSender};
 
 use crate::sys::types::{
-    ApplicationCommandOption, ApplicationCommandOptionChoiceValue, ApplicationCommandOptionKind,
+    ApplicationCommandOption, ApplicationCommandOptionKind, ApplicationCommandOptionValue,
     InteractionApplicationCommand,
 };
 
@@ -34,25 +34,28 @@ pub fn parse_command(
             }
             _ => {
                 let mut arguments = Vec::new();
-                for choice in current_options.iter().flat_map(|opt| opt.choices.iter()) {
-                    match &choice.value {
-                        ApplicationCommandOptionChoiceValue::String(s) => {
+                for option in current_options {
+                    match &option.value {
+                        Some(ApplicationCommandOptionValue::String(s)) => {
                             arguments.push(CommandArgument {
-                                name: choice.name.clone(),
+                                name: option.name.clone(),
                                 value: CommandArgumentValue::String(s.clone()),
-                            })
+                            });
                         }
-                        ApplicationCommandOptionChoiceValue::Int(i) => {
+                        Some(ApplicationCommandOptionValue::Int(i)) => {
                             arguments.push(CommandArgument {
-                                name: choice.name.clone(),
+                                name: option.name.clone(),
                                 value: CommandArgumentValue::I64(i.clone()),
-                            })
+                            });
                         }
-                        ApplicationCommandOptionChoiceValue::Double(d) => {
+                        Some(ApplicationCommandOptionValue::Double(d)) => {
                             arguments.push(CommandArgument {
-                                name: choice.name.clone(),
+                                name: option.name.clone(),
                                 value: CommandArgumentValue::F64(d.clone()),
-                            })
+                            });
+                        }
+                        None => {
+                            continue;
                         }
                     };
                 }

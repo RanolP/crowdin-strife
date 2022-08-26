@@ -64,6 +64,9 @@ pub struct ApplicationCommandOption {
     /// 1-32 character name
     pub name: String,
 
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub value: Option<ApplicationCommandOptionValue>,
+
     /// 1-100 character description
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -98,12 +101,12 @@ pub struct ApplicationCommandOptionChoice {
     pub name: String,
 
     /// Value for the choice, up to 100 characters if string
-    pub value: ApplicationCommandOptionChoiceValue,
+    pub value: ApplicationCommandOptionValue,
 }
 
 #[derive(Serialize, Deserialize)]
 #[serde(untagged)]
-pub enum ApplicationCommandOptionChoiceValue {
+pub enum ApplicationCommandOptionValue {
     String(String),
     Int(i64),
     Double(f64),

@@ -36,30 +36,38 @@ impl CommandOptionValueKind {
     }
 }
 
-pub trait GetCommandOptionValueKind {
-    fn get_command_option_value_kind() -> CommandOptionValueKind;
-}
+pub trait CommandOptionValueTy: Sized {
+    fn spec_kind() -> CommandOptionValueKind;
 
-impl<T: GetCommandOptionValueKind> GetCommandOptionValueKind for Option<T> {
-    fn get_command_option_value_kind() -> CommandOptionValueKind {
-        CommandOptionValueKind::Optional(Box::new(T::get_command_option_value_kind()))
+    fn default() -> Option<Self> {
+        None
     }
 }
 
-impl GetCommandOptionValueKind for String {
-    fn get_command_option_value_kind() -> CommandOptionValueKind {
+impl<T: CommandOptionValueTy> CommandOptionValueTy for Option<T> {
+    fn spec_kind() -> CommandOptionValueKind {
+        CommandOptionValueKind::Optional(Box::new(T::spec_kind()))
+    }
+
+    fn default() -> Option<Self> {
+        Some(None)
+    }
+}
+
+impl CommandOptionValueTy for String {
+    fn spec_kind() -> CommandOptionValueKind {
         CommandOptionValueKind::String
     }
 }
 
-impl GetCommandOptionValueKind for i64 {
-    fn get_command_option_value_kind() -> CommandOptionValueKind {
+impl CommandOptionValueTy for i64 {
+    fn spec_kind() -> CommandOptionValueKind {
         CommandOptionValueKind::Integer
     }
 }
 
-impl GetCommandOptionValueKind for f64 {
-    fn get_command_option_value_kind() -> CommandOptionValueKind {
+impl CommandOptionValueTy for f64 {
+    fn spec_kind() -> CommandOptionValueKind {
         CommandOptionValueKind::Double
     }
 }

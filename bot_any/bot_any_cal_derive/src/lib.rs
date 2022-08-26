@@ -162,7 +162,7 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                             subcommands_named_fields_match_arms.push(quote! {
                                 #command_name => {
                                     #(
-                                        let mut #inner_option_idents: ::std::option::Option<#inner_option_types> = ::std::option::Option::None;
+                                        let mut #inner_option_idents: ::std::option::Option<#inner_option_types> = <#inner_option_types as ::bot_any_cal::CommandOptionValueTy>::default();
                                     )*
             
                                     for argument in arguments {
@@ -195,9 +195,7 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                                     options: vec![#(::bot_any_cal::CommandOption {
                                         name: #inner_option_names,
                                         description: #inner_option_descriptions,
-                                        value: <
-                                            #inner_option_types as ::bot_any_cal::GetCommandOptionValueKind
-                                        >::get_command_option_value_kind(),
+                                        value: <#inner_option_types as ::bot_any_cal::CommandOptionValueTy>::spec_kind(),
                                     }),*],
                                     subcommands: ::std::vec::Vec::new(),
                                 }
@@ -290,7 +288,7 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
         Some(quote! {
             [::bot_any_cal::CommandPreflight::Execute(arguments)] => {
                 #(
-                    let mut #option_idents: ::std::option::Option<#option_types> = ::std::option::Option::None;
+                    let mut #option_idents: ::std::option::Option<#option_types> = <#option_types as ::bot_any_cal::CommandOptionValueTy>::default();
                 )*
 
                 for argument in arguments {
@@ -332,9 +330,7 @@ pub fn derive_command(item: TokenStream) -> TokenStream {
                         ::bot_any_cal::CommandOption {
                             name: #option_names,
                             description: #option_descriptions,
-                            value: <
-                                #option_types as ::bot_any_cal::GetCommandOptionValueKind
-                            >::get_command_option_value_kind(),
+                            value: <#option_types as ::bot_any_cal::CommandOptionValueTy>::spec_kind(),
                         }),*],
                     subcommands: ::std::vec![#(#subcommands),*],
                 }
