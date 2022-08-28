@@ -7,7 +7,11 @@ macro_rules! command_group {
 
         impl $name {
             pub fn contains(name: &str) -> bool {
-                matches!(name, $(<$children as ::bot_any_cal::Command>::NAME)|*)
+                ::std::matches!(name, $(<$children as ::bot_any_cal::Command>::NAME)|*)
+            }
+
+            pub fn children_specs() -> std::vec::Vec<::bot_any_cal::CommandSpec> {
+                std::vec![$(<$children as ::bot_any_cal::Command>::spec()),*]
             }
         }
 
@@ -21,7 +25,7 @@ macro_rules! command_group {
                     options: ::std::vec::Vec::new(),
                     subcommands: ::std::vec![
                         $(
-                            $children::spec(),
+                            <$children as ::bot_any_cal::Command>::spec(),
                         )*
                     ],
                 }

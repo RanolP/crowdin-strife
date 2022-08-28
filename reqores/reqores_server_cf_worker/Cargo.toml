@@ -7,4 +7,4 @@ edition = "2021"
 
 [dependencies]
 worker = "*"
-reqores = { path = "../" }
+reqores = "0.1.1"

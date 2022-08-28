@@ -9,5 +9,5 @@ edition = "2021"
 bot_any = { path = "../" }
 bot_any_cal_derive = { path = "../bot_any_cal_derive" }
 
-serde = "*"
+serde = { version = "1", default-features = false, features = ["alloc", "derive"] }
 thiserror = "*"

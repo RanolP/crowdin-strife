@@ -1,6 +1,6 @@
 use ed25519_dalek::{PublicKey, Signature, SignatureError, Verifier};
 use hex::FromHexError;
-use reqores::{ServerRequest, ServerResponse, ServerResponseBuilder, StatusCode};
+use reqores::{HttpStatusCode, ServerRequest, ServerResponse, ServerResponseBuilder};
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -35,7 +35,7 @@ impl VerifyKey {
 
         if self.client_public_key.verify(message, &signature).is_err() {
             Ok(ServerResponseBuilder::new()
-                .status(StatusCode::Forbidden)
+                .status(HttpStatusCode::Forbidden)
                 .body(
                     "[discord-interactions] Invalid signature"
                         .as_bytes()

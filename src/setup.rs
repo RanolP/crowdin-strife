@@ -2,12 +2,11 @@
 
 use std::time::Duration;
 
-use bot_any_cal::Command;
 use bot_any_platform_discord::sys::{
     commands::{DeleteCommand, ListCommands, UpdateCommand},
     types::{ApplicationCommand, Snowflake},
 };
-use crowdin_strife::commands::{RootCommand, TestCommand, Version, WorksLeft};
+use crowdin_strife::commands::RootCommand;
 use reqores_client_surf::SurfClient;
 use tokio::time;
 
@@ -51,20 +50,14 @@ async fn main() -> eyre::Result<()> {
 
     println!();
 
-    let commands = vec![
-        ApplicationCommand::try_from(WorksLeft::spec())?,
-        ApplicationCommand::try_from(Version::spec())?,
-        ApplicationCommand::try_from(TestCommand::spec())?,
-    ];
-
-    for command in commands {
+    for command in RootCommand::children_specs() {
         let result = client
             .call(UpdateCommand {
                 application_id: &discord_application_id,
                 token: &discord_token,
                 // guild_id: None,
                 guild_id: guild_id.clone(),
-                command,
+                command: ApplicationCommand::try_from(command)?,
             })
             .await
             .map_err(|e| eyre::eyre!("{}", e))?;

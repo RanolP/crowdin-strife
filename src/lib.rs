@@ -14,7 +14,7 @@ pub async fn main(
         cal::parse_command, sys::types::InteractionResponse, DiscordGarden, DiscordPlant,
     };
     use crowdin_client::{DiscussionStatus, LanguageId, LoadTopics, RefreshToken};
-    use reqores::{ServerResponseBuilder, StatusCode};
+    use reqores::{HttpStatusCode, ServerResponseBuilder};
     use reqores_client_cf_worker::CfWorkerClient;
     use reqores_server_cf_worker::{make_response, CfWorkerServerRequest};
     use worker::{Response, Router};
@@ -60,7 +60,7 @@ pub async fn main(
 
                     res.then(
                         ServerResponseBuilder::new()
-                            .status(StatusCode::Ok)
+                            .status(HttpStatusCode::Ok)
                             .body_json(&InteractionResponse::message_with_source(
                                 message_output.into(),
                             ))?,

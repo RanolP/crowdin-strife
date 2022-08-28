@@ -1,6 +1,4 @@
-use std::borrow::Cow;
-
-use reqores::{ClientRequest, HttpMethod, StatusCode};
+use reqores::{ClientRequest, HttpMethod, HttpStatusCode};
 
 use crate::sys::types::Snowflake;
 
@@ -18,29 +16,29 @@ impl ClientRequest for DeleteCommand<'_> {
         vec![("Authorization".to_string(), format!("Bot {}", self.token))]
     }
 
-    fn url(&self) -> Cow<str> {
+    fn url(&self) -> String {
         if let Some(guild_id) = &self.guild_id {
-            Cow::Owned(format!(
+            format!(
                 "https://discord.com/api/v10/applications/{}/guilds/{}/commands/{}",
                 self.application_id, guild_id.0, self.command_id.0
-            ))
+            )
         } else {
-            Cow::Owned(format!(
+            format!(
                 "https://discord.com/api/v10/applications/{}/commands/{}",
                 self.application_id, self.command_id.0
-            ))
+            )
         }
     }
 
-    fn method(&self) -> &HttpMethod {
-        &HttpMethod::Delete
+    fn method(&self) -> HttpMethod {
+        HttpMethod::Delete
     }
 
     fn deserialize(
         &self,
         response: &impl reqores::ClientResponse,
     ) -> Result<Self::Response, String> {
-        if response.status() == StatusCode::NoContent {
+        if response.status() == HttpStatusCode::NoContent {
             Ok(())
         } else {
             Err("Failed to delete command".to_string())

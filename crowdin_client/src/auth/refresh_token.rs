@@ -1,5 +1,3 @@
-use std::borrow::Cow;
-
 use reqores::{ClientRequest, HttpMethod};
 
 pub struct RefreshToken;
@@ -7,12 +5,12 @@ pub struct RefreshToken;
 impl ClientRequest for RefreshToken {
     type Response = String;
 
-    fn url(&self) -> Cow<str> {
-        Cow::Borrowed("https://accounts.crowdin.com/auth/token?refresh=true")
+    fn url(&self) -> String {
+        "https://accounts.crowdin.com/auth/token?refresh=true".to_string()
     }
 
-    fn method(&self) -> &HttpMethod {
-        &HttpMethod::Get
+    fn method(&self) -> HttpMethod {
+        HttpMethod::Get
     }
 
     fn deserialize(

@@ -510,6 +510,7 @@ dependencies = [
  "serde",
  "serde_with",
  "thiserror",
+ "url",
 ]
 
 [[package]]
@@ -1580,11 +1581,12 @@ checksum = "a3f87b73ce11b1619a3c6332f45341e0047173771e8b8b73f87bfeefb7b56244"
 
 [[package]]
 name = "reqores"
-version = "0.1.0"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "01bf1580441e679b5b067f6c598a2cb025449daafdcfb1afe5123bd3f00e56b9"
 dependencies = [
  "serde",
  "serde_json",
- "url",
 ]
 
 [[package]]
@@ -1687,9 +1689,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.83"
+version = "1.0.85"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "38dd04e3c8279e75b31ef29dbdceebfe5ad89f4d0937213c53f7d49d01b3d5a7"
+checksum = "e55a28e3aaef9d5ce0506d0a14dbba8054ddc7e499ef522dd8b26859ec9d4a44"
 dependencies = [
  "itoa",
  "ryu",

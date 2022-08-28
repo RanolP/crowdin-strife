@@ -10,7 +10,7 @@ pub fn make_response(server_response: ServerResponse) -> worker::Result<Response
                 response.headers_mut().set(&name, &value)?;
             }
             ServerResponsePart::StatusCode(code) => {
-                response = response.with_status(code as u16);
+                response = response.with_status(u16::from(code));
             }
         }
     }

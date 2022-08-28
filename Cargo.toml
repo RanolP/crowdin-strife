@@ -12,9 +12,9 @@ default = ["console_error_panic_hook"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-serde_json = "1.0.67"
+serde_json = { version = "1", default-features = false, features = [] }
 
-reqores = { path = "./reqores" }
+reqores = "0.1.1"
 
 bot_any = { path = "./bot_any" }
 bot_any_cal = { path = "./bot_any/bot_any_cal" }

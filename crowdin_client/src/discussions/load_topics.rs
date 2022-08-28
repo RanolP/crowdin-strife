@@ -1,8 +1,7 @@
-use std::borrow::Cow;
-
-use reqores::{ClientRequest, HttpMethod, Url};
+use reqores::{ClientRequest, HttpMethod};
 use serde::{Deserialize, Serialize};
 use serde_with::{serde_as, DisplayFromStr};
+use url::Url;
 
 use crate::{CrowdinResponse, DiscussionId, DiscussionStatus, LanguageId, UserId, BASE_URL};
 
@@ -58,7 +57,7 @@ impl ClientRequest for LoadTopics<'_> {
         ]
     }
 
-    fn url(&self) -> Cow<str> {
+    fn url(&self) -> String {
         let mut url = Url::parse(&format!("{}/discussions/load_topics", BASE_URL)).unwrap();
 
         url.query_pairs_mut()
@@ -76,10 +75,10 @@ impl ClientRequest for LoadTopics<'_> {
             url.query_pairs_mut().append_pair("status", &author_id.0);
         }
 
-        Cow::Owned(url.to_string())
+        url.to_string()
     }
 
-    fn method(&self) -> &HttpMethod {
-        &HttpMethod::Get
+    fn method(&self) -> HttpMethod {
+        HttpMethod::Get
     }
 }

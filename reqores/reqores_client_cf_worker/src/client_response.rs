@@ -1,16 +1,21 @@
-use reqores::{ClientResponse, StatusCode};
+use reqores::{ClientResponse, HttpStatusCode};
 use worker::Response;
 
 pub struct CfWorkerClientResponse {
     body: Vec<u8>,
     response: Response,
+    status: HttpStatusCode,
 }
 
 impl CfWorkerClientResponse {
     pub async fn new(mut response: Response) -> worker::Result<Self> {
+        let body = response.bytes().await?;
+        let status = HttpStatusCode::try_from(response.status_code())
+            .map_err(|e| worker::Error::RustError(e.to_string()))?;
         Ok(Self {
-            body: response.bytes().await?,
+            body,
             response,
+            status,
         })
     }
 }
@@ -20,15 +25,8 @@ impl ClientResponse for CfWorkerClientResponse {
         &self.body
     }
 
-    fn status(&self) -> StatusCode {
-        match self.response.status_code() {
-            200 => StatusCode::Ok,
-            204 => StatusCode::NoContent,
-            400 => StatusCode::BadRequest,
-            403 => StatusCode::Forbidden,
-            404 => StatusCode::Notfound,
-            _ => todo!(),
-        }
+    fn status(&self) -> HttpStatusCode {
+        self.status.clone()
     }
 
     fn header(&self, key: &str) -> Option<String> {

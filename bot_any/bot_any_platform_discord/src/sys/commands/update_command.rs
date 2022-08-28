@@ -1,5 +1,3 @@
-use std::borrow::Cow;
-
 use reqores::{ClientRequest, HttpMethod};
 
 use crate::sys::types::{ApplicationCommand, Snowflake};
@@ -18,17 +16,17 @@ impl ClientRequest for UpdateCommand<'_> {
         vec![("Authorization".to_string(), format!("Bot {}", self.token))]
     }
 
-    fn url(&self) -> Cow<str> {
+    fn url(&self) -> String {
         if let Some(guild_id) = &self.guild_id {
-            Cow::Owned(format!(
+            format!(
                 "https://discord.com/api/v10/applications/{}/guilds/{}/commands",
                 self.application_id, guild_id.0
-            ))
+            )
         } else {
-            Cow::Owned(format!(
+            format!(
                 "https://discord.com/api/v10/applications/{}/commands",
                 self.application_id
-            ))
+            )
         }
     }
 
@@ -36,7 +34,7 @@ impl ClientRequest for UpdateCommand<'_> {
         Some(serde_json::to_string(&self.command).unwrap())
     }
 
-    fn method(&self) -> &HttpMethod {
-        &HttpMethod::Post
+    fn method(&self) -> HttpMethod {
+        HttpMethod::Post
     }
 }

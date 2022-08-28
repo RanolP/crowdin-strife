@@ -6,7 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-reqores = { path = "../reqores" }
-serde = "*"
+reqores = "0.1.1"
+serde = { version = "1", default-features = false, features = ["alloc", "derive"] }
 serde_with = "*"
 thiserror = "*"
+url = "2.2.2"

@@ -1,4 +1,4 @@
-use reqores::{ServerRequest, ServerResponse, ServerResponseBuilder, StatusCode};
+use reqores::{HttpStatusCode, ServerRequest, ServerResponse, ServerResponseBuilder};
 use thiserror::Error;
 
 use crate::sys::{
@@ -44,7 +44,7 @@ impl DiscordGarden {
             Some(Interaction::Ping) => (
                 response.then(
                     ServerResponseBuilder::new()
-                        .status(StatusCode::Ok)
+                        .status(HttpStatusCode::Ok)
                         .body_json(&InteractionResponse::pong())?,
                 ),
                 DiscordPlant::EarlyReturn,
@@ -54,7 +54,7 @@ impl DiscordGarden {
             }
             None => (
                 ServerResponseBuilder::new()
-                    .status(StatusCode::BadRequest)
+                    .status(HttpStatusCode::BadRequest)
                     .body_str("Server failed to decode the interaction"),
                 DiscordPlant::EarlyReturn,
             ),

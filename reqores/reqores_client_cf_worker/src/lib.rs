@@ -20,9 +20,11 @@ impl CfWorkerClient {
         let mut request_init = RequestInit::new();
         request_init
             .with_method(match client_request.method() {
-                &HttpMethod::Get => Method::Get,
-                &HttpMethod::Post => Method::Post,
-                &HttpMethod::Delete => Method::Delete,
+                HttpMethod::Get => Method::Get,
+                HttpMethod::Post => Method::Post,
+                HttpMethod::Put => Method::Put,
+                HttpMethod::Delete => Method::Delete,
+                HttpMethod::Patch => Method::Patch,
             })
             .with_headers(headers)
             .with_body(client_request.body().map(|s| JsValue::from_str(&s)));
