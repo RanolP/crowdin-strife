@@ -21,6 +21,7 @@ kal = "0.1.1"
 bot_any = { path = "./bot_any" }
 bot_any_platform_discord = { path = "./bot_any/bot_any_platform_discord" }
 
+mcapi = { path = "./mcapi" }
 crowdin_client = { path = "./crowdin_client" }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]

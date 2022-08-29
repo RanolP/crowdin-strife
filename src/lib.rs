@@ -21,6 +21,7 @@ pub async fn main(
         cal::parse_command, sys::types::InteractionResponse, DiscordGarden, DiscordPlant,
     };
     use crowdin_client::{DiscussionStatus, LanguageId, LoadTopics, RefreshToken};
+    use mcapi::launcher::GetVersionManifest;
     use reqores::{HttpStatusCode, ServerResponseBuilder};
     use reqores_universal_cf_worker::{client::CfWorkerClient, server};
     use worker::{Response, Router};
@@ -91,6 +92,15 @@ pub async fn main(
                 })
                 .await
                 .unwrap();
+
+            Response::from_json(&response)
+        })
+        .get_async("/minecraft/versions", |_, _| async {
+            let client = CfWorkerClient;
+
+            let response = client
+                .call(GetVersionManifest)
+                .await?;
 
             Response::from_json(&response)
         })
