@@ -14,7 +14,7 @@ default = ["console_error_panic_hook"]
 [dependencies]
 serde_json = { version = "1", default-features = false, features = [] }
 
-reqores = "0.1.1"
+reqores = "0.1.4"
 
 bot_any = { path = "./bot_any" }
 bot_any_cal = { path = "./bot_any/bot_any_cal" }
@@ -27,8 +27,7 @@ worker = "0.0.10"
 
 bot_any_env_cf_worker = { path = "./bot_any/bot_any_env_cf_worker" }
 
-reqores_client_cf_worker = { path = "./reqores/reqores_client_cf_worker" }
-reqores_server_cf_worker = { path = "./reqores/reqores_server_cf_worker" }
+reqores-universal-cf-worker = "0.1.2"
 
 # The `console_error_panic_hook` crate provides better debugging of panics by
 # logging them with `console.error`. This is great for development, but requires

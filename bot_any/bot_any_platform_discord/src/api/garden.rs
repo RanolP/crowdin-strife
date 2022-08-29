@@ -37,14 +37,14 @@ impl DiscordGarden {
         let response = if let Some(verify_key) = &self.verify_key {
             verify_key.accept(req).await?
         } else {
-            ServerResponseBuilder::new().build()
+            ServerResponseBuilder::new().end()
         };
         let interaction: RawInteraction = req.body_json()?;
         let response = match interaction.transform() {
             Some(Interaction::Ping) => (
                 response.then(
                     ServerResponseBuilder::new()
-                        .status(HttpStatusCode::Ok)
+                        .with_status(HttpStatusCode::Ok)
                         .body_json(&InteractionResponse::pong())?,
                 ),
                 DiscordPlant::EarlyReturn,
@@ -54,7 +54,7 @@ impl DiscordGarden {
             }
             None => (
                 ServerResponseBuilder::new()
-                    .status(HttpStatusCode::BadRequest)
+                    .with_status(HttpStatusCode::BadRequest)
                     .body_str("Server failed to decode the interaction"),
                 DiscordPlant::EarlyReturn,
             ),

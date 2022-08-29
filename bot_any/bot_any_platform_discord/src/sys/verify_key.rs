@@ -35,14 +35,14 @@ impl VerifyKey {
 
         if self.client_public_key.verify(message, &signature).is_err() {
             Ok(ServerResponseBuilder::new()
-                .status(HttpStatusCode::Forbidden)
+                .with_status(HttpStatusCode::Forbidden)
                 .body(
                     "[discord-interactions] Invalid signature"
                         .as_bytes()
                         .to_vec(),
                 ))
         } else {
-            Ok(ServerResponseBuilder::new().build())
+            Ok(ServerResponseBuilder::new().end())
         }
     }
 }

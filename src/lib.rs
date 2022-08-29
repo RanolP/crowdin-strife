@@ -15,8 +15,7 @@ pub async fn main(
     };
     use crowdin_client::{DiscussionStatus, LanguageId, LoadTopics, RefreshToken};
     use reqores::{HttpStatusCode, ServerResponseBuilder};
-    use reqores_client_cf_worker::CfWorkerClient;
-    use reqores_server_cf_worker::{make_response, CfWorkerServerRequest};
+    use reqores_universal_cf_worker::{client::CfWorkerClient, server};
     use worker::{Response, Router};
 
     #[cfg(feature = "console_error_panic_hook")]
@@ -34,7 +33,7 @@ pub async fn main(
             let garden = DiscordGarden::new(public_key.as_deref())
                 .map_err(|e| worker::Error::from(e.to_string()))?;
 
-            let request = CfWorkerServerRequest::new(req).await?;
+            let request = server::decode_request(req).await?;
             let response = match garden
                 .seed(&request)
                 .await
@@ -60,7 +59,7 @@ pub async fn main(
 
                     res.then(
                         ServerResponseBuilder::new()
-                            .status(HttpStatusCode::Ok)
+                            .with_status(HttpStatusCode::Ok)
                             .body_json(&InteractionResponse::message_with_source(
                                 message_output.into(),
                             ))?,
@@ -68,7 +67,7 @@ pub async fn main(
                 }
             };
 
-            make_response(response)
+            server::encode_response(response)
         })
         .get_async("/discussions/list", |_, _| async {
             let client = CfWorkerClient;

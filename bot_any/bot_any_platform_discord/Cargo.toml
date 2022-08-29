@@ -16,7 +16,7 @@ ed25519-dalek = "*"
 
 thiserror = "*"
 
-reqores = "0.1.1"
+reqores = "0.1"
 
 bot_any = { path = "../" }
 

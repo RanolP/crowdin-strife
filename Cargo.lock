@@ -527,9 +527,8 @@ dependencies = [
  "dotenvy",
  "eyre",
  "reqores",
- "reqores_client_cf_worker",
+ "reqores-universal-cf-worker",
  "reqores_client_surf",
- "reqores_server_cf_worker",
  "serde_json",
  "tokio",
  "worker",
@@ -1581,20 +1580,21 @@ checksum = "a3f87b73ce11b1619a3c6332f45341e0047173771e8b8b73f87bfeefb7b56244"
 
 [[package]]
 name = "reqores"
-version = "0.1.1"
+version = "0.1.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "01bf1580441e679b5b067f6c598a2cb025449daafdcfb1afe5123bd3f00e56b9"
+checksum = "bca780fd695a4cd76deecf4251a070875977eb6b1c3c4e4cae24433edf094ded"
 dependencies = [
  "serde",
  "serde_json",
 ]
 
 [[package]]
-name = "reqores_client_cf_worker"
-version = "0.1.0"
+name = "reqores-universal-cf-worker"
+version = "0.1.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c69a812f71c6a62d5b9d09b435cd0a6c07ba433bd01eb782ba7480d8d6135a05"
 dependencies = [
  "reqores",
- "serde",
  "worker",
 ]
 
@@ -1605,14 +1605,6 @@ dependencies = [
  "reqores",
  "serde",
  "surf",
-]
-
-[[package]]
-name = "reqores_server_cf_worker"
-version = "0.1.0"
-dependencies = [
- "reqores",
- "worker",
 ]
 
 [[package]]

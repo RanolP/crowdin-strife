@@ -8,5 +8,5 @@ edition = "2021"
 [dependencies]
 surf = "*"
 
-reqores = "0.1.1"
+reqores = "0.1"
 serde = { version = "1", default-features = false, features = ["alloc", "derive"] }

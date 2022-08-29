@@ -15,7 +15,7 @@ impl ClientRequest for RefreshToken {
 
     fn deserialize(
         &self,
-        response: &impl reqores::ClientResponse,
+        response: &dyn reqores::ClientResponse,
     ) -> Result<Self::Response, String> {
         if let Some(value) = response.header("set-cookie") {
             let key = value

@@ -34,10 +34,7 @@ impl ClientRequest for DeleteCommand<'_> {
         HttpMethod::Delete
     }
 
-    fn deserialize(
-        &self,
-        response: &impl reqores::ClientResponse,
-    ) -> Result<Self::Response, String> {
+    fn deserialize(&self, response: &dyn reqores::ClientResponse) -> Result<Self::Response, String> {
         if response.status() == HttpStatusCode::NoContent {
             Ok(())
         } else {
