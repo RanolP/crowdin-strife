@@ -1,4 +1,4 @@
-use bot_any_cal::{CommandOption, CommandOptionValueKind, CommandSpec};
+use kal::{CommandOption, CommandOptionValueKind, CommandSpec};
 use thiserror::Error;
 
 use crate::sys::types::{

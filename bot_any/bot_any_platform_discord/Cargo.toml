@@ -20,4 +20,4 @@ reqores = "0.1"
 
 bot_any = { path = "../" }
 
-bot_any_cal = { path = "../bot_any_cal" }
+kal = "0.1"

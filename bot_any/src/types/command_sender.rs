@@ -1,4 +1,4 @@
-use bot_any::types::User;
+use super::User;
 
 pub enum CommandSender {
     User(User),

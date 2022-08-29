@@ -1,25 +1,25 @@
-use bot_any::types::MessageOutput;
-use bot_any_cal::{CommandArgumentValue, CommandPreflight, CommandSender, Env};
+use bot_any::types::{CommandSender, Env, MessageOutput};
+use kal::{CommandArgumentValue, CommandFragment};
 
 pub async fn handle_unknown(
     sender: CommandSender,
-    preflights: &[CommandPreflight],
+    preflights: &[CommandFragment],
     env: &impl Env,
 ) -> MessageOutput {
     let mut command = String::new();
 
     for preflight in preflights {
         match preflight {
-            CommandPreflight::Select(name) => {
+            CommandFragment::Select(name) => {
                 command.push_str(&format!("select({name}) "));
             }
-            CommandPreflight::Execute(arguments) => {
+            CommandFragment::Execute(arguments) => {
                 command.push_str("execute(");
                 for argument in arguments {
                     command.push_str(&format!(
                         "{}={}, ",
-                        argument.name,
-                        match &argument.value {
+                        argument.0,
+                        match &argument.1 {
                             CommandArgumentValue::String(s) => format!("str({s})"),
                             CommandArgumentValue::I64(i) => format!("i64({i})"),
                             CommandArgumentValue::F64(f) => format!("f64({f})"),

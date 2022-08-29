@@ -1,4 +1,4 @@
-use bot_any_cal::command_group;
+use kal::command_group;
 
 pub use test::TestCommand;
 pub use unknown::handle_unknown;

@@ -1,5 +1,5 @@
-use bot_any::types::MessageOutput;
-use bot_any_cal::{Command, CommandSender, Env};
+use bot_any::types::{CommandSender, Env, MessageOutput};
+use kal::Command;
 
 #[derive(Command)]
 #[command(name = "sc1", description = "실험용 서브커맨드1입니다.")]

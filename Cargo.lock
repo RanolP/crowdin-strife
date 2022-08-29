@@ -272,29 +272,10 @@ name = "bot_any"
 version = "0.1.0"
 
 [[package]]
-name = "bot_any_cal"
-version = "0.1.0"
-dependencies = [
- "bot_any",
- "bot_any_cal_derive",
- "serde",
- "thiserror",
-]
-
-[[package]]
-name = "bot_any_cal_derive"
-version = "0.1.0"
-dependencies = [
- "darling",
- "quote",
- "syn",
-]
-
-[[package]]
 name = "bot_any_env_cf_worker"
 version = "0.1.0"
 dependencies = [
- "bot_any_cal",
+ "bot_any",
  "worker",
 ]
 
@@ -303,9 +284,9 @@ name = "bot_any_platform_discord"
 version = "0.1.0"
 dependencies = [
  "bot_any",
- "bot_any_cal",
  "ed25519-dalek",
  "hex",
+ "kal",
  "reqores",
  "serde",
  "serde_json",
@@ -524,7 +505,6 @@ name = "crowdin_strife"
 version = "0.1.0"
 dependencies = [
  "bot_any",
- "bot_any_cal",
  "bot_any_env_cf_worker",
  "bot_any_platform_discord",
  "color-eyre",
@@ -532,6 +512,7 @@ dependencies = [
  "crowdin_client",
  "dotenvy",
  "eyre",
+ "kal",
  "reqores",
  "reqores-client-surf",
  "reqores-universal-cf-worker",
@@ -1099,6 +1080,26 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "258451ab10b34f8af53416d1fdab72c22e805f0c92a1136d59470ec0b11138b2"
 dependencies = [
  "wasm-bindgen",
+]
+
+[[package]]
+name = "kal"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2978ca19c05788ac5a10208aab28fdbb785d46452dc55c71c70f8908caf6477d"
+dependencies = [
+ "kal-derive",
+]
+
+[[package]]
+name = "kal-derive"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "646b887501c5d77fc3e494621fb4bc7b2290052bff6d863b7ab55cc795f29bae"
+dependencies = [
+ "darling",
+ "quote",
+ "syn",
 ]
 
 [[package]]

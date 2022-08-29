@@ -1,5 +1,5 @@
-use bot_any::types::MessageOutput;
-use bot_any_cal::{Command, CommandSender, Env};
+use bot_any::types::{CommandSender, Env, MessageOutput};
+use kal::Command;
 
 #[derive(Command)]
 #[command(name = "잔업", description = "남은 잔업을 가져올까요?")]

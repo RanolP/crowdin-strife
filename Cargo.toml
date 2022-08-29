@@ -16,8 +16,9 @@ serde_json = { version = "1", default-features = false, features = [] }
 
 reqores = "0.1.4"
 
+kal = "0.1.1"
+
 bot_any = { path = "./bot_any" }
-bot_any_cal = { path = "./bot_any/bot_any_cal" }
 bot_any_platform_discord = { path = "./bot_any/bot_any_platform_discord" }
 
 crowdin_client = { path = "./crowdin_client" }

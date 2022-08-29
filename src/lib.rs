@@ -15,7 +15,7 @@ pub async fn main(
     _ctx: worker::Context,
 ) -> worker::Result<worker::Response> {
     use crate::commands::{handle_unknown, RootCommand};
-    use bot_any_cal::Command;
+    use kal::Command;
     use bot_any_env_cf_worker::CfWorkerEnv;
     use bot_any_platform_discord::{
         cal::parse_command, sys::types::InteractionResponse, DiscordGarden, DiscordPlant,
