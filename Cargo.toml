@@ -38,7 +38,7 @@ console_error_panic_hook = { version = "0.1.1", optional = true }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tokio = { version = "1.20.1", features = ["full"] }
-reqores_client_surf = { path = "./reqores/reqores_client_surf" }
+reqores-client-surf = "0.1.0"
 dotenvy = "0.15.1"
 eyre = "0.6.8"
 color-eyre = "0.6.2"

@@ -533,8 +533,8 @@ dependencies = [
  "dotenvy",
  "eyre",
  "reqores",
+ "reqores-client-surf",
  "reqores-universal-cf-worker",
- "reqores_client_surf",
  "serde_json",
  "tokio",
  "wee_alloc",
@@ -1602,6 +1602,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "reqores-client-surf"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4a2344a42e4fa4a26f7779f129ac5086e0906571611ba756aa4d8f5a5ee86002"
+dependencies = [
+ "reqores",
+ "surf",
+]
+
+[[package]]
 name = "reqores-universal-cf-worker"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1609,15 +1619,6 @@ checksum = "c69a812f71c6a62d5b9d09b435cd0a6c07ba433bd01eb782ba7480d8d6135a05"
 dependencies = [
  "reqores",
  "worker",
-]
-
-[[package]]
-name = "reqores_client_surf"
-version = "0.1.0"
-dependencies = [
- "reqores",
- "serde",
- "surf",
 ]
 
 [[package]]
