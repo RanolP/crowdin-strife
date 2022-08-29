@@ -15,12 +15,12 @@ pub async fn main(
     _ctx: worker::Context,
 ) -> worker::Result<worker::Response> {
     use crate::commands::{handle_unknown, RootCommand};
-    use kal::Command;
     use bot_any_env_cf_worker::CfWorkerEnv;
     use bot_any_platform_discord::{
         cal::parse_command, sys::types::InteractionResponse, DiscordGarden, DiscordPlant,
     };
     use crowdin_client::{DiscussionStatus, LanguageId, LoadTopics, RefreshToken};
+    use kal::Command;
     use mcapi::launcher::GetVersionManifest;
     use reqores::{HttpStatusCode, ServerResponseBuilder};
     use reqores_universal_cf_worker::{client::CfWorkerClient, server};
@@ -98,9 +98,7 @@ pub async fn main(
         .get_async("/minecraft/versions", |_, _| async {
             let client = CfWorkerClient;
 
-            let response = client
-                .call(GetVersionManifest)
-                .await?;
+            let response = client.call(GetVersionManifest).await?;
 
             Response::from_json(&response)
         })

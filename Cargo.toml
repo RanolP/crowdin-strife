@@ -45,11 +45,6 @@ dotenvy = "0.15.1"
 eyre = "0.6.8"
 color-eyre = "0.6.2"
 
-[[bin]]
-name = "setup"
-path = "src/setup.rs"
-
-
 [profile.release]
 opt-level = "s"
 lto = true

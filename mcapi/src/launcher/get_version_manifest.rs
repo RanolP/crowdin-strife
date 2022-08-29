@@ -15,7 +15,7 @@ pub struct LatestVersionIds {
     pub snapshot: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct Version {
     pub id: String,
 
@@ -25,12 +25,16 @@ pub struct Version {
     pub url: String,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub enum VersionKind {
     #[serde(rename = "release")]
     Release,
     #[serde(rename = "snapshot")]
     Snapshot,
+    #[serde(rename = "old_beta")]
+    OldBeta,
+    #[serde(rename = "old_alpha")]
+    OldAlpha,
 }
 
 impl ClientRequest for GetVersionManifest {
