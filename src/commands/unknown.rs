@@ -1,11 +1,11 @@
-use bot_any::types::{CommandSender, Env, MessageOutput};
+use bot_any::types::{CommandSender, Env, MessageWrite};
 use kal::{CommandArgumentValue, CommandFragment};
 
 pub async fn handle_unknown(
     _sender: CommandSender,
     preflights: &[CommandFragment],
     _env: &impl Env,
-) -> MessageOutput {
+) -> MessageWrite {
     let mut command = String::new();
 
     for preflight in preflights {
@@ -35,7 +35,7 @@ pub async fn handle_unknown(
         }
     }
 
-    MessageOutput {
-        content: Some(format!("알 수 없는 명령어입니다: {command}")),
-    }
+    MessageWrite::begin()
+        .push_str(format!("알 수 없는 명령어입니다: {command}"))
+        .end()
 }

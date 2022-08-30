@@ -1,9 +1,12 @@
 use reqores::{HttpStatusCode, ServerRequest, ServerResponse, ServerResponseBuilder};
 use thiserror::Error;
 
-use crate::sys::{
-    types::{Interaction, InteractionApplicationCommand, InteractionResponse, RawInteraction},
-    verify_key::{VerifyKey, VerifyKeyError},
+use crate::{
+    sys::{
+        types::{InteractionResponse, RawInteraction},
+        verify_key::{VerifyKey, VerifyKeyError},
+    },
+    Interaction, InteractionApplicationCommand,
 };
 
 pub enum DiscordFruit {
@@ -39,8 +42,8 @@ impl DiscordGarden {
         } else {
             ServerResponseBuilder::new().end()
         };
-        let interaction: RawInteraction = req.body_json()?;
-        let response = match interaction.transform() {
+        let raw_interaction: RawInteraction = req.body_json()?;
+        let response = match Interaction::from(raw_interaction) {
             Some(Interaction::Ping) => (
                 response.then(
                     ServerResponseBuilder::new()

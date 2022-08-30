@@ -1,4 +1,4 @@
-use bot_any::types::{CommandSender, Env, MessageOutput};
+use bot_any::types::{CommandSender, Env, MessageWrite};
 use kal::Command;
 
 #[derive(Command)]
@@ -6,9 +6,9 @@ use kal::Command;
 pub struct WorksLeft;
 
 impl WorksLeft {
-    pub async fn execute(self, _sender: CommandSender, _env: &dyn Env) -> MessageOutput {
-        MessageOutput {
-            content: Some("잔업은 언젠가 완료될 것입니다.".to_string()),
-        }
+    pub async fn execute(self, _sender: CommandSender, _env: &dyn Env) -> MessageWrite {
+        MessageWrite::begin()
+            .push_str("잔업은 언젠가 완료될 것입니다.".to_string())
+            .end()
     }
 }

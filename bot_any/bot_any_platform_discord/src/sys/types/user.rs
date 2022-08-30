@@ -8,12 +8,3 @@ pub struct User {
     pub username: String,
     pub discriminator: String,
 }
-
-impl From<User> for bot_any::types::User {
-    fn from(user: User) -> Self {
-        bot_any::types::User {
-            id: user.id.0,
-            display_name: user.username,
-        }
-    }
-}

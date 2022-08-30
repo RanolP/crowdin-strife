@@ -1,21 +1,23 @@
-use bot_any::types::CommandSender;
+use bot_any::types::{CommandSender, User as BotanyUser};
 use kal::{CommandArgumentValue, CommandFragment};
 
-use crate::sys::types::{
-    ApplicationCommandOption, ApplicationCommandOptionKind, ApplicationCommandOptionValue,
+use crate::{
+    sys::types::{
+        ApplicationCommandOption, ApplicationCommandOptionKind, ApplicationCommandOptionValue,
+    },
     InteractionApplicationCommand,
 };
 
 pub fn parse_command(
     command: InteractionApplicationCommand,
 ) -> (CommandSender, Vec<CommandFragment>) {
-    let sender = if let Some(member) = command.rest.member {
-        CommandSender::User(member.into())
-    } else if let Some(user) = command.rest.user {
-        CommandSender::User(user.into())
-    } else {
-        CommandSender::Unknown
-    };
+    let sender = command
+        .common
+        .member
+        .map(BotanyUser::from)
+        .or_else(|| command.common.user.map(BotanyUser::from))
+        .map(CommandSender::User)
+        .unwrap_or(CommandSender::Unknown);
     let label = command.data.name;
 
     let mut fragments = Vec::new();

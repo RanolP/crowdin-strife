@@ -1,4 +1,4 @@
-use bot_any::types::{CommandSender, Env, MessageOutput};
+use bot_any::types::{CommandSender, Env, MessageWrite};
 use kal::command_group;
 
 pub use unknown::handle_unknown;
@@ -17,7 +17,7 @@ command_group! {
 }
 
 impl RootCommand {
-    pub async fn execute(self, sender: CommandSender, env: &dyn Env) -> MessageOutput {
+    pub async fn execute(self, sender: CommandSender, env: &dyn Env) -> MessageWrite {
         match self {
             RootCommand::WorksLeft(works_left) => works_left.execute(sender, env).await,
             RootCommand::Version(version) => version.execute(sender, env).await,
