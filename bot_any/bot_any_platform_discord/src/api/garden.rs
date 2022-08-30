@@ -6,7 +6,7 @@ use crate::sys::{
     verify_key::{VerifyKey, VerifyKeyError},
 };
 
-pub enum DiscordPlant {
+pub enum DiscordFruit {
     EarlyReturn,
     Command(InteractionApplicationCommand),
 }
@@ -30,10 +30,10 @@ impl DiscordGarden {
         })
     }
 
-    pub async fn seed(
+    pub async fn plant(
         &self,
         req: &impl ServerRequest,
-    ) -> Result<(ServerResponse, DiscordPlant), DiscordGardenError> {
+    ) -> Result<(ServerResponse, DiscordFruit), DiscordGardenError> {
         let response = if let Some(verify_key) = &self.verify_key {
             verify_key.accept(req).await?
         } else {
@@ -47,16 +47,16 @@ impl DiscordGarden {
                         .with_status(HttpStatusCode::Ok)
                         .body_json(&InteractionResponse::pong())?,
                 ),
-                DiscordPlant::EarlyReturn,
+                DiscordFruit::EarlyReturn,
             ),
             Some(Interaction::ApplicationCommand(command)) => {
-                (response, DiscordPlant::Command(command))
+                (response, DiscordFruit::Command(command))
             }
             None => (
                 ServerResponseBuilder::new()
                     .with_status(HttpStatusCode::BadRequest)
                     .body_str("Server failed to decode the interaction"),
-                DiscordPlant::EarlyReturn,
+                DiscordFruit::EarlyReturn,
             ),
         };
         Ok(response)
