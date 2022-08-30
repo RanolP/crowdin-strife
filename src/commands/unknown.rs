@@ -2,9 +2,9 @@ use bot_any::types::{CommandSender, Env, MessageOutput};
 use kal::{CommandArgumentValue, CommandFragment};
 
 pub async fn handle_unknown(
-    sender: CommandSender,
+    _sender: CommandSender,
     preflights: &[CommandFragment],
-    env: &impl Env,
+    _env: &impl Env,
 ) -> MessageOutput {
     let mut command = String::new();
 
@@ -30,7 +30,7 @@ pub async fn handle_unknown(
                     command.pop();
                     command.pop();
                 }
-                command.push_str(")");
+                command.push(')');
             }
         }
     }

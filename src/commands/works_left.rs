@@ -6,7 +6,7 @@ use kal::Command;
 pub struct WorksLeft;
 
 impl WorksLeft {
-    pub async fn execute(self, sender: CommandSender, env: &dyn Env) -> MessageOutput {
+    pub async fn execute(self, _sender: CommandSender, _env: &dyn Env) -> MessageOutput {
         MessageOutput {
             content: Some("잔업은 언젠가 완료될 것입니다.".to_string()),
         }

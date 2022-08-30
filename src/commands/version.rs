@@ -6,11 +6,11 @@ use kal::Command;
 pub struct Version;
 
 impl Version {
-    pub async fn execute(self, sender: CommandSender, env: &dyn Env) -> MessageOutput {
+    pub async fn execute(self, _sender: CommandSender, env: &dyn Env) -> MessageOutput {
         MessageOutput {
             content: Some(format!(
                 "버전 : {}",
-                env.var("VERSION").unwrap_or("알 수 없음".to_string())
+                env.var("VERSION").unwrap_or_else(|| "알 수 없음".to_string())
             )),
         }
     }

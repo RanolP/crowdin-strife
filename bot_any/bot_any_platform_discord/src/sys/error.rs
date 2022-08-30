@@ -2,8 +2,8 @@ use serde::Deserialize;
 
 #[derive(Deserialize)]
 pub struct Error {
-    code: u64,
-    message: String,
+    pub code: u64,
+    pub message: String,
 }
 
 #[derive(Deserialize)]
