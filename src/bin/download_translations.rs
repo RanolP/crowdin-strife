@@ -1,6 +1,8 @@
 #![cfg(not(target_arch = "wasm32"))]
 
-use mcapi::launcher::{GetAssetBundle, GetVersionManifest};
+use std::collections::HashMap;
+
+use mcapi::launcher::{DownloadAsset, GetAssetBundle, GetAssetIndex, GetVersionManifest};
 use reqores_client_surf::SurfClient;
 
 #[tokio::main]
@@ -16,6 +18,10 @@ async fn main() -> eyre::Result<()> {
         .map_err(|e| eyre::eyre!("{}", e))?;
 
     let latest_snapshot = version_manifest.latest.snapshot;
+    println!(
+        "Fetched version manifest, latest snapshot is {}",
+        latest_snapshot
+    );
 
     let latest_snapshot = version_manifest
         .versions
@@ -30,7 +36,30 @@ async fn main() -> eyre::Result<()> {
         .await
         .map_err(|e| eyre::eyre!("{}", e))?;
 
-    println!("{:?}", asset_bundle);
+    println!("Fetched asset bundle for latest snapshot");
+
+    let asset_index = client
+        .call(GetAssetIndex {
+            bundle: &asset_bundle,
+        })
+        .await
+        .map_err(|e| eyre::eyre!("{}", e))?;
+
+    println!("Fetched asset index for latest snapshot");
+
+    let ko_kr = asset_index
+        .objects
+        .get("minecraft/lang/ko_kr.json")
+        .ok_or(eyre::eyre!("ko_kr.json not found"))?;
+
+    let ko_kr = client
+        .call(DownloadAsset { asset: ko_kr })
+        .await
+        .map_err(|e| eyre::eyre!("{}", e))?;
+
+    let ko_kr: HashMap<String, String> = serde_json::from_slice(&ko_kr)?;
+
+    println!("{:?}", ko_kr.iter().find(|_| true));
 
     Ok(())
 }

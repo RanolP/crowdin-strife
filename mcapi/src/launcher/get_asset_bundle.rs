@@ -10,30 +10,30 @@ pub struct GetAssetBundle<'a> {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AssetBundle {
     #[serde(rename = "assetIndex")]
-    asset_index: AssetIndex,
-    downloads: Downloads,
+    pub asset_index: AssetIndexResolution,
+    pub downloads: Downloads,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct AssetIndex {
-    id: String,
-    sha1: String,
-    size: u64,
+pub struct AssetIndexResolution {
+    pub id: String,
+    pub sha1: String,
+    pub size: u64,
     #[serde(rename = "totalSize")]
-    total_size: u64,
-    url: String,
+    pub total_size: u64,
+    pub url: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Downloads {
-    client: DownloadableFile,
+    pub client: DownloadableFile,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct DownloadableFile {
-    sha1: String,
-    size: u64,
-    url: String,
+    pub sha1: String,
+    pub size: u64,
+    pub url: String,
 }
 
 impl ClientRequest for GetAssetBundle<'_> {
