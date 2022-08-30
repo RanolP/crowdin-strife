@@ -44,6 +44,7 @@ reqores-client-surf = "0.1.0"
 dotenvy = "0.15.1"
 eyre = "0.6.8"
 color-eyre = "0.6.2"
+zip = "0.6.2"
 
 [profile.release]
 opt-level = "s"

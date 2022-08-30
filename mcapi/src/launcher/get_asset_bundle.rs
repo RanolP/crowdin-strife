@@ -26,11 +26,11 @@ pub struct AssetIndexResolution {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Downloads {
-    pub client: DownloadableFile,
+    pub client: GameFile,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct DownloadableFile {
+pub struct GameFile {
     pub sha1: String,
     pub size: u64,
     pub url: String,

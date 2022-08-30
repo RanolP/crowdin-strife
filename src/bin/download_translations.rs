@@ -1,9 +1,17 @@
 #![cfg(not(target_arch = "wasm32"))]
 
-use std::collections::HashMap;
+use std::{
+    collections::HashMap,
+    env,
+    fs::{self, File},
+    io::{self, Cursor, Write},
+};
 
-use mcapi::launcher::{DownloadAsset, GetAssetBundle, GetAssetIndex, GetVersionManifest};
+use mcapi::launcher::{
+    DownloadAsset, DownloadGame, GetAssetBundle, GetAssetIndex, GetVersionManifest,
+};
 use reqores_client_surf::SurfClient;
+use zip::ZipArchive;
 
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
@@ -38,6 +46,18 @@ async fn main() -> eyre::Result<()> {
 
     println!("Fetched asset bundle for latest snapshot");
 
+    println!("Downloading game client from {}", asset_bundle.downloads.client.ur-);
+    let game_client = client
+        .call(DownloadGame {
+            game_file: &asset_bundle.downloads.client,
+        })
+        .await
+        .map_err(|e| eyre::eyre!("{}", e))?;
+    println!("Downloaded game client");
+
+    let mut game_client_zip = ZipArchive::new(Cursor::new(game_client))?;
+    let mut en_us_file = game_client_zip.by_name("assets/minecraft/lang/en_us.json")?;
+
     let asset_index = client
         .call(GetAssetIndex {
             bundle: &asset_bundle,
@@ -57,9 +77,16 @@ async fn main() -> eyre::Result<()> {
         .await
         .map_err(|e| eyre::eyre!("{}", e))?;
 
-    let ko_kr: HashMap<String, String> = serde_json::from_slice(&ko_kr)?;
+    let assets_dir = env::current_dir()?.join("assets");
+    if !assets_dir.exists() {
+        fs::create_dir_all(&assets_dir)?;
+    }
 
-    println!("{:?}", ko_kr.iter().find(|_| true));
+    File::open(assets_dir.join("ko_kr.json"))?.write(&ko_kr)?;
+    io::copy(
+        &mut en_us_file,
+        &mut File::open(assets_dir.join("en_us.json"))?,
+    )?;
 
     Ok(())
 }
