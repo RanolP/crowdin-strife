@@ -9,6 +9,10 @@ pub struct DownloadGame<'a> {
 impl ClientRequest for DownloadGame<'_> {
     type Response = Vec<u8>;
 
+    fn headers(&self) -> Vec<(String, String)> {
+        Vec::new()
+    }
+
     fn url(&self) -> String {
         self.game_file.url.clone()
     }

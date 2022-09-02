@@ -18,3 +18,9 @@ wrangler.toml
 !.yarn/versions
 
 .env
+
+# the Minecraft language file is not ours
+assets/
+
+# You can specify build.target in .cargo/config.toml for easier wasm-non wasm transition
+.cargo/config.toml

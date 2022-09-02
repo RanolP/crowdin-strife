@@ -1,3 +1,4 @@
+use bot_any::types::MessageWrite;
 use bot_any_env_cf_worker::CfWorkerEnv;
 use bot_any_platform_discord::{
     kal::parse_command, sys::types::InteractionResponse, DiscordFruit, DiscordGarden,
@@ -36,7 +37,15 @@ pub async fn actual_main(req: Request, env: Env, _ctx: Context) -> worker::Resul
                     let (sender, preflights) = parse_command(command);
                     let env = CfWorkerEnv(context.env);
                     let message_output = if let Some(command) = RootCommand::parse(&preflights) {
-                        command.execute(sender, &env).await
+                        match command.execute(sender, &env).await {
+                            Ok(output) => output,
+                            Err(err) => MessageWrite::begin()
+                                .push_str(format!(
+                                    "명령어 실행에 실패했습니다:\n```\n{}\n```",
+                                    err.to_string()
+                                ))
+                                .end(),
+                        }
                     } else {
                         handle_unknown(sender, &preflights, &env).await
                     };

@@ -21,7 +21,7 @@ async fn main() -> eyre::Result<()> {
 
     let guild_id = guild_id.map(Snowflake);
 
-    let client = SurfClient;
+    let client = SurfClient::new();
 
     let old_commands = client
         .call(ListCommands {

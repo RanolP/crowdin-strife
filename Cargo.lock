@@ -615,6 +615,7 @@ dependencies = [
  "reqores-client-surf",
  "reqores-universal-cf-worker",
  "serde_json",
+ "surf",
  "tokio",
  "wee_alloc",
  "worker",

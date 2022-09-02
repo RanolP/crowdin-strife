@@ -12,6 +12,7 @@ use mcapi::launcher::{
     DownloadAsset, DownloadGame, GetAssetBundle, GetAssetIndex, GetVersionManifest,
 };
 use reqores_client_surf::SurfClient;
+use surf::{middleware::Logger, Client};
 use zip::ZipArchive;
 
 #[tokio::main]
@@ -20,7 +21,7 @@ async fn main() -> eyre::Result<()> {
     color_eyre::install().ok();
     pretty_env_logger::try_init()?;
 
-    let client = SurfClient;
+    let client = SurfClient::with_client(Client::new().with(Logger::new()));
 
     let version_manifest = client
         .call(GetVersionManifest)
