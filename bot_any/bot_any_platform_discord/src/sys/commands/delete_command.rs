@@ -1,4 +1,4 @@
-use reqores::{ClientRequest, HttpMethod, HttpStatusCode};
+use reqores::{headers, ClientRequest, HttpMethod, HttpStatusCode};
 
 use crate::sys::types::Snowflake;
 
@@ -13,7 +13,10 @@ impl ClientRequest for DeleteCommand<'_> {
     type Response = ();
 
     fn headers(&self) -> Vec<(String, String)> {
-        vec![("Authorization".to_string(), format!("Bot {}", self.token))]
+        vec![
+            headers::content_type_json_utf8(),
+            ("Authorization".to_string(), format!("Bot {}", self.token)),
+        ]
     }
 
     fn url(&self) -> String {
@@ -34,7 +37,10 @@ impl ClientRequest for DeleteCommand<'_> {
         HttpMethod::Delete
     }
 
-    fn deserialize(&self, response: &dyn reqores::ClientResponse) -> Result<Self::Response, String> {
+    fn deserialize(
+        &self,
+        response: &dyn reqores::ClientResponse,
+    ) -> Result<Self::Response, String> {
         if response.status() == HttpStatusCode::NoContent {
             Ok(())
         } else {

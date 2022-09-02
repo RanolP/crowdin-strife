@@ -1,4 +1,4 @@
-use reqores::{ClientRequest, HttpMethod};
+use reqores::{headers, ClientRequest, HttpMethod};
 use serde::{Deserialize, Serialize};
 use serde_with::{serde_as, DisplayFromStr};
 use url::Url;
@@ -48,6 +48,7 @@ impl ClientRequest for LoadTopics<'_> {
 
     fn headers(&self) -> Vec<(String, String)> {
         vec![
+            headers::content_type_json_utf8(),
             // TODO: X-Csrf-Token ok? I think it's just random value so we could lock
             ("X-Csrf-Token".to_string(), "nqys8q8d2x".to_string()),
             (

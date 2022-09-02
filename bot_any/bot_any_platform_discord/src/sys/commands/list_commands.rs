@@ -1,4 +1,4 @@
-use reqores::{ClientRequest, HttpMethod};
+use reqores::{headers, ClientRequest, HttpMethod};
 
 use crate::sys::types::{ApplicationCommand, Snowflake};
 
@@ -12,7 +12,10 @@ impl ClientRequest for ListCommands<'_> {
     type Response = Vec<ApplicationCommand>;
 
     fn headers(&self) -> Vec<(String, String)> {
-        vec![("Authorization".to_string(), format!("Bot {}", self.token))]
+        vec![
+            headers::content_type_json_utf8(),
+            ("Authorization".to_string(), format!("Bot {}", self.token)),
+        ]
     }
 
     fn url(&self) -> String {

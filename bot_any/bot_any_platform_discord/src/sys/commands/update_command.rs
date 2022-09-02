@@ -1,4 +1,4 @@
-use reqores::{ClientRequest, HttpMethod};
+use reqores::{ClientRequest, HttpMethod, headers};
 
 use crate::sys::types::{ApplicationCommand, Snowflake};
 
@@ -13,7 +13,7 @@ impl ClientRequest for UpdateCommand<'_> {
     type Response = ApplicationCommand;
 
     fn headers(&self) -> Vec<(String, String)> {
-        vec![("Authorization".to_string(), format!("Bot {}", self.token))]
+        vec![ headers::content_type_json_utf8(), ("Authorization".to_string(), format!("Bot {}", self.token))]
     }
 
     fn url(&self) -> String {

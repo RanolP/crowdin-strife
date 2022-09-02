@@ -1,12 +1,13 @@
 #![cfg(not(target_arch = "wasm32"))]
 
 use std::{
-    collections::HashMap,
     env,
     fs::{self, File},
     io::{self, Cursor, Write},
+    time::Instant,
 };
 
+use log::info;
 use mcapi::launcher::{
     DownloadAsset, DownloadGame, GetAssetBundle, GetAssetIndex, GetVersionManifest,
 };
@@ -17,6 +18,7 @@ use zip::ZipArchive;
 async fn main() -> eyre::Result<()> {
     dotenvy::dotenv().ok();
     color_eyre::install().ok();
+    pretty_env_logger::try_init()?;
 
     let client = SurfClient;
 
@@ -26,7 +28,7 @@ async fn main() -> eyre::Result<()> {
         .map_err(|e| eyre::eyre!("{}", e))?;
 
     let latest_snapshot = version_manifest.latest.snapshot;
-    println!(
+    info!(
         "Fetched version manifest, latest snapshot is {}",
         latest_snapshot
     );
@@ -44,16 +46,23 @@ async fn main() -> eyre::Result<()> {
         .await
         .map_err(|e| eyre::eyre!("{}", e))?;
 
-    println!("Fetched asset bundle for latest snapshot");
+    info!("Fetched asset bundle for latest snapshot");
 
-    println!("Downloading game client from {}", asset_bundle.downloads.client.ur-);
+    let now = Instant::now();
+    info!(
+        "Downloading game client from {}",
+        asset_bundle.downloads.client.url
+    );
     let game_client = client
         .call(DownloadGame {
             game_file: &asset_bundle.downloads.client,
         })
         .await
         .map_err(|e| eyre::eyre!("{}", e))?;
-    println!("Downloaded game client");
+    info!(
+        "Downloaded game client in {:.1}s",
+        Instant::now().duration_since(now).as_secs_f32()
+    );
 
     let mut game_client_zip = ZipArchive::new(Cursor::new(game_client))?;
     let mut en_us_file = game_client_zip.by_name("assets/minecraft/lang/en_us.json")?;
@@ -65,7 +74,7 @@ async fn main() -> eyre::Result<()> {
         .await
         .map_err(|e| eyre::eyre!("{}", e))?;
 
-    println!("Fetched asset index for latest snapshot");
+    info!("Fetched asset index for latest snapshot");
 
     let ko_kr = asset_index
         .objects
@@ -82,10 +91,10 @@ async fn main() -> eyre::Result<()> {
         fs::create_dir_all(&assets_dir)?;
     }
 
-    File::open(assets_dir.join("ko_kr.json"))?.write(&ko_kr)?;
+    File::create(assets_dir.join("ko_kr.json"))?.write(&ko_kr)?;
     io::copy(
         &mut en_us_file,
-        &mut File::open(assets_dir.join("en_us.json"))?,
+        &mut File::create(assets_dir.join("en_us.json"))?,
     )?;
 
     Ok(())
