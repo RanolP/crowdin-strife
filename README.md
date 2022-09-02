@@ -4,11 +4,11 @@
 
 ## Commands
 
-### /e2k [text: string] (TODO)
+### /e2k [text: string] [page: int?]
 
 주어진 텍스트를 포함하는 원본 문자열들의 현재 번역 문자열을 보여줍니다.
 
-### /k2e [text: string] (TODO)
+### /k2e [text: string] [page: int?]
 
 주어진 텍스트를 포함하는 현재 번역 문자열들의 원본 문자열을 보여줍니다.
 
@@ -21,6 +21,24 @@
 최근 토론 5개를 보여줍니다. 추후 기능 변경이 예정되어 있으며, API 실험용 명령어입니다.
 
 ## 돌려보기
+
+### 애셋 설정하기
+
+성공적으로 빌드하기 위해 `assets/lang/en_us.json`과 `assets/lang/ko_kr.json`을 만듭니다.
+이후, 아래 명령어를 실행해 실제로 언어 파일을 내려받습니다.
+
+```sh
+cargo run --bin download_translations
+```
+
+### 명령어 등록하기
+
+아래 명령어로 디스코드 봇에 명령어를 등록합니다.
+
+
+```sh
+cargo run --bin register-commands
+```
 
 ### wrangler 설치
 
