@@ -50,12 +50,14 @@ pub async fn actual_main(req: Request, env: Env, _ctx: Context) -> worker::Resul
                         handle_unknown(sender, &preflights, &env).await
                     };
 
+                    let body = InteractionResponse::message_with_source(message_output.into());
+
+                    worker::console_log!("{:?}", serde_json::to_string(&body));
+
                     res.then(
                         ServerResponseBuilder::new()
                             .with_status(HttpStatusCode::Ok)
-                            .body_json(&InteractionResponse::message_with_source(
-                                message_output.into(),
-                            ))?,
+                            .body_json(&body)?,
                     )
                 }
             };

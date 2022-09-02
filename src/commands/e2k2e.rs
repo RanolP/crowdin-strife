@@ -1,4 +1,4 @@
-use std::{collections::HashMap, env, fs::File, path::PathBuf};
+use std::collections::HashMap;
 
 use bot_any::types::MessageWrite;
 use kal::Command;
@@ -25,24 +25,31 @@ pub struct K2E {
 
 fn search(map: HashMap<String, String>, query: &str) -> Vec<(String, String)> {
     map.into_iter()
-        .filter(|(_, value)| value.contains(query))
+        .filter(|(_, value)| value.to_lowercase().contains(query))
         .collect()
 }
 
-fn read_lang_file(path: PathBuf) -> eyre::Result<HashMap<String, String>> {
-    Ok(serde_json::from_reader(File::open(path)?)?)
+fn read_lang_file(src: &str) -> eyre::Result<HashMap<String, String>> {
+    Ok(serde_json::from_str(src)?)
 }
+
+const EN_US: &str = include_str!("../../assets/lang/en_us.json");
+const KO_KR: &str = include_str!("../../assets/lang/ko_kr.json");
 
 impl E2K {
     pub async fn execute(self) -> eyre::Result<MessageWrite> {
-        let en_us = read_lang_file(env::current_dir()?.join("assets/lang/en_us.json"))?;
-        let ko_kr = read_lang_file(env::current_dir()?.join("assets/lang/ko_kr.json"))?;
+        let en_us = read_lang_file(EN_US)?;
+        let ko_kr = read_lang_file(KO_KR)?;
 
         let mut w = MessageWrite::begin();
 
-        for (k, v) in search(en_us, &self.query) {
+        for (k, v) in search(en_us, &self.query.to_lowercase()) {
             let correspondent = ko_kr.get(&k).map_or("*대응어 없음*", String::as_ref);
             w = w.push_str(format!("{} => {}\n", v, correspondent));
+        }
+
+        if w.is_empty() {
+            w = w.push_str("결과 없음".to_string());
         }
 
         Ok(w.end())
@@ -51,14 +58,18 @@ impl E2K {
 
 impl K2E {
     pub async fn execute(self) -> eyre::Result<MessageWrite> {
-        let en_us = read_lang_file(env::current_dir()?.join("assets/lang/en_us.json"))?;
-        let ko_kr = read_lang_file(env::current_dir()?.join("assets/lang/ko_kr.json"))?;
+        let en_us = read_lang_file(EN_US)?;
+        let ko_kr = read_lang_file(KO_KR)?;
 
         let mut w = MessageWrite::begin();
 
-        for (k, v) in search(ko_kr, &self.query) {
+        for (k, v) in search(ko_kr, &self.query.to_lowercase()) {
             let correspondent = en_us.get(&k).map_or("*대응어 없음*", String::as_ref);
             w = w.push_str(format!("{} => {}\n", v, correspondent));
+        }
+
+        if w.is_empty() {
+            w = w.push_str("결과 없음".to_string());
         }
 
         Ok(w.end())

@@ -23,6 +23,10 @@ impl MessageWrite<false> {
         }
     }
 
+    pub fn is_empty(&self) -> bool {
+        self.contents.is_empty()
+    }
+
     pub fn push_str(mut self, content: String) -> Self {
         self.contents.push(MessagePart::Text(content));
         self
