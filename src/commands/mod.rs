@@ -1,10 +1,7 @@
 use bot_any::types::{CommandSender, Env, MessageWrite};
 use kal::command_group;
 
-pub use e2k2e::{E2K, K2E};
 pub use unknown::handle_unknown;
-pub use version::Version;
-pub use works_left::WorksLeft;
 
 mod e2k2e;
 mod unknown;
@@ -12,11 +9,11 @@ mod version;
 mod works_left;
 
 command_group! {
-    RootCommand {
-        WorksLeft,
-        Version,
-        E2K,
-        K2E,
+    pub enum RootCommand {
+        WorksLeft(works_left::WorksLeft),
+        Version(version::Version),
+        E2K(e2k2e::E2K),
+        K2E(e2k2e::K2E)
     }
 }
 

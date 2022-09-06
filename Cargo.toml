@@ -16,7 +16,7 @@ serde_json = { version = "1", default-features = false, features = [] }
 
 reqores = "0.1.6"
 
-kal = "0.1.1"
+kal = "0.1.3"
 
 bot_any = { path = "./bot_any" }
 bot_any_platform_discord = { path = "./bot_any/bot_any_platform_discord" }

@@ -1255,9 +1255,9 @@ dependencies = [
 
 [[package]]
 name = "kal"
-version = "0.1.1"
+version = "0.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2978ca19c05788ac5a10208aab28fdbb785d46452dc55c71c70f8908caf6477d"
+checksum = "c1547091ead5b0c40d3dc1ddfe034c44c6c179c1eaff7d64ec91b69230b5eb57"
 dependencies = [
  "kal-derive",
 ]
