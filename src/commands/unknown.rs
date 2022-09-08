@@ -16,10 +16,16 @@ pub async fn handle_unknown(
             CommandFragment::Execute(arguments) => {
                 command.push_str("execute(");
                 for argument in arguments {
+                    let (name, value) = match argument {
+                        kal::CommandArgument::Named(name, value) => (name.clone(), value),
+                        kal::CommandArgument::Positioned(position, value) => {
+                            (position.to_string(), value)
+                        }
+                    };
                     command.push_str(&format!(
                         "{}={}, ",
-                        argument.0,
-                        match &argument.1 {
+                        name,
+                        match &value {
                             CommandArgumentValue::String(s) => format!("str({s})"),
                             CommandArgumentValue::I64(i) => format!("i64({i})"),
                             CommandArgumentValue::F64(f) => format!("f64({f})"),

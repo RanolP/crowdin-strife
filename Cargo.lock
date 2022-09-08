@@ -1255,18 +1255,18 @@ dependencies = [
 
 [[package]]
 name = "kal"
-version = "0.1.3"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c1547091ead5b0c40d3dc1ddfe034c44c6c179c1eaff7d64ec91b69230b5eb57"
+checksum = "c9fe827fce5ccb4058d6c024c086b35aa21743064f37e7c796b1706b286cafd3"
 dependencies = [
  "kal-derive",
 ]
 
 [[package]]
 name = "kal-derive"
-version = "0.1.1"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "646b887501c5d77fc3e494621fb4bc7b2290052bff6d863b7ab55cc795f29bae"
+checksum = "556a8d46426b3cc8d57dc77b1225b63268f8c58b7876cad4a70654b215278d9b"
 dependencies = [
  "darling",
  "quote",

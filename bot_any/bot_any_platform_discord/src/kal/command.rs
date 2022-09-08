@@ -1,5 +1,5 @@
 use bot_any::types::{CommandSender, User as BotanyUser};
-use kal::{CommandArgumentValue, CommandFragment};
+use kal::{CommandArgument, CommandArgumentValue, CommandFragment};
 
 use crate::{
     sys::types::{
@@ -38,25 +38,19 @@ pub fn parse_command(
             _ => {
                 let mut arguments = Vec::new();
                 for option in current_options {
-                    match &option.value {
+                    let value = match &option.value {
                         Some(ApplicationCommandOptionValue::String(s)) => {
-                            arguments.push((
-                                option.name.clone(),
-                                CommandArgumentValue::String(s.clone()),
-                            ));
+                            CommandArgumentValue::String(s.clone())
                         }
                         Some(ApplicationCommandOptionValue::Int(i)) => {
-                            arguments
-                                .push((option.name.clone(), CommandArgumentValue::I64(i.clone())));
+                            CommandArgumentValue::I64(i.clone())
                         }
                         Some(ApplicationCommandOptionValue::Double(d)) => {
-                            arguments
-                                .push((option.name.clone(), CommandArgumentValue::F64(d.clone())));
+                            CommandArgumentValue::F64(d.clone())
                         }
-                        None => {
-                            continue;
-                        }
+                        None => continue,
                     };
+                    arguments.push(CommandArgument::Named(option.name.clone(), value));
                 }
                 fragments.push(CommandFragment::Execute(arguments));
                 break;
