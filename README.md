@@ -35,9 +35,8 @@ cargo run --bin download_translations
 
 아래 명령어로 디스코드 봇에 명령어를 등록합니다.
 
-
 ```sh
-cargo run --bin register-commands
+cargo run --bin register_commands
 ```
 
 ### wrangler 설치

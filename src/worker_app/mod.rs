@@ -36,7 +36,7 @@ pub async fn actual_main(req: Request, env: Env, _ctx: Context) -> worker::Resul
                 (res, DiscordFruit::Command(command)) => {
                     let (sender, preflights) = parse_command(command);
                     let env = CfWorkerEnv(context.env);
-                    let message_output = if let Some(command) = RootCommand::parse(&preflights) {
+                    let message_output = if let Ok(command) = RootCommand::parse(&preflights) {
                         match command.execute(sender, &env).await {
                             Ok(output) => output,
                             Err(err) => MessageWrite::begin()

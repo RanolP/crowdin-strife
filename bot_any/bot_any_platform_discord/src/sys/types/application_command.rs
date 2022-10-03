@@ -3,7 +3,7 @@ use serde_repr::{Deserialize_repr, Serialize_repr};
 
 use super::Snowflake;
 
-#[derive(Serialize_repr, Deserialize_repr)]
+#[derive(Clone, Serialize_repr, Deserialize_repr)]
 #[repr(u32)]
 pub enum ApplicationCommandKind {
     ChatInput = 1,
@@ -11,7 +11,7 @@ pub enum ApplicationCommandKind {
     Message = 3,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct ApplicationCommand {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub id: Option<Snowflake>,
@@ -34,7 +34,7 @@ pub struct ApplicationCommand {
     pub description: Option<String>,
 }
 
-#[derive(Serialize_repr, Deserialize_repr, PartialEq)]
+#[derive(Clone, Serialize_repr, Deserialize_repr, PartialEq)]
 #[repr(u32)]
 pub enum ApplicationCommandOptionKind {
     SubCommand = 1,
@@ -55,7 +55,7 @@ pub enum ApplicationCommandOptionKind {
     Attachment = 11,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct ApplicationCommandOption {
     /// Type of option
     #[serde(rename = "type")]
@@ -95,7 +95,7 @@ pub struct ApplicationCommandOption {
     // autocomplete? *	boolean	If autocomplete interactions are enabled for this STRING, INTEGER, or NUMBER type option
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 pub struct ApplicationCommandOptionChoice {
     /// 1-100 character choice name
     pub name: String,
@@ -104,7 +104,7 @@ pub struct ApplicationCommandOptionChoice {
     pub value: ApplicationCommandOptionValue,
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ApplicationCommandOptionValue {
     String(String),

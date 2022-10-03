@@ -1,7 +1,11 @@
-use reqores::{ClientRequest, HttpMethod, headers};
+use reqores::{headers, ClientRequest, HttpMethod};
 
-use crate::sys::types::{ApplicationCommand, Snowflake};
+use crate::sys::{
+    error::DiscordResult,
+    types::{ApplicationCommand, Snowflake},
+};
 
+#[derive(Clone)]
 pub struct UpdateCommand<'a> {
     pub application_id: &'a str,
     pub token: &'a str,
@@ -10,10 +14,13 @@ pub struct UpdateCommand<'a> {
 }
 
 impl ClientRequest for UpdateCommand<'_> {
-    type Response = ApplicationCommand;
+    type Response = DiscordResult<ApplicationCommand>;
 
     fn headers(&self) -> Vec<(String, String)> {
-        vec![ headers::content_type_json_utf8(), ("Authorization".to_string(), format!("Bot {}", self.token))]
+        vec![
+            headers::content_type_json_utf8(),
+            ("Authorization".to_string(), format!("Bot {}", self.token)),
+        ]
     }
 
     fn url(&self) -> String {

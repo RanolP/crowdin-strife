@@ -87,7 +87,7 @@ async fn main() -> eyre::Result<()> {
         .await
         .map_err(|e| eyre::eyre!("{}", e))?;
 
-    let assets_dir = env::current_dir()?.join("assets/lang");
+    let assets_dir = env::current_dir()?.join("assets/lang/java");
     if !assets_dir.exists() {
         fs::create_dir_all(&assets_dir)?;
     }

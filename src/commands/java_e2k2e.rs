@@ -3,27 +3,25 @@ use std::{cmp::Ordering, collections::HashMap};
 use bot_any::types::MessageWrite;
 use kal::Command;
 
+/// Minecraft에서 해당 문자열이 포함된 영어 문자열을 검색해 한국어 대응 문자열과 함께 보여줍니다.
 #[derive(Command)]
-#[command(
-    name = "e2k",
-    description = "해당 문자열이 포함된 영어 문자열을 검색해 한국어 대응 문자열과 함께 보여줍니다."
-)]
+#[command(rename = "javae2k")]
 pub struct E2K {
-    #[argument(name = "query", description = "검색할 문자열")]
+    /// 검색할 문자열
     query: String,
-    #[argument(name = "page", description = "페이지")]
+
+    /// 페이지
     page: Option<i64>,
 }
 
+/// Minecraft에서 해당 문자열이 포함된 한국어 문자열을 검색해 영어 대응 문자열과 함께 보여줍니다.
 #[derive(Command)]
-#[command(
-    name = "k2e",
-    description = "해당 문자열이 포함된 한국어 문자열을 검색해 영어 대응 문자열과 함께 보여줍니다."
-)]
+#[command(rename = "javak2e")]
 pub struct K2E {
-    #[argument(name = "query", description = "검색할 문자열")]
+    /// 검색할 문자열
     query: String,
-    #[argument(name = "page", description = "페이지")]
+
+    /// 페이지
     page: Option<i64>,
 }
 
@@ -67,8 +65,8 @@ fn read_lang_file<'a>(src: &'a str) -> eyre::Result<HashMap<String, String>> {
     Ok(serde_json::from_str(src)?)
 }
 
-const EN_US: &str = include_str!("../../assets/lang/en_us.json");
-const KO_KR: &str = include_str!("../../assets/lang/ko_kr.json");
+const EN_US: &str = include_str!("../../assets/lang/java/en_us.json");
+const KO_KR: &str = include_str!("../../assets/lang/java/ko_kr.json");
 
 impl E2K {
     pub async fn execute(self) -> eyre::Result<MessageWrite> {

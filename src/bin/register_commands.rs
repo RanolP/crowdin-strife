@@ -4,6 +4,7 @@ use std::time::Duration;
 
 use bot_any_platform_discord::sys::{
     commands::{DeleteCommand, ListCommands, UpdateCommand},
+    error::{DiscordError, DiscordResult},
     types::{ApplicationCommand, Snowflake},
 };
 use crowdin_strife::commands::RootCommand;
@@ -51,18 +52,41 @@ async fn main() -> eyre::Result<()> {
     println!();
 
     for command in RootCommand::children_specs() {
-        let result = client
-            .call(UpdateCommand {
-                application_id: &discord_application_id,
-                token: &discord_token,
-                // guild_id: None,
-                guild_id: guild_id.clone(),
-                command: ApplicationCommand::try_from(command)?,
-            })
-            .await
-            .map_err(|e| eyre::eyre!("{}", e))?;
-        println!("Successfully registered command '{}'", result.name);
-        time::sleep(Duration::from_millis(100)).await;
+        let update_command = UpdateCommand {
+            application_id: &discord_application_id,
+            token: &discord_token,
+            // guild_id: None,
+            guild_id: guild_id.clone(),
+            command: ApplicationCommand::try_from(command)?,
+        };
+        loop {
+            let result = client
+                .call(update_command.clone())
+                .await
+                .map_err(|e| eyre::eyre!("{}", e))?;
+            match result {
+                DiscordResult::Ok(result) => {
+                    println!("Successfully registered command '{}'", result.name);
+                    break;
+                }
+                DiscordResult::Err(e) => match e {
+                    DiscordError::Coded { code, message } => {
+                        eyre::bail!(
+                            "Failed to register commanbd with code {}: {}",
+                            code,
+                            message
+                        );
+                    }
+                    DiscordError::RateLimited { retry_after, .. } => {
+                        println!("Rated limited: sleep {}s", retry_after);
+                        time::sleep(Duration::from_secs(1).mul_f64(retry_after)).await;
+                    }
+                    DiscordError::Unknown(e) => {
+                        eyre::bail!("Failed to register commanbd: {}", e);
+                    }
+                },
+            }
+        }
     }
 
     Ok(())

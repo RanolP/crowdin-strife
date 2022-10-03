@@ -1,8 +1,9 @@
 use bot_any::types::{CommandSender, Env, MessageWrite};
 use kal::Command;
 
+/// 남은 잔업을 가져올까요?
 #[derive(Command)]
-#[command(name = "잔업", description = "남은 잔업을 가져올까요?")]
+#[command(rename = "잔업")]
 pub struct WorksLeft;
 
 impl WorksLeft {
