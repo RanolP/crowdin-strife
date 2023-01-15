@@ -3,7 +3,7 @@
 use std::{
     env,
     fs::{self, File},
-    io::{self, Cursor, Write},
+    io::{Cursor, Write},
     time::Instant,
 };
 
@@ -66,7 +66,11 @@ async fn main() -> eyre::Result<()> {
     );
 
     let mut game_client_zip = ZipArchive::new(Cursor::new(game_client))?;
-    let mut en_us_file = game_client_zip.by_name("assets/minecraft/lang/en_us.json")?;
+    let en_us_file = game_client_zip.by_name("assets/minecraft/lang/en_us.json")?;
+
+    let en_us = serde_json::from_reader::<_, serde_json::Value>(en_us_file)
+        .and_then(|v| serde_json::to_vec(&v))
+        .map_err(|e| eyre::eyre!("{}", e))?;
 
     let asset_index = client
         .call(GetAssetIndex {
@@ -87,16 +91,17 @@ async fn main() -> eyre::Result<()> {
         .await
         .map_err(|e| eyre::eyre!("{}", e))?;
 
+    let ko_kr = serde_json::from_slice::<serde_json::Value>(&ko_kr)
+        .and_then(|v| serde_json::to_vec(&v))
+        .map_err(|e| eyre::eyre!("{}", e))?;
+
     let assets_dir = env::current_dir()?.join("assets/lang/java");
     if !assets_dir.exists() {
         fs::create_dir_all(&assets_dir)?;
     }
 
     File::create(assets_dir.join("ko_kr.json"))?.write(&ko_kr)?;
-    io::copy(
-        &mut en_us_file,
-        &mut File::create(assets_dir.join("en_us.json"))?,
-    )?;
+    File::create(assets_dir.join("en_us.json"))?.write(&en_us)?;
 
     Ok(())
 }

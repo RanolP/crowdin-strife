@@ -20,17 +20,16 @@ impl ClientRequest for DeleteCommand<'_> {
     }
 
     fn url(&self) -> String {
+        let mut res = String::new();
+        res.push_str("https://discord.com/api/v10/applications/");
+        res.push_str(&self.application_id.to_string());
         if let Some(guild_id) = &self.guild_id {
-            format!(
-                "https://discord.com/api/v10/applications/{}/guilds/{}/commands/{}",
-                self.application_id, guild_id.0, self.command_id.0
-            )
-        } else {
-            format!(
-                "https://discord.com/api/v10/applications/{}/commands/{}",
-                self.application_id, self.command_id.0
-            )
+            res.push_str("/guilds/");
+            res.push_str(&guild_id.0);
         }
+        res.push_str("/commands/");
+        res.push_str(&self.command_id.0);
+        res
     }
 
     fn method(&self) -> HttpMethod {

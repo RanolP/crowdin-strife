@@ -1,6 +1,6 @@
 [package]
 name = "crowdin_strife"
-version = "0.1.0"
+version = "0.3.0"
 edition = "2021"
 
 [lib]
@@ -50,8 +50,12 @@ zip = "0.6.2"
 pretty_env_logger = "0.4.0"
 log = "0.4.17"
 surf = "2.3.2"
+java-properties = "1.4.1"
+encoding = "0.2.33"
 
 [profile.release]
 opt-level = "s"
-lto = true
+lto = "fat"
 panic = "abort"
+strip = "debuginfo"
+codegen-units = 1

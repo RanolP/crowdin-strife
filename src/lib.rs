@@ -1,4 +1,6 @@
 pub mod commands;
+pub mod e2k_base;
+pub mod file_reader;
 
 #[cfg(target_arch = "wasm32")]
 mod worker_app;

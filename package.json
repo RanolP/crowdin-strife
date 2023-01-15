@@ -7,9 +7,10 @@
     "wrangler": "wrangler"
   },
   "devDependencies": {
-    "@miniflare/core": "^2.7.1",
-    "@miniflare/durable-objects": "^2.7.1",
-    "wrangler": "^2.0.28"
+    "@cloudflare/kv-asset-handler": "^0.3.0",
+    "@miniflare/core": "^2.11.0",
+    "@miniflare/durable-objects": "^2.11.0",
+    "wrangler": "^2.7.1"
   },
   "packageManager": "yarn@3.2.3"
 }

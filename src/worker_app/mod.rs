@@ -11,7 +11,10 @@ use reqores::{HttpStatusCode, ServerResponseBuilder};
 use reqores_universal_cf_worker::{client::CfWorkerClient, server};
 use worker::{Context, Env, Request, Response, Router};
 
-use crate::commands::{handle_unknown, RootCommand};
+use crate::{
+    commands::{handle_unknown, RootCommand},
+    file_reader::AssetStore,
+};
 
 pub async fn actual_main(req: Request, env: Env, _ctx: Context) -> worker::Result<Response> {
     Router::new()
@@ -35,9 +38,10 @@ pub async fn actual_main(req: Request, env: Env, _ctx: Context) -> worker::Resul
                 (res, DiscordFruit::EarlyReturn) => res,
                 (res, DiscordFruit::Command(command)) => {
                     let (sender, preflights) = parse_command(command);
-                    let env = CfWorkerEnv(context.env);
+                    let env = CfWorkerEnv(&context.env);
                     let message_output = if let Ok(command) = RootCommand::parse(&preflights) {
-                        match command.execute(sender, &env).await {
+                        let asset_store = AssetStore(&context.env);
+                        match command.execute(sender, &env, &asset_store).await {
                             Ok(output) => output,
                             Err(err) => MessageWrite::begin()
                                 .push_str(format!(
