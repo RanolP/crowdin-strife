@@ -16,6 +16,9 @@ async fn main() -> eyre::Result<()> {
     dotenvy::dotenv().ok();
     color_eyre::install().ok();
 
+    let global = dotenvy::var("GLOBAL_REGISTER")
+        .map(|v| v == "true")
+        .unwrap_or(false);
     let discord_application_id = dotenvy::var("DISCORD_APPLICATION_ID")?;
     let discord_token = dotenvy::var("DISCORD_TOKEN")?;
     let guild_id = Some("898200418146988072".to_string());
@@ -55,8 +58,7 @@ async fn main() -> eyre::Result<()> {
         let update_command = UpdateCommand {
             application_id: &discord_application_id,
             token: &discord_token,
-            // guild_id: None,
-            guild_id: guild_id.clone(),
+            guild_id: if global { None } else { guild_id.clone() },
             command: ApplicationCommand::try_from(command)?,
         };
         loop {
