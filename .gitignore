@@ -1,21 +1,10 @@
 .DS_Store
 
 **/*.rs.bk
-wasm-pack.log
 
 build/
 **/target
 /dist
-
-wrangler.toml
-
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
 
 .env
 
