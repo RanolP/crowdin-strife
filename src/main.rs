@@ -1,22 +1,9 @@
-use bot_any::types::MessageWrite;
-use bot_any_env_cf_worker::CfWorkerEnv;
-use bot_any_platform_discord::{
-    kal::parse_command, sys::types::InteractionResponse, DiscordFruit, DiscordGarden,
-};
-use crowdin_client::{
-    CrowdinResponse, DiscussionStatus, LanguageId, LoadTopics, LoadTopicsResponse, RefreshToken,
-};
-use kal::Command;
-use reqores::{HttpStatusCode, ServerResponseBuilder};
-use reqores_universal_cf_worker::{client::CfWorkerClient, server};
-use worker::{Context, Env, Request, Response, Router};
+pub mod commands;
+pub mod e2k_base;
+pub mod file_reader;
 
-use crate::{
-    commands::{handle_unknown, RootCommand},
-    file_reader::AssetStore,
-};
-
-pub async fn actual_main(req: Request, env: Env, _ctx: Context) -> worker::Result<Response> {
+fn main() {
+    
     Router::new()
         .post_async("/discord/interactions", |req, context| async move {
             let is_production = context.var("ENVIRONMENT")?.to_string() != "development";

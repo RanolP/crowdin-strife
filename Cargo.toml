@@ -17,8 +17,8 @@ mcapi = { path = "./mcapi" }
 crowdin_client = { path = "./crowdin_client" }
 
 eyre = "0.6.8"
+serenity = "0.11.5"
 
-[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tokio = { version = "1.21.2", features = ["full"] }
 reqores-client-surf = "0.1.3"
 dotenvy = "0.15.5"
