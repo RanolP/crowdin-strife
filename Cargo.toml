@@ -3,12 +3,6 @@ name = "crowdin_strife"
 version = "0.3.0"
 edition = "2021"
 
-[lib]
-crate-type = ["cdylib", "rlib"]
-
-[features]
-default = ["console_error_panic_hook"]
-
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
@@ -19,27 +13,10 @@ reqores = "0.1.7"
 
 kal = "0.5.0"
 
-bot_any = { path = "./bot_any" }
-bot_any_platform_discord = { path = "./bot_any/bot_any_platform_discord" }
-
 mcapi = { path = "./mcapi" }
 crowdin_client = { path = "./crowdin_client" }
 
 eyre = "0.6.8"
-
-[target.'cfg(target_arch = "wasm32")'.dependencies]
-wee_alloc = "0.4.5"
-worker = "0.0.11"
-
-bot_any_env_cf_worker = { path = "./bot_any/bot_any_env_cf_worker" }
-
-reqores-universal-cf-worker = "0.1.4"
-
-# The `console_error_panic_hook` crate provides better debugging of panics by
-# logging them with `console.error`. This is great for development, but requires
-# all the `std::fmt` and `std::panicking` infrastructure, so isn't great for
-# code size when deploying.
-console_error_panic_hook = { version = "0.1.7", optional = true }
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 tokio = { version = "1.21.2", features = ["full"] }
@@ -53,9 +30,9 @@ surf = "2.3.2"
 java-properties = "1.4.1"
 encoding = "0.2.33"
 
-[profile.release]
-opt-level = "s"
-lto = "fat"
-panic = "abort"
-strip = "debuginfo"
-codegen-units = 1
+# [profile.release]
+# opt-level = "s"
+# lto = "fat"
+# panic = "abort"
+# strip = "debuginfo"
+# codegen-units = 1
