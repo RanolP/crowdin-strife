@@ -2,5 +2,6 @@
 members = [
     "crates/app",
     "crates/crowdin_client",
-    "crates/mcapi"
+    "crates/mcapi",
+    "crates/kal-serenity"
 ]

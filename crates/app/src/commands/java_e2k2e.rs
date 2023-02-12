@@ -1,4 +1,3 @@
-use bot_any::types::MessageWrite;
 use kal::Command;
 
 use crate::{
@@ -29,7 +28,7 @@ pub struct K2E {
 }
 
 impl E2K {
-    pub async fn execute<'a>(self, asset_store: &AssetStore<'a>) -> eyre::Result<MessageWrite> {
+    pub async fn execute<'a>(self, asset_store: &AssetStore<'a>) -> eyre::Result<String> {
         let en_us = read_lang_file(&asset_store.read_asset("lang/java/en_us.json").await?)?;
         let ko_kr = read_lang_file(&asset_store.read_asset("lang/java/ko_kr.json").await?)?;
 
@@ -38,7 +37,7 @@ impl E2K {
 }
 
 impl K2E {
-    pub async fn execute<'a>(self, asset_store: &AssetStore<'a>) -> eyre::Result<MessageWrite> {
+    pub async fn execute<'a>(self, asset_store: &AssetStore<'a>) -> eyre::Result<String> {
         let en_us = read_lang_file(&asset_store.read_asset("lang/java/en_us.json").await?)?;
         let ko_kr = read_lang_file(&asset_store.read_asset("lang/java/ko_kr.json").await?)?;
 

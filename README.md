@@ -2,15 +2,30 @@
 
 > The EX-CROWDIN Bot for Minecraft Translation Support
 
-## Commands
+## Features
 
-### /e2k [text: string] [page: int?]
+### Search TM (TODO)
 
-주어진 텍스트를 포함하는 원본 문자열들의 현재 번역 문자열을 보여줍니다.
+Minecraft와 관련된 제품의 번역 파일을 바탕으로, 대응 번역어 쌍을 검색할 수 있습니다.
+각 명령어는 한글 포함 여부로 언어를 판단하며, src 옵셔을 통해 강제 지정할 수도 있습니다.
 
-### /k2e [text: string] [page: int?]
+> /java [text: string] [src: 'en' | 'ko']
 
-주어진 텍스트를 포함하는 현재 번역 문자열들의 원본 문자열을 보여줍니다.
+Minecraft: Java Edition 최신 릴리스에 포함된 번역 파일을 바탕으로 합니다.
+
+> /bedrock [text: string] [src: 'en' | 'ko']
+
+Minecraft for Windows에 포함된 번역 파일을 바탕으로 합니다.
+
+> /dungeons [text: string] [src: 'en' | 'ko']
+
+Minecraft Dungeons에 포함된 번역 파일을 바탕으로 합니다.
+
+### 표준국어대사전 검색 (TODO)
+
+> /stdict [text: string]
+
+표준국어대사전에 등록된 단어를 검색하고, 품사 및 뜻을 알려줍니다.
 
 ### /issues (TODO)
 
@@ -50,25 +65,13 @@ yarn
 
 ### 개발 서버 열기
 
-다음 명령어를 사용해 개발 서버를 열 수 있습니다.
-
-```sh
-yarn dev
-```
+TODO
 
 ### 배포하기
 
-다음 명령어 중 하나를 사용해 배포할 수 있습니다.
+TODO
 
-```sh
-yarn deploy
-```
-
-```sh
-yarn deploy --env production
-```
-
-#### 비밀 값 설정
+#### 비밀 값 설정 (outdated)
 
 Crowdin Strife 봇은 다음의 비밀값 설정을 요구합니다.
 

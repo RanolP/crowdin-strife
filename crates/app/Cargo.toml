@@ -12,6 +12,7 @@ csv = "1.1.6"
 reqores = "0.1.7"
 
 kal = "0.5.0"
+kal-serenity = { path = "../kal-serenity" }
 
 mcapi = { path = "../mcapi" }
 crowdin_client = { path = "../crowdin_client" }

@@ -119,6 +119,7 @@ dependencies = [
  "eyre",
  "java-properties",
  "kal",
+ "kal-serenity",
  "log",
  "mcapi",
  "pretty_env_logger",
@@ -1469,6 +1470,14 @@ dependencies = [
  "darling",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "kal-serenity"
+version = "0.1.0"
+dependencies = [
+ "kal",
+ "serenity",
 ]
 
 [[package]]

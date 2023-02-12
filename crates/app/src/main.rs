@@ -1,79 +1,65 @@
+use commands::{handle_unknown, RootCommand};
+use kal_serenity::parse_command;
+use serenity::{
+    async_trait, model::application::interaction::InteractionResponseType,
+    model::prelude::interaction::Interaction, prelude::*, Client,
+};
+
 pub mod commands;
 pub mod e2k_base;
 pub mod file_reader;
 
-fn main() {
-    
-    Router::new()
-        .post_async("/discord/interactions", |req, context| async move {
-            let is_production = context.var("ENVIRONMENT")?.to_string() != "development";
-            let public_key = is_production
-                .then(|| {
-                    context
-                        .secret("DISCORD_PUBLIC_KEY")
-                        .map(|binding| binding.to_string())
-                })
-                .transpose()?;
-            let garden = DiscordGarden::new(public_key.as_deref())
-                .map_err(|e| worker::Error::from(e.to_string()))?;
+struct Handler;
 
-            let response = match garden
-                .plant(&server::decode_request(req).await?)
-                .await
-                .map_err(|e| worker::Error::from(e.to_string()))?
-            {
-                (res, DiscordFruit::EarlyReturn) => res,
-                (res, DiscordFruit::Command(command)) => {
-                    let (sender, preflights) = parse_command(command);
-                    let env = CfWorkerEnv(&context.env);
-                    let message_output = if let Ok(command) = RootCommand::parse(&preflights) {
-                        let asset_store = AssetStore(&context.env);
-                        match command.execute(sender, &env, &asset_store).await {
-                            Ok(output) => output,
-                            Err(err) => MessageWrite::begin()
-                                .push_str(format!(
-                                    "명령어 실행에 실패했습니다:\n```\n{}\n```",
-                                    err.to_string()
-                                ))
-                                .end(),
+#[async_trait]
+impl EventHandler for Handler {
+    async fn interaction_create(&self, ctx: Context, interaction: Interaction) {
+        match interaction {
+            Interaction::Ping(_) => {}
+            Interaction::ApplicationCommand(interaction) => {
+                let preflights = parse_command(&interaction.data);
+                let env = CfWorkerEnv(&context.env);
+                let message_output = if let Ok(command) = RootCommand::parse(&preflights) {
+                    let asset_store = AssetStore(&context.env);
+                    match command.execute(&env, &asset_store).await {
+                        Ok(output) => output,
+                        Err(err) => {
+                            format!("명령어 실행에 실패했습니다:\n```\n{}\n```", err.to_string())
                         }
-                    } else {
-                        handle_unknown(sender, &preflights, &env).await
-                    };
+                    }
+                } else {
+                    handle_unknown(&preflights).await
+                };
 
-                    res.then(
-                        ServerResponseBuilder::new()
-                            .with_status(HttpStatusCode::Ok)
-                            .body_json(&InteractionResponse::message_with_source(
-                                message_output.into(),
-                            ))?,
-                    )
-                }
-            };
-
-            server::encode_response(response)
-        })
-        .get_async("/discussions/list", |_, _| async {
-            Response::from_json(&list_discussions().await?)
-        })
-        .run(req, env)
-        .await
+                interaction.create_interaction_response(&ctx.http, |response| {
+                    response
+                        .kind(InteractionResponseType::ChannelMessageWithSource)
+                        .interaction_response_data(|data| data.content(message_output))
+                })
+            }
+            Interaction::MessageComponent(_) => {}
+            Interaction::Autocomplete(_) => {}
+            Interaction::ModalSubmit(_) => {}
+        }
+    }
 }
 
-async fn list_discussions() -> worker::Result<CrowdinResponse<LoadTopicsResponse>> {
-    let client = CfWorkerClient;
+#[tokio::main]
+async fn main() -> eyre::Result<()> {
+    dotenvy::dotenv();
+    let is_production = dotenvy::var("ENVIRONMENT")? != "development";
+    let public_key = is_production
+        .then(|| dotenvy::var("DISCORD_PUBLIC_KEY"))
+        .transpose()?;
+    let token = dotenvy::var("DISCORD_TOKEN")?;
+    let application_id: u64 = dotenvy::var("DISCORD_APP_ID")?.parse()?;
 
-    let csrf_token = client.call(RefreshToken).await?;
-
-    let response = client
-        .call(LoadTopics {
-            csrf_token: &csrf_token,
-            project_id: 3579,
-            status: Some(DiscussionStatus::Open),
-            language_id: Some(LanguageId(27)),
-            author_id: None,
-        })
+    let client = Client::builder(token, GatewayIntents::empty())
+        .application_id(application_id)
+        .event_handler(Handler)
         .await?;
 
-    Ok(response)
+    client.start().await?;
+
+    Ok(())
 }

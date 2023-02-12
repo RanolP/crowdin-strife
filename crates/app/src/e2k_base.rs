@@ -1,7 +1,5 @@
 use std::{cmp::Ordering, collections::HashMap};
 
-use bot_any::types::MessageWrite;
-
 #[derive(PartialEq, Eq, Ord)]
 pub struct Word<'a> {
     pub key: &'a str,
@@ -47,21 +45,21 @@ pub fn e2k(
     page: Option<i64>,
     en_us: HashMap<String, String>,
     ko_kr: HashMap<String, String>,
-) -> eyre::Result<MessageWrite> {
-    let mut message = MessageWrite::begin();
-    message = message.push_str(format!("▷ {}\n", query));
+) -> eyre::Result<String> {
+    let mut message = String::new();
+    message = message.push_str(&format!("▷ {}\n", query));
 
     let query = query.to_lowercase();
     let page = (page.unwrap_or(1) - 1) as usize;
     let (found, total_pages) = search(&en_us, &ko_kr, &query, page);
     for word in &found {
-        message = message.push_str(format!("{} => {}\n", word.src, word.dst));
+        message = message.push_str(&format!("{} => {}\n", word.src, word.dst));
     }
 
     if found.is_empty() {
-        message = message.push_str("결과 없음".to_string());
+        message = message.push_str(&"결과 없음".to_string());
     } else if total_pages > 1 {
-        message = message.push_str(format!("페이지 {} / {}", page + 1, total_pages));
+        message = message.push_str(&format!("페이지 {} / {}", page + 1, total_pages));
     }
 
     Ok(message.end())
@@ -72,21 +70,21 @@ pub fn k2e(
     page: Option<i64>,
     en_us: HashMap<String, String>,
     ko_kr: HashMap<String, String>,
-) -> eyre::Result<MessageWrite> {
-    let mut message = MessageWrite::begin();
-    message = message.push_str(format!("▷ {}\n", query));
+) -> eyre::Result<String> {
+    let mut message = String::new();
+    message = message.push_str(&format!("▷ {}\n", query));
 
     let query = query.to_lowercase();
     let page = (page.unwrap_or(1) - 1) as usize;
     let (found, total_pages) = search(&ko_kr, &en_us, &query, page);
     for word in &found {
-        message = message.push_str(format!("{} => {}\n", word.src, word.dst));
+        message = message.push_str(&format!("{} => {}\n", word.src, word.dst));
     }
 
     if found.is_empty() {
-        message = message.push_str("결과 없음".to_string());
+        message = message.push_str(&"결과 없음".to_string());
     } else if total_pages > 1 {
-        message = message.push_str(format!("페이지 {} / {}", page + 1, total_pages));
+        message = message.push_str(&format!("페이지 {} / {}", page + 1, total_pages));
     }
 
     Ok(message.end())

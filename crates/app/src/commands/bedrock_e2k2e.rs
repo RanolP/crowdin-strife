@@ -1,6 +1,5 @@
 use std::collections::HashMap;
 
-use bot_any::types::MessageWrite;
 use kal::Command;
 
 use crate::{
@@ -35,7 +34,7 @@ fn read_lang_file<'a>(src: &'a str) -> eyre::Result<HashMap<String, String>> {
 }
 
 impl E2K {
-    pub async fn execute<'a>(self, asset_store: &AssetStore<'a>) -> eyre::Result<MessageWrite> {
+    pub async fn execute<'a>(self, asset_store: &AssetStore<'a>) -> eyre::Result<String> {
         let en_us = read_lang_file(&asset_store.read_asset("lang/bedrock/en_us.json").await?)?;
         let ko_kr = read_lang_file(&asset_store.read_asset("lang/bedrock/ko_kr.json").await?)?;
 
@@ -44,7 +43,7 @@ impl E2K {
 }
 
 impl K2E {
-    pub async fn execute<'a>(self, asset_store: &AssetStore<'a>) -> eyre::Result<MessageWrite> {
+    pub async fn execute<'a>(self, asset_store: &AssetStore<'a>) -> eyre::Result<String> {
         let en_us = read_lang_file(&asset_store.read_asset("lang/bedrock/en_us.json").await?)?;
         let ko_kr = read_lang_file(&asset_store.read_asset("lang/bedrock/ko_kr.json").await?)?;
 
