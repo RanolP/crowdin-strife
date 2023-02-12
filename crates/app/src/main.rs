@@ -1,4 +1,6 @@
 use commands::{handle_unknown, RootCommand};
+use engine::env::StdEnv;
+use kal::Command;
 use kal_serenity::parse_command;
 use serenity::{
     async_trait, model::application::interaction::InteractionResponseType,
@@ -18,7 +20,9 @@ impl EventHandler for Handler {
             Interaction::Ping(_) => {}
             Interaction::ApplicationCommand(interaction) => {
                 let preflights = parse_command(&interaction.data);
-                let env = CfWorkerEnv(&context.env);
+
+                let env = StdEnv;
+
                 let message_output = if let Ok(command) = RootCommand::parse(&preflights) {
                     let asset_store = AssetStore(&context.env);
                     match command.execute(&env, &asset_store).await {

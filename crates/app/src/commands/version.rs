@@ -1,3 +1,4 @@
+use engine::env::Env;
 use kal::Command;
 
 /// 현재 실행 중인 봇의 버전을 가져옵니다.
@@ -9,7 +10,7 @@ impl Version {
     pub async fn execute(self, env: &dyn Env) -> String {
         format!(
             "버전 : {}",
-            env.var("VERSION")
+            env.get("VERSION")
                 .unwrap_or_else(|| "알 수 없음".to_string())
         )
     }

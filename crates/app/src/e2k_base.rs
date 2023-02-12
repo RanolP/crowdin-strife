@@ -47,22 +47,22 @@ pub fn e2k(
     ko_kr: HashMap<String, String>,
 ) -> eyre::Result<String> {
     let mut message = String::new();
-    message = message.push_str(&format!("▷ {}\n", query));
+    message.push_str(&format!("▷ {}\n", query));
 
     let query = query.to_lowercase();
     let page = (page.unwrap_or(1) - 1) as usize;
     let (found, total_pages) = search(&en_us, &ko_kr, &query, page);
     for word in &found {
-        message = message.push_str(&format!("{} => {}\n", word.src, word.dst));
+        message.push_str(&format!("{} => {}\n", word.src, word.dst));
     }
 
     if found.is_empty() {
-        message = message.push_str(&"결과 없음".to_string());
+        message.push_str(&"결과 없음".to_string());
     } else if total_pages > 1 {
-        message = message.push_str(&format!("페이지 {} / {}", page + 1, total_pages));
+        message.push_str(&format!("페이지 {} / {}", page + 1, total_pages));
     }
 
-    Ok(message.end())
+    Ok(message)
 }
 
 pub fn k2e(
@@ -72,20 +72,20 @@ pub fn k2e(
     ko_kr: HashMap<String, String>,
 ) -> eyre::Result<String> {
     let mut message = String::new();
-    message = message.push_str(&format!("▷ {}\n", query));
+    message.push_str(&format!("▷ {}\n", query));
 
     let query = query.to_lowercase();
     let page = (page.unwrap_or(1) - 1) as usize;
     let (found, total_pages) = search(&ko_kr, &en_us, &query, page);
     for word in &found {
-        message = message.push_str(&format!("{} => {}\n", word.src, word.dst));
+        message.push_str(&format!("{} => {}\n", word.src, word.dst));
     }
 
     if found.is_empty() {
-        message = message.push_str(&"결과 없음".to_string());
+        message.push_str(&"결과 없음".to_string());
     } else if total_pages > 1 {
-        message = message.push_str(&format!("페이지 {} / {}", page + 1, total_pages));
+        message.push_str(&format!("페이지 {} / {}", page + 1, total_pages));
     }
 
-    Ok(message.end())
+    Ok(message)
 }
