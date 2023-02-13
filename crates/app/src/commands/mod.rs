@@ -1,9 +1,7 @@
-use engine::env::Env;
+use engine::{api::CrowdinStrifeApi, env::Env};
 use kal::command_group;
 
 pub use unknown::handle_unknown;
-
-use crate::file_reader::AssetStore;
 
 // mod bedrock_e2k2e;
 mod dungeons_e2k2e;
@@ -27,14 +25,14 @@ impl RootCommand {
     pub async fn execute<'a>(
         self,
         env: &'a dyn Env,
-        asset_store: &'a AssetStore<'a>,
+        api: &'a dyn CrowdinStrifeApi,
     ) -> eyre::Result<String> {
         match self {
             RootCommand::Version(version) => Ok(version.execute(env).await),
-            RootCommand::JavaE2K(java_e2k) => java_e2k.execute(asset_store).await,
-            RootCommand::JavaK2E(java_k2e) => java_k2e.execute(asset_store).await,
-            RootCommand::DungeonsE2K(dungeons_e2k) => dungeons_e2k.execute(asset_store).await,
-            RootCommand::DungeonsK2E(dungeons_k2e) => dungeons_k2e.execute(asset_store).await,
+            RootCommand::JavaE2K(java_e2k) => java_e2k.execute(api).await,
+            RootCommand::JavaK2E(java_k2e) => java_k2e.execute(api).await,
+            RootCommand::DungeonsE2K(dungeons_e2k) => dungeons_e2k.execute(api).await,
+            RootCommand::DungeonsK2E(dungeons_k2e) => dungeons_k2e.execute(api).await,
             // RootCommand::BedrockE2K(bedrock_e2k) => bedrock_e2k.execute(asset_store).await,
             // RootCommand::BedrockK2E(bedrock_k2e) => bedrock_k2e.execute(asset_store).await,
         }

@@ -1,87 +1,37 @@
-use std::{cmp::Ordering, collections::HashMap};
+use engine::api::{CrowdinStrifeApi, MinecraftPlatform, SearchTmQuery, SourceLanguage};
 
-#[derive(PartialEq, Eq, Ord)]
-pub struct Word<'a> {
-    pub key: &'a str,
-    pub src: &'a str,
-    pub dst: &'a str,
-}
+pub async fn search_tm(
+    api: &dyn CrowdinStrifeApi,
+    platform: MinecraftPlatform,
+    source: SourceLanguage,
+    query: String,
+    page: Option<i64>,
+) -> eyre::Result<String> {
+    let query = query.to_lowercase();
+    let page = page.unwrap_or(1) - 1;
 
-impl<'a> PartialOrd<Word<'a>> for Word<'a> {
-    fn partial_cmp(&self, other: &Word) -> Option<Ordering> {
-        self.key.partial_cmp(other.key)
-    }
-}
-
-pub fn read_lang_file<'a>(src: &'a str) -> eyre::Result<HashMap<String, String>> {
-    Ok(serde_json::from_str(src)?)
-}
-
-pub fn search<'a>(
-    src_map: &'a HashMap<String, String>,
-    dst_map: &'a HashMap<String, String>,
-    query: &'a str,
-    page: usize,
-) -> (Vec<Word<'a>>, usize) {
-    let mut words_found: Vec<_> = src_map
-        .into_iter()
-        .filter(|(_, value)| value.to_lowercase().contains(query))
-        .map(|(key, src)| Word {
-            key,
-            src,
-            dst: dst_map.get(key).map_or("*대응어 없음*", String::as_ref),
+    let res = api
+        .search_tm(SearchTmQuery {
+            source,
+            platform,
+            text: query.clone(),
+            skip: 10 * page as usize,
+            take: 10,
         })
-        .collect();
-    words_found.sort();
-    let total_len = words_found.len();
-    (
-        words_found.into_iter().skip(page * 10).take(10).collect(),
-        (total_len + 9) / 10,
-    )
-}
+        .await;
+    let total_pages = (res.total + 9) / 10;
 
-pub fn e2k(
-    query: String,
-    page: Option<i64>,
-    en_us: HashMap<String, String>,
-    ko_kr: HashMap<String, String>,
-) -> eyre::Result<String> {
     let mut message = String::new();
     message.push_str(&format!("▷ {}\n", query));
 
-    let query = query.to_lowercase();
-    let page = (page.unwrap_or(1) - 1) as usize;
-    let (found, total_pages) = search(&en_us, &ko_kr, &query, page);
-    for word in &found {
-        message.push_str(&format!("{} => {}\n", word.src, word.dst));
+    for entry in &res.items {
+        message.push_str(&format!(
+            "{} => {}\n",
+            entry.source.content, entry.targets[0].content
+        ));
     }
 
-    if found.is_empty() {
-        message.push_str(&"결과 없음".to_string());
-    } else if total_pages > 1 {
-        message.push_str(&format!("페이지 {} / {}", page + 1, total_pages));
-    }
-
-    Ok(message)
-}
-
-pub fn k2e(
-    query: String,
-    page: Option<i64>,
-    en_us: HashMap<String, String>,
-    ko_kr: HashMap<String, String>,
-) -> eyre::Result<String> {
-    let mut message = String::new();
-    message.push_str(&format!("▷ {}\n", query));
-
-    let query = query.to_lowercase();
-    let page = (page.unwrap_or(1) - 1) as usize;
-    let (found, total_pages) = search(&ko_kr, &en_us, &query, page);
-    for word in &found {
-        message.push_str(&format!("{} => {}\n", word.src, word.dst));
-    }
-
-    if found.is_empty() {
+    if res.items.is_empty() {
         message.push_str(&"결과 없음".to_string());
     } else if total_pages > 1 {
         message.push_str(&format!("페이지 {} / {}", page + 1, total_pages));

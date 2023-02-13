@@ -16,13 +16,36 @@ impl Default for SourceLanguage {
     }
 }
 
+pub enum MinecraftPlatform {
+    Java,
+    Bedrock,
+    Dungeons,
+}
+
 pub struct SearchTmQuery {
     pub source: SourceLanguage,
+    pub platform: MinecraftPlatform,
     pub text: String,
+    pub skip: usize,
+    pub take: usize,
 }
-pub struct SearchTmResultEntry {}
+
+pub struct Pagination<T> {
+    pub total: usize,
+    pub items: Vec<T>,
+}
+pub struct SearchTmResultEntry {
+    pub key: String,
+    pub source: TmEntry,
+    pub targets: Vec<TmEntry>,
+}
+
+pub struct TmEntry {
+    pub language: Language,
+    pub content: String,
+}
 
 #[async_trait]
 pub trait CrowdinStrifeApi {
-    async fn search_tm(&self, query: SearchTmQuery) -> Vec<SearchTmResultEntry>;
+    async fn search_tm(&self, query: SearchTmQuery) -> Pagination<SearchTmResultEntry>;
 }

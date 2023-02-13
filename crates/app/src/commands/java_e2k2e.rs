@@ -1,9 +1,7 @@
+use engine::api::{CrowdinStrifeApi, Language, MinecraftPlatform, SourceLanguage};
 use kal::Command;
 
-use crate::{
-    e2k_base::{e2k, k2e, read_lang_file},
-    file_reader::AssetStore,
-};
+use crate::e2k_base::search_tm;
 
 /// Minecraft에서 해당 문자열이 포함된 영어 문자열을 검색해 한국어 대응 문자열과 함께 보여줍니다.
 #[derive(Command)]
@@ -28,19 +26,27 @@ pub struct K2E {
 }
 
 impl E2K {
-    pub async fn execute<'a>(self, asset_store: &AssetStore<'a>) -> eyre::Result<String> {
-        let en_us = read_lang_file(&asset_store.read_asset("lang/java/en_us.json").await?)?;
-        let ko_kr = read_lang_file(&asset_store.read_asset("lang/java/ko_kr.json").await?)?;
-
-        e2k(self.query, self.page, en_us, ko_kr)
+    pub async fn execute(self, api: &dyn CrowdinStrifeApi) -> eyre::Result<String> {
+        search_tm(
+            api,
+            MinecraftPlatform::Java,
+            SourceLanguage::Specified(Language::English),
+            self.query,
+            self.page,
+        )
+        .await
     }
 }
 
 impl K2E {
-    pub async fn execute<'a>(self, asset_store: &AssetStore<'a>) -> eyre::Result<String> {
-        let en_us = read_lang_file(&asset_store.read_asset("lang/java/en_us.json").await?)?;
-        let ko_kr = read_lang_file(&asset_store.read_asset("lang/java/ko_kr.json").await?)?;
-
-        k2e(self.query, self.page, en_us, ko_kr)
+    pub async fn execute<'a>(self, api: &dyn CrowdinStrifeApi) -> eyre::Result<String> {
+        search_tm(
+            api,
+            MinecraftPlatform::Java,
+            SourceLanguage::Specified(Language::Korean),
+            self.query,
+            self.page,
+        )
+        .await
     }
 }
