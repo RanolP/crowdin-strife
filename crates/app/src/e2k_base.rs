@@ -1,7 +1,7 @@
-use engine::api::{CrowdinStrifeApi, MinecraftPlatform, SearchTmQuery, SourceLanguage};
+use engine::db::{MinecraftPlatform, SearchTmQuery, SourceLanguage, TmDatabase};
 
 pub async fn search_tm(
-    api: &dyn CrowdinStrifeApi,
+    api: &(impl TmDatabase + Sync + Send),
     platform: MinecraftPlatform,
     source: SourceLanguage,
     query: String,
@@ -11,14 +11,14 @@ pub async fn search_tm(
     let page = page.unwrap_or(1) - 1;
 
     let res = api
-        .search_tm(SearchTmQuery {
+        .search(SearchTmQuery {
             source,
             platform,
             text: query.clone(),
             skip: 10 * page as usize,
             take: 10,
         })
-        .await;
+        .await?;
     let total_pages = (res.total + 9) / 10;
 
     let mut message = String::new();

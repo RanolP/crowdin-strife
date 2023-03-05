@@ -7,7 +7,7 @@ use kal::Command;
 pub struct Version;
 
 impl Version {
-    pub async fn execute(self, env: &dyn Env) -> String {
+    pub async fn execute(self, env: &(dyn Env + Sync + Send)) -> String {
         format!(
             "버전 : {}",
             env.get("VERSION")

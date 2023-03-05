@@ -5,4 +5,7 @@ members = [
     "crates/mcapi",
     "crates/kal-serenity",
     "crates/engine",
+    "crates/prisma",
+    "crates/update-java-asset",
+    "crates/query",
 ]

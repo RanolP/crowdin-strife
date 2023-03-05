@@ -1,4 +1,4 @@
-use engine::{api::CrowdinStrifeApi, env::Env};
+use engine::{db::TmDatabase, env::Env};
 use kal::command_group;
 
 pub use unknown::handle_unknown;
@@ -24,8 +24,8 @@ command_group! {
 impl RootCommand {
     pub async fn execute<'a>(
         self,
-        env: &'a dyn Env,
-        api: &'a dyn CrowdinStrifeApi,
+        env: &'a (impl Env + Sync + Send),
+        api: &'a (impl TmDatabase + Sync + Send),
     ) -> eyre::Result<String> {
         match self {
             RootCommand::Version(version) => Ok(version.execute(env).await),
