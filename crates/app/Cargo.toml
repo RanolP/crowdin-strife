@@ -20,7 +20,7 @@ crowdin_client = { path = "../crowdin_client" }
 engine = { path = "../engine" }
 
 eyre = "0.6.8"
-serenity = "0.11.5"
+serenity = { version = "0.11.5", default-features = false, features = ["base64", "builder", "bytes", "cache", "chrono", "client", "dashmap", "flate2", "gateway", "http", "levenshtein", "model", "parking_lot", "rustls_backend", "static_assertions", "tokio", "typemap_rev", "utils", "uwl"] }
 
 tokio = { version = "1.21.2", features = ["full"] }
 reqores-client-surf = "0.1.3"

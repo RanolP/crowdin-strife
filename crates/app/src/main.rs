@@ -1,13 +1,17 @@
 use app::commands::{handle_unknown, RootCommand};
 use engine::{
-    db::TmDatabase,
+    db::{PrismaDatabase, TmDatabase},
     env::{Env, StdEnv},
 };
 use kal::Command;
-use kal_serenity::parse_command;
+use kal_serenity::{parse_command, try_into_serenity_command};
 use serenity::{
-    async_trait, model::application::interaction::InteractionResponseType,
-    model::prelude::interaction::Interaction, prelude::*,
+    async_trait,
+    model::application::interaction::InteractionResponseType,
+    model::prelude::{
+        command::Command as SerenityCommand, interaction::Interaction, GuildId, Ready,
+    },
+    prelude::*,
 };
 
 struct Handler<E, Db> {
@@ -44,34 +48,53 @@ where
                             .kind(InteractionResponseType::ChannelMessageWithSource)
                             .interaction_response_data(|data| data.content(message_output))
                     })
-                    .await;
+                    .await
+                    .unwrap();
             }
             Interaction::MessageComponent(_) => {}
             Interaction::Autocomplete(_) => {}
             Interaction::ModalSubmit(_) => {}
         }
     }
+
+    async fn ready(&self, ctx: Context, _ready: Ready) {
+        SerenityCommand::set_global_application_commands(&ctx.http, |commands| {
+            for command in RootCommand::children_specs() {
+                commands.add_application_command(try_into_serenity_command(command).unwrap());
+            }
+            commands
+        })
+        .await
+        .unwrap();
+    }
 }
 
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
     dotenvy::dotenv().ok();
-    let is_production = dotenvy::var("ENVIRONMENT")? != "development";
+    let is_production = dotenvy::var("ENVIRONMENT")
+        .map(|x| x == "production")
+        .unwrap_or(false);
     let public_key = is_production
         .then(|| dotenvy::var("DISCORD_PUBLIC_KEY"))
         .transpose()?;
     let token = dotenvy::var("DISCORD_TOKEN")?;
     let application_id: u64 = dotenvy::var("DISCORD_APP_ID")?.parse()?;
 
-    let database_url = dotenvy::var("DATABASE_URL")?;
+    let database = PrismaDatabase::connect().await?;
 
     let env = StdEnv;
-    // let mut client = Client::builder(token, GatewayIntents::empty())
-    //     .application_id(application_id)
-    //     .event_handler(Handler { env, database })
-    //     .await?;
+    let mut client = Client::builder(token, GatewayIntents::empty())
+        .application_id(application_id)
+        .event_handler(Handler { env, database })
+        .await?;
 
-    // client.start().await?;
+    println!(
+        "Invite bot with https://discord.com/api/oauth2/authorize?client_id={}&permissions={}&scope={}",
+        application_id, 0, "bot%20applications.commands"
+    );
+
+    client.start().await?;
 
     Ok(())
 }
