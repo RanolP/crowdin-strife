@@ -10,11 +10,11 @@ impl ClientRequest for DownloadAsset<'_> {
     type Response = Vec<u8>;
 
     fn url(&self) -> String {
-        dbg!(format!(
-            "http://resources.download.minecraft.net/{}/{}",
+        format!(
+            "https://resources.download.minecraft.net/{}/{}",
             &self.asset.hash[..2],
             self.asset.hash
-        ))
+        )
     }
 
     fn method(&self) -> HttpMethod {
