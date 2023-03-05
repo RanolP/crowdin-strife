@@ -1,14 +1,14 @@
 use async_trait::async_trait;
 use prisma_client_rust::{
     chrono::{FixedOffset, TimeZone, Utc},
-    raw, Direction, NewClientError, QueryError, Raw,
+    raw, NewClientError, QueryError,
 };
 use serde::Deserialize;
 
 use crate::{
     db::{
         MinecraftPlatform, Pagination, SearchTmQuery, SearchTmResultEntry, TmDatabase, TmEntry,
-        Upload, Word,
+        Upload,
     },
     prisma::{self, language_file, word, PrismaClient},
 };
