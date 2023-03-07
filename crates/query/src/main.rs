@@ -27,8 +27,9 @@ async fn main() -> eyre::Result<()> {
                 take: 10,
             })
             .await?;
+        println!("{}", result.game_version);
 
-        for word in result.items {
+        for word in result.list.items {
             writeln!(
                 stdout,
                 "{} => {}",
@@ -38,8 +39,8 @@ async fn main() -> eyre::Result<()> {
         writeln!(
             stdout,
             "1 / {} - 전체 {} 개",
-            (result.total + 9) / 10,
-            result.total
+            (result.list.total + 9) / 10,
+            result.list.total
         )?;
         writeln!(stdout)?;
     }

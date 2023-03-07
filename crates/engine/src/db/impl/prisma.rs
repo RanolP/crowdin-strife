@@ -7,8 +7,8 @@ use serde::Deserialize;
 
 use crate::{
     db::{
-        MinecraftPlatform, Pagination, SearchTmQuery, SearchTmResultEntry, TmDatabase, TmEntry,
-        Upload,
+        MinecraftPlatform, Pagination, SearchTmQuery, SearchTmResponse, TmDatabase, TmWord,
+        TmWordPair, Upload,
     },
     prisma::{self, language_file, word, PrismaClient},
 };
@@ -37,10 +37,8 @@ fn into_prisma_minecraft_platform(platform: MinecraftPlatform) -> prisma::Minecr
 impl TmDatabase for PrismaDatabase {
     type Error = QueryError;
 
-    async fn search(
-        &self,
-        query: SearchTmQuery,
-    ) -> Result<Pagination<SearchTmResultEntry>, Self::Error> {
+    async fn search(&self, query: SearchTmQuery) -> Result<SearchTmResponse, Self::Error> {
+        let platform = into_prisma_minecraft_platform(query.platform);
         let source = query.source.guess(&query.text);
         let target = source.as_e2k_counterpart();
         #[derive(Deserialize)]
@@ -64,6 +62,8 @@ impl TmDatabase for PrismaDatabase {
                         t1.key = t2.key AND
                         t1.language = {} AND
                         t2.language = {} AND
+                        t1.platform = {} AND
+                        t2.platform = {} AND
                         t1.value LIKE CONCAT('%', {}, '%')
                     ORDER BY t1.key ASC
                     LIMIT {}
@@ -71,6 +71,8 @@ impl TmDatabase for PrismaDatabase {
                 "#,
                 source.as_str().into(),
                 target.as_str().into(),
+                platform.to_string().into(),
+                platform.to_string().into(),
                 query.text.clone().into(),
                 query.take.into(),
                 query.skip.into()
@@ -79,27 +81,41 @@ impl TmDatabase for PrismaDatabase {
             .await?;
         let items = result
             .into_iter()
-            .map(|res| SearchTmResultEntry {
+            .map(|res| TmWordPair {
                 key: res.key,
-                source: TmEntry {
+                source: TmWord {
                     language: source.clone(),
                     content: res.src,
                 },
-                targets: vec![TmEntry {
+                targets: vec![TmWord {
                     language: target.clone(),
                     content: res.dst,
                 }],
             })
             .collect();
+        let game_version = self
+            .client
+            .language_file()
+            .find_first(vec![language_file::platform::equals(platform.clone())])
+            .exec()
+            .await?
+            .map(|language_file| language_file.game_version)
+            .unwrap_or("".to_string());
         let total = self
             .client
             .word()
-            .count(vec![word::value::contains(query.text)])
+            .count(vec![
+                word::platform::equals(platform.clone()),
+                word::value::contains(query.text),
+            ])
             .exec()
             .await?;
-        Ok(Pagination {
-            total: total as usize,
-            items,
+        Ok(SearchTmResponse {
+            game_version,
+            list: Pagination {
+                total: total as usize,
+                items,
+            },
         })
     }
 

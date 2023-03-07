@@ -69,17 +69,22 @@ pub struct SearchTmQuery {
     pub take: usize,
 }
 
+pub struct SearchTmResponse {
+    pub game_version: String,
+    pub list: Pagination<TmWordPair>,
+}
+
 pub struct Pagination<T> {
     pub total: usize,
     pub items: Vec<T>,
 }
-pub struct SearchTmResultEntry {
+pub struct TmWordPair {
     pub key: String,
-    pub source: TmEntry,
-    pub targets: Vec<TmEntry>,
+    pub source: TmWord,
+    pub targets: Vec<TmWord>,
 }
 
-pub struct TmEntry {
+pub struct TmWord {
     pub language: Language,
     pub content: String,
 }
@@ -89,10 +94,10 @@ pub struct Upload {
     pub filename: String,
     pub language: Language,
     pub game_version: String,
-    pub words: Vec<Word>,
+    pub words: Vec<UploadWord>,
 }
 
-pub struct Word {
+pub struct UploadWord {
     pub key: String,
     pub value: String,
 }
@@ -101,10 +106,7 @@ pub struct Word {
 pub trait TmDatabase {
     type Error: std::error::Error + Sync + Send + 'static;
 
-    async fn search(
-        &self,
-        query: SearchTmQuery,
-    ) -> Result<Pagination<SearchTmResultEntry>, Self::Error>;
+    async fn search(&self, query: SearchTmQuery) -> Result<SearchTmResponse, Self::Error>;
 
     async fn upload(&self, upload: Upload) -> Result<(), Self::Error>;
 }

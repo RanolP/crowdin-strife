@@ -19,19 +19,19 @@ pub async fn search_tm(
             take: 10,
         })
         .await?;
-    let total_pages = (res.total + 9) / 10;
+    let total_pages = (res.list.total + 9) / 10;
 
     let mut message = String::new();
-    message.push_str(&format!("▷ {}\n", query));
+    message.push_str(&format!("{} ▷ {}\n", res.game_version, query));
 
-    for entry in &res.items {
+    for entry in &res.list.items {
         message.push_str(&format!(
             "{} => {}\n",
             entry.source.content, entry.targets[0].content
         ));
     }
 
-    if res.items.is_empty() {
+    if res.list.items.is_empty() {
         message.push_str(&"결과 없음".to_string());
     } else if total_pages > 1 {
         message.push_str(&format!("페이지 {} / {}", page + 1, total_pages));
