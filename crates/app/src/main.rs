@@ -8,9 +8,7 @@ use kal_serenity::{parse_command, try_into_serenity_command};
 use serenity::{
     async_trait,
     model::application::interaction::InteractionResponseType,
-    model::prelude::{
-        command::Command as SerenityCommand, interaction::Interaction, GuildId, Ready,
-    },
+    model::prelude::{command::Command as SerenityCommand, interaction::Interaction, Ready},
     prelude::*,
 };
 

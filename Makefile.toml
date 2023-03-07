@@ -1,0 +1,26 @@
+env_files = [
+    { path = "./.env.development", profile = "development" },
+    { path = "./.env.production", profile = "production" },
+    { path = "./.env" }
+]
+
+[tasks.prisma]
+workspace = false
+command = "cargo"
+cwd = "crates/engine"
+args = ["run", "-p", "prisma", "--", "${@}"]
+
+[tasks.query]
+workspace = false
+command = "cargo"
+args = ["run", "-p", "query"]
+
+[tasks.update-java-asset]
+workspace = false
+command = "cargo"
+args = ["run", "-p", "update-java-asset"]
+
+[tasks.app]
+workspace = false
+command = "cargo"
+args = ["run", "-p", "app"]

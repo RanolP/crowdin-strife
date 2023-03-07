@@ -111,6 +111,7 @@ impl TmDatabase for PrismaDatabase {
             .begin()
             .await?;
 
+        let platform = into_prisma_minecraft_platform(upload.platform);
         let now = FixedOffset::east_opt(9 * 60 * 60)
             .unwrap()
             .from_utc_datetime(&Utc::now().naive_utc());
@@ -119,11 +120,11 @@ impl TmDatabase for PrismaDatabase {
             .language_file()
             .upsert(
                 language_file::UniqueWhereParam::PlatformFilenameEquals(
-                    into_prisma_minecraft_platform(upload.platform.clone()),
+                    platform.clone(),
                     upload.filename.clone(),
                 ),
                 language_file::create(
-                    into_prisma_minecraft_platform(upload.platform.clone()),
+                    platform.clone(),
                     upload.filename.clone(),
                     upload.game_version.clone(),
                     now.clone(),
@@ -141,13 +142,23 @@ impl TmDatabase for PrismaDatabase {
 
         client
             .word()
+            .delete_many(vec![
+                word::platform::equals(platform.clone()),
+                word::filename::equals(upload.filename.clone()),
+                word::language::equals(upload.language.as_str().to_string()),
+            ])
+            .exec()
+            .await?;
+
+        client
+            .word()
             .create_many(
                 upload
                     .words
                     .into_iter()
                     .map(|word| {
                         (
-                            into_prisma_minecraft_platform(upload.platform.clone()),
+                            platform.clone(),
                             upload.filename.clone(),
                             word.key,
                             word.value,
