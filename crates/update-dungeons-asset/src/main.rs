@@ -2,13 +2,12 @@ use std::{
     collections::HashMap,
     env,
     fs::{self, File, OpenOptions},
-    io::Write,
     path::PathBuf,
 };
 
 use aes::cipher::KeyInit;
 use engine::db::{Language, MinecraftPlatform, PrismaDatabase, TmDatabase, Upload, UploadWord};
-use memmap2::{Mmap, MmapMut};
+use memmap2::Mmap;
 use repak::PakReader;
 
 use crate::locres::LocresFile;
@@ -70,12 +69,17 @@ async fn main() -> eyre::Result<()> {
                 eyre::eyre!("{}", &s[s.len() - 1000..])
             })?;
 
-            let korean = entry_lower.contains("ko-kr");
-            let english = entry_lower.contains("en");
+            let language_detected = if entry_lower.contains("ko-kr") {
+                Some(Language::Korean)
+            } else if entry_lower.contains("en") {
+                Some(Language::English)
+            } else {
+                None
+            };
 
             let mut words = Vec::new();
 
-            if korean || english {
+            if let Some(language) = language_detected {
                 let len = locres.len();
                 for (i, ns) in locres.into_values().enumerate() {
                     let namespace = ns.name().to_string();
@@ -100,29 +104,10 @@ async fn main() -> eyre::Result<()> {
                     words.extend(map.into_values());
                 }
 
-                for (i, w1) in words.iter().enumerate() {
-                    for (j, w2) in words.iter().skip(i + 1).enumerate() {
-                        if w1.key.to_lowercase() == w2.key.to_lowercase()
-                            && w1.namespace == w2.namespace
-                        {
-                            println!(
-                                "{} != {} but {} == {} in ({:?}, {:?})",
-                                w1.value, w2.value, w1.key, w2.key, w1.namespace, w2.namespace
-                            );
-                        }
-                    }
-                }
-
                 database
                     .upload(Upload {
                         platform: MinecraftPlatform::Dungeons,
-                        language: if korean {
-                            Language::Korean
-                        } else if english {
-                            Language::English
-                        } else {
-                            panic!("never happen");
-                        },
+                        language: language.clone(),
                         game_version: version.clone(),
                         words,
                     })

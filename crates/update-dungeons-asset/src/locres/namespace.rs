@@ -1,7 +1,4 @@
-use std::collections::{
-    hash_map::{IntoIter, Iter, Values},
-    HashMap,
-};
+use std::collections::{hash_map::IntoIter, HashMap};
 
 pub struct LocresNamespace {
     name: String,

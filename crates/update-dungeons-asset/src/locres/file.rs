@@ -1,4 +1,4 @@
-use std::collections::hash_map::{IntoValues, Values};
+use std::collections::hash_map::{IntoValues};
 use std::collections::HashMap;
 
 use encoding_rs::UTF_16LE;
