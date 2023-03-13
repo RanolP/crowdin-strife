@@ -10,3 +10,6 @@ build/
 
 # the Minecraft language file is not ours
 assets/
+
+# Temp file for locres decoding
+.tmp

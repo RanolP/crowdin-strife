@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 use async_trait::async_trait;
 use prisma_client_rust::{
     chrono::{FixedOffset, TimeZone, Utc},
@@ -64,7 +66,8 @@ impl TmDatabase for PrismaDatabase {
                         t2.language = {} AND
                         t1.platform = {} AND
                         t2.platform = {} AND
-                        t1.value LIKE CONCAT('%', {}, '%')
+                        t1.namespace = t2.namespace AND
+                        t1.value COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', {}, '%')
                     ORDER BY t1.key ASC
                     LIMIT {}
                     OFFSET {}
@@ -101,25 +104,50 @@ impl TmDatabase for PrismaDatabase {
             .await?
             .map(|language_file| language_file.game_version)
             .unwrap_or("".to_string());
-        let total = self
+        #[derive(Deserialize)]
+        struct Count {
+            count: usize,
+        }
+        let total: Vec<Count> = self
             .client
-            .word()
-            .count(vec![
-                word::platform::equals(platform.clone()),
-                word::value::contains(query.text),
-            ])
+            ._query_raw(raw!(
+                r#"
+                    SELECT
+                        COUNT(*) AS count
+                    FROM
+                        Word
+                    WHERE
+                        Word.language = {} AND
+                        Word.platform = {} AND
+                        Word.value COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', {}, '%')
+                "#,
+                source.as_str().into(),
+                platform.to_string().into(),
+                query.text.clone().into()
+            ))
             .exec()
             .await?;
         Ok(SearchTmResponse {
             game_version,
             list: Pagination {
-                total: total as usize,
+                total: total[0].count,
                 items,
             },
         })
     }
 
     async fn upload(&self, upload: Upload) -> Result<(), Self::Error> {
+        let platform = into_prisma_minecraft_platform(upload.platform);
+        let now = FixedOffset::east_opt(9 * 60 * 60)
+            .unwrap()
+            .from_utc_datetime(&Utc::now().naive_utc());
+
+        let namespaces: HashSet<_> = upload
+            .words
+            .iter()
+            .map(|word| word.namespace.clone())
+            .collect();
+
         let (controller, client) = self
             .client
             ._transaction()
@@ -127,31 +155,31 @@ impl TmDatabase for PrismaDatabase {
             .begin()
             .await?;
 
-        let platform = into_prisma_minecraft_platform(upload.platform);
-        let now = FixedOffset::east_opt(9 * 60 * 60)
-            .unwrap()
-            .from_utc_datetime(&Utc::now().naive_utc());
+        client
+            .language_file()
+            .delete_many(vec![
+                language_file::platform::equals(platform.clone()),
+                language_file::language::equals(upload.language.as_str().to_string()),
+            ])
+            .exec()
+            .await?;
 
         client
             .language_file()
-            .upsert(
-                language_file::UniqueWhereParam::PlatformFilenameEquals(
-                    platform.clone(),
-                    upload.filename.clone(),
-                ),
-                language_file::create(
-                    platform.clone(),
-                    upload.filename.clone(),
-                    upload.game_version.clone(),
-                    now.clone(),
-                    upload.language.as_str().to_string(),
-                    vec![],
-                ),
-                vec![
-                    language_file::SetParam::SetGameVersion(upload.game_version.clone()),
-                    language_file::SetParam::SetLatestUpdate(now.clone()),
-                    language_file::SetParam::SetLanguage(upload.language.as_str().to_string()),
-                ],
+            .create_many(
+                namespaces
+                    .into_iter()
+                    .map(|namespace| {
+                        (
+                            platform.clone(),
+                            namespace,
+                            upload.language.as_str().to_string(),
+                            upload.game_version.clone(),
+                            now.clone(),
+                            vec![],
+                        )
+                    })
+                    .collect(),
             )
             .exec()
             .await?;
@@ -160,7 +188,6 @@ impl TmDatabase for PrismaDatabase {
             .word()
             .delete_many(vec![
                 word::platform::equals(platform.clone()),
-                word::filename::equals(upload.filename.clone()),
                 word::language::equals(upload.language.as_str().to_string()),
             ])
             .exec()
@@ -175,10 +202,10 @@ impl TmDatabase for PrismaDatabase {
                     .map(|word| {
                         (
                             platform.clone(),
-                            upload.filename.clone(),
+                            word.namespace,
+                            upload.language.as_str().to_string(),
                             word.key,
                             word.value,
-                            upload.language.as_str().to_string(),
                             vec![],
                         )
                     })

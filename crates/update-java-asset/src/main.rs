@@ -24,12 +24,15 @@ async fn main() -> eyre::Result<()> {
     database
         .upload(Upload {
             platform: MinecraftPlatform::Java,
-            filename: "assets/minecraft/lang/en_us.json".to_string(),
             language: Language::English,
             game_version: version.id.clone(),
             words: en_us
                 .into_iter()
-                .map(|(key, value)| UploadWord { key, value })
+                .map(|(key, value)| UploadWord {
+                    namespace: "".to_string(),
+                    key,
+                    value,
+                })
                 .collect(),
         })
         .await?;
@@ -43,12 +46,15 @@ async fn main() -> eyre::Result<()> {
     database
         .upload(Upload {
             platform: MinecraftPlatform::Java,
-            filename: "assets/minecraft/lang/ko_kr.json".to_string(),
             language: Language::Korean,
             game_version: version.id.clone(),
             words: ko_kr
                 .into_iter()
-                .map(|(key, value)| UploadWord { key, value })
+                .map(|(key, value)| UploadWord {
+                    namespace: "".to_string(),
+                    key,
+                    value,
+                })
                 .collect(),
         })
         .await?;

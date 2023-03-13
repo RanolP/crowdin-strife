@@ -73,75 +73,147 @@ pub mod language_file {
             }
         }
     }
-    pub mod filename {
+    pub mod namespace {
         use super::super::*;
         use super::_prisma::*;
         use super::{OrderByParam, SetParam, UniqueWhereParam, WhereParam, WithParam};
         pub struct Set(pub String);
         impl From<Set> for SetParam {
             fn from(value: Set) -> Self {
-                Self::SetFilename(value.0)
+                Self::SetNamespace(value.0)
             }
         }
         pub fn set<T: From<Set>>(value: String) -> T {
             Set(value).into()
         }
         pub fn order(direction: ::prisma_client_rust::Direction) -> OrderByParam {
-            OrderByParam::Filename(direction)
+            OrderByParam::Namespace(direction)
         }
         pub fn equals(value: String) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::Equals(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::Equals(value))
         }
         pub fn in_vec(value: Vec<String>) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::InVec(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::InVec(value))
         }
         pub fn not_in_vec(value: Vec<String>) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::NotInVec(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::NotInVec(value))
         }
         pub fn lt(value: String) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::Lt(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::Lt(value))
         }
         pub fn lte(value: String) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::Lte(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::Lte(value))
         }
         pub fn gt(value: String) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::Gt(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::Gt(value))
         }
         pub fn gte(value: String) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::Gte(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::Gte(value))
         }
         pub fn contains(value: String) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::Contains(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::Contains(value))
         }
         pub fn starts_with(value: String) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::StartsWith(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::StartsWith(value))
         }
         pub fn ends_with(value: String) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::EndsWith(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::EndsWith(value))
         }
         pub fn not(value: String) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::Not(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::Not(value))
         }
         pub struct Include;
         impl Into<super::IncludeParam> for Include {
             fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Filename(self)
+                super::IncludeParam::Namespace(self)
             }
         }
         impl Include {
             pub fn to_selection(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel("filename")
+                ::prisma_client_rust::sel("namespace")
             }
         }
         pub struct Select;
         impl Into<super::SelectParam> for Select {
             fn into(self) -> super::SelectParam {
-                super::SelectParam::Filename(self)
+                super::SelectParam::Namespace(self)
             }
         }
         impl Select {
             pub fn to_selection(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel("filename")
+                ::prisma_client_rust::sel("namespace")
+            }
+        }
+    }
+    pub mod language {
+        use super::super::*;
+        use super::_prisma::*;
+        use super::{OrderByParam, SetParam, UniqueWhereParam, WhereParam, WithParam};
+        pub struct Set(pub String);
+        impl From<Set> for SetParam {
+            fn from(value: Set) -> Self {
+                Self::SetLanguage(value.0)
+            }
+        }
+        pub fn set<T: From<Set>>(value: String) -> T {
+            Set(value).into()
+        }
+        pub fn order(direction: ::prisma_client_rust::Direction) -> OrderByParam {
+            OrderByParam::Language(direction)
+        }
+        pub fn equals(value: String) -> WhereParam {
+            WhereParam::Language(_prisma::read_filters::StringFilter::Equals(value))
+        }
+        pub fn in_vec(value: Vec<String>) -> WhereParam {
+            WhereParam::Language(_prisma::read_filters::StringFilter::InVec(value))
+        }
+        pub fn not_in_vec(value: Vec<String>) -> WhereParam {
+            WhereParam::Language(_prisma::read_filters::StringFilter::NotInVec(value))
+        }
+        pub fn lt(value: String) -> WhereParam {
+            WhereParam::Language(_prisma::read_filters::StringFilter::Lt(value))
+        }
+        pub fn lte(value: String) -> WhereParam {
+            WhereParam::Language(_prisma::read_filters::StringFilter::Lte(value))
+        }
+        pub fn gt(value: String) -> WhereParam {
+            WhereParam::Language(_prisma::read_filters::StringFilter::Gt(value))
+        }
+        pub fn gte(value: String) -> WhereParam {
+            WhereParam::Language(_prisma::read_filters::StringFilter::Gte(value))
+        }
+        pub fn contains(value: String) -> WhereParam {
+            WhereParam::Language(_prisma::read_filters::StringFilter::Contains(value))
+        }
+        pub fn starts_with(value: String) -> WhereParam {
+            WhereParam::Language(_prisma::read_filters::StringFilter::StartsWith(value))
+        }
+        pub fn ends_with(value: String) -> WhereParam {
+            WhereParam::Language(_prisma::read_filters::StringFilter::EndsWith(value))
+        }
+        pub fn not(value: String) -> WhereParam {
+            WhereParam::Language(_prisma::read_filters::StringFilter::Not(value))
+        }
+        pub struct Include;
+        impl Into<super::IncludeParam> for Include {
+            fn into(self) -> super::IncludeParam {
+                super::IncludeParam::Language(self)
+            }
+        }
+        impl Include {
+            pub fn to_selection(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel("language")
+            }
+        }
+        pub struct Select;
+        impl Into<super::SelectParam> for Select {
+            fn into(self) -> super::SelectParam {
+                super::SelectParam::Language(self)
+            }
+        }
+        impl Select {
+            pub fn to_selection(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel("language")
             }
         }
     }
@@ -318,78 +390,6 @@ pub mod language_file {
             }
         }
     }
-    pub mod language {
-        use super::super::*;
-        use super::_prisma::*;
-        use super::{OrderByParam, SetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub struct Set(pub String);
-        impl From<Set> for SetParam {
-            fn from(value: Set) -> Self {
-                Self::SetLanguage(value.0)
-            }
-        }
-        pub fn set<T: From<Set>>(value: String) -> T {
-            Set(value).into()
-        }
-        pub fn order(direction: ::prisma_client_rust::Direction) -> OrderByParam {
-            OrderByParam::Language(direction)
-        }
-        pub fn equals(value: String) -> WhereParam {
-            WhereParam::Language(_prisma::read_filters::StringFilter::Equals(value))
-        }
-        pub fn in_vec(value: Vec<String>) -> WhereParam {
-            WhereParam::Language(_prisma::read_filters::StringFilter::InVec(value))
-        }
-        pub fn not_in_vec(value: Vec<String>) -> WhereParam {
-            WhereParam::Language(_prisma::read_filters::StringFilter::NotInVec(value))
-        }
-        pub fn lt(value: String) -> WhereParam {
-            WhereParam::Language(_prisma::read_filters::StringFilter::Lt(value))
-        }
-        pub fn lte(value: String) -> WhereParam {
-            WhereParam::Language(_prisma::read_filters::StringFilter::Lte(value))
-        }
-        pub fn gt(value: String) -> WhereParam {
-            WhereParam::Language(_prisma::read_filters::StringFilter::Gt(value))
-        }
-        pub fn gte(value: String) -> WhereParam {
-            WhereParam::Language(_prisma::read_filters::StringFilter::Gte(value))
-        }
-        pub fn contains(value: String) -> WhereParam {
-            WhereParam::Language(_prisma::read_filters::StringFilter::Contains(value))
-        }
-        pub fn starts_with(value: String) -> WhereParam {
-            WhereParam::Language(_prisma::read_filters::StringFilter::StartsWith(value))
-        }
-        pub fn ends_with(value: String) -> WhereParam {
-            WhereParam::Language(_prisma::read_filters::StringFilter::EndsWith(value))
-        }
-        pub fn not(value: String) -> WhereParam {
-            WhereParam::Language(_prisma::read_filters::StringFilter::Not(value))
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Language(self)
-            }
-        }
-        impl Include {
-            pub fn to_selection(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel("language")
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Language(self)
-            }
-        }
-        impl Select {
-            pub fn to_selection(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel("language")
-            }
-        }
-    }
     pub mod word {
         use super::super::*;
         use super::_prisma::*;
@@ -529,106 +529,107 @@ pub mod language_file {
             }
         }
     }
-    pub fn platform_filename<T: From<UniqueWhereParam>>(
+    pub fn platform_namespace_language<T: From<UniqueWhereParam>>(
         platform: MinecraftPlatform,
-        filename: String,
+        namespace: String,
+        language: String,
     ) -> T {
-        UniqueWhereParam::PlatformFilenameEquals(platform, filename).into()
+        UniqueWhereParam::PlatformNamespaceLanguageEquals(platform, namespace, language).into()
     }
     pub fn create(
         platform: MinecraftPlatform,
-        filename: String,
+        namespace: String,
+        language: String,
         game_version: String,
         latest_update: ::prisma_client_rust::chrono::DateTime<
             ::prisma_client_rust::chrono::FixedOffset,
         >,
-        language: String,
         _params: Vec<SetParam>,
     ) -> (
         MinecraftPlatform,
         String,
         String,
-        ::prisma_client_rust::chrono::DateTime<::prisma_client_rust::chrono::FixedOffset>,
         String,
+        ::prisma_client_rust::chrono::DateTime<::prisma_client_rust::chrono::FixedOffset>,
         Vec<SetParam>,
     ) {
         (
             platform,
-            filename,
+            namespace,
+            language,
             game_version,
             latest_update,
-            language,
             _params,
         )
     }
     pub fn create_unchecked(
         platform: MinecraftPlatform,
-        filename: String,
+        namespace: String,
+        language: String,
         game_version: String,
         latest_update: ::prisma_client_rust::chrono::DateTime<
             ::prisma_client_rust::chrono::FixedOffset,
         >,
-        language: String,
         _params: Vec<SetParam>,
     ) -> (
         MinecraftPlatform,
         String,
         String,
-        ::prisma_client_rust::chrono::DateTime<::prisma_client_rust::chrono::FixedOffset>,
         String,
+        ::prisma_client_rust::chrono::DateTime<::prisma_client_rust::chrono::FixedOffset>,
         Vec<SetParam>,
     ) {
         (
             platform,
-            filename,
+            namespace,
+            language,
             game_version,
             latest_update,
-            language,
             _params,
         )
     }
     #[macro_export]
-    macro_rules ! _select_language_file { ($ (($ ($ func_arg : ident : $ func_arg_ty : ty) , +) =>) ? $ module_name : ident { $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { # [allow (warnings)] pub mod $ module_name { $ crate :: prisma :: language_file :: select ! (@ definitions ; $ module_name ; $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) +) ; use super :: * ; pub struct Selection (Vec < :: prisma_client_rust :: Selection >) ; impl :: prisma_client_rust :: SelectType for Selection { type Data = Data ; type ModelData = $ crate :: prisma :: language_file :: Data ; fn to_selections (self) -> Vec < :: prisma_client_rust :: Selection > { self . 0 } } pub fn select ($ ($ ($ func_arg : $ func_arg_ty) , +) ?) -> Selection { Selection ([$ crate :: prisma :: language_file :: select ! (@ selections_to_params ; : select { $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) + }) . into_iter () . map (| p | p . to_selection ()) . collect :: < Vec < _ >> () ,] . into_iter () . flatten () . collect :: < Vec < _ >> ()) } } } ; ({ $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { { $ crate :: prisma :: language_file :: select ! (@ definitions ; ; $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) +) ; pub struct Selection (Vec < :: prisma_client_rust :: Selection >) ; impl :: prisma_client_rust :: SelectType for Selection { type Data = Data ; type ModelData = $ crate :: prisma :: language_file :: Data ; fn to_selections (self) -> Vec < :: prisma_client_rust :: Selection > { self . 0 } } Selection ([$ crate :: prisma :: language_file :: select ! (@ selections_to_params ; : select { $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) + }) . into_iter () . map (| p | p . to_selection ()) . collect :: < Vec < _ >> () ,] . into_iter () . flatten () . collect :: < Vec < _ >> ()) } } ; (@ definitions ; $ ($ module_name : ident) ? ; $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) +) => { # [allow (warnings)] enum Fields { platform , filename , game_version , latest_update , language , word } # [allow (warnings)] impl Fields { fn selections () { $ (let _ = Fields :: $ field ;) + } } # [allow (warnings)] # [derive (std :: fmt :: Debug , Clone)] pub struct Data { $ (pub $ field : $ crate :: prisma :: language_file :: select ! (@ field_type ; $ field $ (: $ selection_mode { $ ($ selections) + }) ?) ,) + } impl :: serde :: Serialize for Data { fn serialize < S > (& self , serializer : S) -> Result < S :: Ok , S :: Error > where S : :: serde :: Serializer , { use :: serde :: ser :: SerializeStruct ; let mut state = serializer . serialize_struct ("Data" , [$ (stringify ! ($ field) ,) +] . len ()) ? ; $ (state . serialize_field ($ crate :: prisma :: language_file :: select ! (@ field_serde_name ; $ field) , & self . $ field) ? ;) * state . end () } } impl < 'de > :: serde :: Deserialize < 'de > for Data { fn deserialize < D > (deserializer : D) -> Result < Self , D :: Error > where D : :: serde :: Deserializer < 'de > , { # [allow (warnings)] enum Field { $ ($ field) , + , } impl < 'de > :: serde :: Deserialize < 'de > for Field { fn deserialize < D > (deserializer : D) -> Result < Field , D :: Error > where D : :: serde :: Deserializer < 'de > , { struct FieldVisitor ; impl < 'de > :: serde :: de :: Visitor < 'de > for FieldVisitor { type Value = Field ; fn expecting (& self , formatter : & mut :: std :: fmt :: Formatter) -> :: std :: fmt :: Result { formatter . write_str (concat ! ($ ($ crate :: prisma :: language_file :: select ! (@ field_serde_name ; $ field) , ", ") , + ,)) } fn visit_str < E > (self , value : & str) -> Result < Field , E > where E : :: serde :: de :: Error , { match value { $ ($ crate :: prisma :: language_file :: select ! (@ field_serde_name ; $ field) => Ok (Field :: $ field)) , * , _ => Err (:: serde :: de :: Error :: unknown_field (value , FIELDS)) , } } } deserializer . deserialize_identifier (FieldVisitor) } } struct DataVisitor ; impl < 'de > :: serde :: de :: Visitor < 'de > for DataVisitor { type Value = Data ; fn expecting (& self , formatter : & mut std :: fmt :: Formatter) -> std :: fmt :: Result { formatter . write_str ("struct Data") } fn visit_map < V > (self , mut map : V) -> Result < Data , V :: Error > where V : :: serde :: de :: MapAccess < 'de > , { $ (let mut $ field = None ;) * while let Some (key) = map . next_key () ? { match key { $ (Field :: $ field => { if $ field . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: language_file :: select ! (@ field_serde_name ; $ field))) ; } $ field = Some (map . next_value () ?) ; }) * } } $ (let $ field = $ field . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: language_file :: select ! (@ field_serde_name ; $ field))) ? ;) * Ok (Data { $ ($ field) , * }) } } const FIELDS : & 'static [& 'static str] = & ["platform" , "filename" , "game_version" , "latest_update" , "language" , "Word"] ; deserializer . deserialize_struct ("Data" , FIELDS , DataVisitor) } } $ ($ (pub mod $ field { $ crate :: prisma :: language_file :: $ selection_mode ! (@ field_module ; $ field : $ selection_mode { $ ($ selections) + }) ; }) ?) + } ; (@ field_type ; platform) => { crate :: prisma :: MinecraftPlatform } ; (@ field_type ; filename) => { String } ; (@ field_type ; game_version) => { String } ; (@ field_type ; latest_update) => { :: prisma_client_rust :: chrono :: DateTime < :: prisma_client_rust :: chrono :: FixedOffset , > } ; (@ field_type ; language) => { String } ; (@ field_type ; word : $ selection_mode : ident { $ ($ selections : tt) + }) => { Vec < word :: Data > } ; (@ field_type ; word) => { Vec < crate :: prisma :: word :: Data > } ; (@ field_type ; $ field : ident $ ($ tokens : tt) *) => { compile_error ! (stringify ! (Cannot include nonexistent relation $ field on model "LanguageFile" , available relations are "platform, filename, game_version, latest_update, language, word")) } ; (@ field_module ; word : $ selection_mode : ident { $ ($ selections : tt) + }) => { $ crate :: prisma :: word :: select ! (@ definitions ; ; $ ($ selections) +) ; } ; (@ field_module ; $ ($ tokens : tt) *) => { } ; (@ selection_field_to_selection_param ; platform) => { Into :: < $ crate :: prisma :: language_file :: SelectParam > :: into ($ crate :: prisma :: language_file :: platform :: Select) } ; (@ selection_field_to_selection_param ; filename) => { Into :: < $ crate :: prisma :: language_file :: SelectParam > :: into ($ crate :: prisma :: language_file :: filename :: Select) } ; (@ selection_field_to_selection_param ; game_version) => { Into :: < $ crate :: prisma :: language_file :: SelectParam > :: into ($ crate :: prisma :: language_file :: game_version :: Select) } ; (@ selection_field_to_selection_param ; latest_update) => { Into :: < $ crate :: prisma :: language_file :: SelectParam > :: into ($ crate :: prisma :: language_file :: latest_update :: Select) } ; (@ selection_field_to_selection_param ; language) => { Into :: < $ crate :: prisma :: language_file :: SelectParam > :: into ($ crate :: prisma :: language_file :: language :: Select) } ; (@ selection_field_to_selection_param ; word $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? : $ selection_mode : ident { $ ($ selections : tt) + }) => { { Into :: < $ crate :: prisma :: language_file :: SelectParam > :: into ($ crate :: prisma :: language_file :: word :: Select :: $ selection_mode ($ crate :: prisma :: word :: ManyArgs :: new ($ crate :: prisma :: word :: select ! (@ filters_to_args ; $ ($ ($ filters) +) ?)) $ ($ (. $ arg ($ ($ arg_params) *)) *) ? , $ crate :: prisma :: word :: select ! (@ selections_to_params ; : $ selection_mode { $ ($ selections) + }) . into_iter () . collect ())) } } ; (@ selection_field_to_selection_param ; word $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ?) => { { Into :: < $ crate :: prisma :: language_file :: SelectParam > :: into ($ crate :: prisma :: language_file :: word :: Select :: Fetch ($ crate :: prisma :: word :: ManyArgs :: new ($ crate :: prisma :: word :: select ! (@ filters_to_args ; $ ($ ($ filters) +) ?)) $ ($ (. $ arg ($ ($ arg_params) *)) *) ?) ,) } } ; (@ selection_field_to_selection_param ; $ ($ tokens : tt) *) => { compile_error ! (stringify ! ($ ($ tokens) *)) } ; (@ selections_to_params ; : $ macro_name : ident { $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { [$ ($ crate :: prisma :: language_file :: $ macro_name ! (@ selection_field_to_selection_param ; $ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) ,) +] } ; (@ filters_to_args ;) => { vec ! [] } ; (@ filters_to_args ; $ ($ t : tt) *) => { $ ($ t) * } ; (@ field_serde_name ; platform) => { "platform" } ; (@ field_serde_name ; filename) => { "filename" } ; (@ field_serde_name ; game_version) => { "game_version" } ; (@ field_serde_name ; latest_update) => { "latest_update" } ; (@ field_serde_name ; language) => { "language" } ; (@ field_serde_name ; word) => { "Word" } ; }
+    macro_rules ! _select_language_file { ($ (($ ($ func_arg : ident : $ func_arg_ty : ty) , +) =>) ? $ module_name : ident { $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { # [allow (warnings)] pub mod $ module_name { $ crate :: prisma :: language_file :: select ! (@ definitions ; $ module_name ; $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) +) ; use super :: * ; pub struct Selection (Vec < :: prisma_client_rust :: Selection >) ; impl :: prisma_client_rust :: SelectType for Selection { type Data = Data ; type ModelData = $ crate :: prisma :: language_file :: Data ; fn to_selections (self) -> Vec < :: prisma_client_rust :: Selection > { self . 0 } } pub fn select ($ ($ ($ func_arg : $ func_arg_ty) , +) ?) -> Selection { Selection ([$ crate :: prisma :: language_file :: select ! (@ selections_to_params ; : select { $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) + }) . into_iter () . map (| p | p . to_selection ()) . collect :: < Vec < _ >> () ,] . into_iter () . flatten () . collect :: < Vec < _ >> ()) } } } ; ({ $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { { $ crate :: prisma :: language_file :: select ! (@ definitions ; ; $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) +) ; pub struct Selection (Vec < :: prisma_client_rust :: Selection >) ; impl :: prisma_client_rust :: SelectType for Selection { type Data = Data ; type ModelData = $ crate :: prisma :: language_file :: Data ; fn to_selections (self) -> Vec < :: prisma_client_rust :: Selection > { self . 0 } } Selection ([$ crate :: prisma :: language_file :: select ! (@ selections_to_params ; : select { $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) + }) . into_iter () . map (| p | p . to_selection ()) . collect :: < Vec < _ >> () ,] . into_iter () . flatten () . collect :: < Vec < _ >> ()) } } ; (@ definitions ; $ ($ module_name : ident) ? ; $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) +) => { # [allow (warnings)] enum Fields { platform , namespace , language , game_version , latest_update , word } # [allow (warnings)] impl Fields { fn selections () { $ (let _ = Fields :: $ field ;) + } } # [allow (warnings)] # [derive (std :: fmt :: Debug , Clone)] pub struct Data { $ (pub $ field : $ crate :: prisma :: language_file :: select ! (@ field_type ; $ field $ (: $ selection_mode { $ ($ selections) + }) ?) ,) + } impl :: serde :: Serialize for Data { fn serialize < S > (& self , serializer : S) -> Result < S :: Ok , S :: Error > where S : :: serde :: Serializer , { use :: serde :: ser :: SerializeStruct ; let mut state = serializer . serialize_struct ("Data" , [$ (stringify ! ($ field) ,) +] . len ()) ? ; $ (state . serialize_field ($ crate :: prisma :: language_file :: select ! (@ field_serde_name ; $ field) , & self . $ field) ? ;) * state . end () } } impl < 'de > :: serde :: Deserialize < 'de > for Data { fn deserialize < D > (deserializer : D) -> Result < Self , D :: Error > where D : :: serde :: Deserializer < 'de > , { # [allow (warnings)] enum Field { $ ($ field) , + , } impl < 'de > :: serde :: Deserialize < 'de > for Field { fn deserialize < D > (deserializer : D) -> Result < Field , D :: Error > where D : :: serde :: Deserializer < 'de > , { struct FieldVisitor ; impl < 'de > :: serde :: de :: Visitor < 'de > for FieldVisitor { type Value = Field ; fn expecting (& self , formatter : & mut :: std :: fmt :: Formatter) -> :: std :: fmt :: Result { formatter . write_str (concat ! ($ ($ crate :: prisma :: language_file :: select ! (@ field_serde_name ; $ field) , ", ") , + ,)) } fn visit_str < E > (self , value : & str) -> Result < Field , E > where E : :: serde :: de :: Error , { match value { $ ($ crate :: prisma :: language_file :: select ! (@ field_serde_name ; $ field) => Ok (Field :: $ field)) , * , _ => Err (:: serde :: de :: Error :: unknown_field (value , FIELDS)) , } } } deserializer . deserialize_identifier (FieldVisitor) } } struct DataVisitor ; impl < 'de > :: serde :: de :: Visitor < 'de > for DataVisitor { type Value = Data ; fn expecting (& self , formatter : & mut std :: fmt :: Formatter) -> std :: fmt :: Result { formatter . write_str ("struct Data") } fn visit_map < V > (self , mut map : V) -> Result < Data , V :: Error > where V : :: serde :: de :: MapAccess < 'de > , { $ (let mut $ field = None ;) * while let Some (key) = map . next_key () ? { match key { $ (Field :: $ field => { if $ field . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: language_file :: select ! (@ field_serde_name ; $ field))) ; } $ field = Some (map . next_value () ?) ; }) * } } $ (let $ field = $ field . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: language_file :: select ! (@ field_serde_name ; $ field))) ? ;) * Ok (Data { $ ($ field) , * }) } } const FIELDS : & 'static [& 'static str] = & ["platform" , "namespace" , "language" , "game_version" , "latest_update" , "Word"] ; deserializer . deserialize_struct ("Data" , FIELDS , DataVisitor) } } $ ($ (pub mod $ field { $ crate :: prisma :: language_file :: $ selection_mode ! (@ field_module ; $ field : $ selection_mode { $ ($ selections) + }) ; }) ?) + } ; (@ field_type ; platform) => { crate :: prisma :: MinecraftPlatform } ; (@ field_type ; namespace) => { String } ; (@ field_type ; language) => { String } ; (@ field_type ; game_version) => { String } ; (@ field_type ; latest_update) => { :: prisma_client_rust :: chrono :: DateTime < :: prisma_client_rust :: chrono :: FixedOffset , > } ; (@ field_type ; word : $ selection_mode : ident { $ ($ selections : tt) + }) => { Vec < word :: Data > } ; (@ field_type ; word) => { Vec < crate :: prisma :: word :: Data > } ; (@ field_type ; $ field : ident $ ($ tokens : tt) *) => { compile_error ! (stringify ! (Cannot include nonexistent relation $ field on model "LanguageFile" , available relations are "platform, namespace, language, game_version, latest_update, word")) } ; (@ field_module ; word : $ selection_mode : ident { $ ($ selections : tt) + }) => { $ crate :: prisma :: word :: select ! (@ definitions ; ; $ ($ selections) +) ; } ; (@ field_module ; $ ($ tokens : tt) *) => { } ; (@ selection_field_to_selection_param ; platform) => { Into :: < $ crate :: prisma :: language_file :: SelectParam > :: into ($ crate :: prisma :: language_file :: platform :: Select) } ; (@ selection_field_to_selection_param ; namespace) => { Into :: < $ crate :: prisma :: language_file :: SelectParam > :: into ($ crate :: prisma :: language_file :: namespace :: Select) } ; (@ selection_field_to_selection_param ; language) => { Into :: < $ crate :: prisma :: language_file :: SelectParam > :: into ($ crate :: prisma :: language_file :: language :: Select) } ; (@ selection_field_to_selection_param ; game_version) => { Into :: < $ crate :: prisma :: language_file :: SelectParam > :: into ($ crate :: prisma :: language_file :: game_version :: Select) } ; (@ selection_field_to_selection_param ; latest_update) => { Into :: < $ crate :: prisma :: language_file :: SelectParam > :: into ($ crate :: prisma :: language_file :: latest_update :: Select) } ; (@ selection_field_to_selection_param ; word $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? : $ selection_mode : ident { $ ($ selections : tt) + }) => { { Into :: < $ crate :: prisma :: language_file :: SelectParam > :: into ($ crate :: prisma :: language_file :: word :: Select :: $ selection_mode ($ crate :: prisma :: word :: ManyArgs :: new ($ crate :: prisma :: word :: select ! (@ filters_to_args ; $ ($ ($ filters) +) ?)) $ ($ (. $ arg ($ ($ arg_params) *)) *) ? , $ crate :: prisma :: word :: select ! (@ selections_to_params ; : $ selection_mode { $ ($ selections) + }) . into_iter () . collect ())) } } ; (@ selection_field_to_selection_param ; word $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ?) => { { Into :: < $ crate :: prisma :: language_file :: SelectParam > :: into ($ crate :: prisma :: language_file :: word :: Select :: Fetch ($ crate :: prisma :: word :: ManyArgs :: new ($ crate :: prisma :: word :: select ! (@ filters_to_args ; $ ($ ($ filters) +) ?)) $ ($ (. $ arg ($ ($ arg_params) *)) *) ?) ,) } } ; (@ selection_field_to_selection_param ; $ ($ tokens : tt) *) => { compile_error ! (stringify ! ($ ($ tokens) *)) } ; (@ selections_to_params ; : $ macro_name : ident { $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { [$ ($ crate :: prisma :: language_file :: $ macro_name ! (@ selection_field_to_selection_param ; $ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) ,) +] } ; (@ filters_to_args ;) => { vec ! [] } ; (@ filters_to_args ; $ ($ t : tt) *) => { $ ($ t) * } ; (@ field_serde_name ; platform) => { "platform" } ; (@ field_serde_name ; namespace) => { "namespace" } ; (@ field_serde_name ; language) => { "language" } ; (@ field_serde_name ; game_version) => { "game_version" } ; (@ field_serde_name ; latest_update) => { "latest_update" } ; (@ field_serde_name ; word) => { "Word" } ; }
     pub use _select_language_file as select;
     pub enum SelectParam {
         Platform(platform::Select),
-        Filename(filename::Select),
+        Namespace(namespace::Select),
+        Language(language::Select),
         GameVersion(game_version::Select),
         LatestUpdate(latest_update::Select),
-        Language(language::Select),
         Word(word::Select),
     }
     impl SelectParam {
         pub fn to_selection(self) -> ::prisma_client_rust::Selection {
             match self {
                 Self::Platform(data) => data.to_selection(),
-                Self::Filename(data) => data.to_selection(),
+                Self::Namespace(data) => data.to_selection(),
+                Self::Language(data) => data.to_selection(),
                 Self::GameVersion(data) => data.to_selection(),
                 Self::LatestUpdate(data) => data.to_selection(),
-                Self::Language(data) => data.to_selection(),
                 Self::Word(data) => data.to_selection(),
             }
         }
     }
     #[macro_export]
-    macro_rules ! _include_language_file { ($ (($ ($ func_arg : ident : $ func_arg_ty : ty) , +) =>) ? $ module_name : ident { $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { # [allow (warnings)] pub mod $ module_name { $ crate :: prisma :: language_file :: include ! (@ definitions ; $ module_name ; $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) +) ; use super :: * ; pub struct Selection (Vec < :: prisma_client_rust :: Selection >) ; impl :: prisma_client_rust :: IncludeType for Selection { type Data = Data ; type ModelData = $ crate :: prisma :: language_file :: Data ; fn to_selections (self) -> Vec < :: prisma_client_rust :: Selection > { self . 0 } } pub fn include ($ ($ ($ func_arg : $ func_arg_ty) , +) ?) -> Selection { Selection ([$ crate :: prisma :: language_file :: include ! (@ selections_to_params ; : include { $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) + }) . into_iter () . map (| p | p . to_selection ()) . collect :: < Vec < _ >> () , < $ crate :: prisma :: language_file :: Types as :: prisma_client_rust :: ModelTypes > :: scalar_selections ()] . into_iter () . flatten () . collect :: < Vec < _ >> ()) } } } ; ({ $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { { $ crate :: prisma :: language_file :: include ! (@ definitions ; ; $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) +) ; pub struct Selection (Vec < :: prisma_client_rust :: Selection >) ; impl :: prisma_client_rust :: IncludeType for Selection { type Data = Data ; type ModelData = $ crate :: prisma :: language_file :: Data ; fn to_selections (self) -> Vec < :: prisma_client_rust :: Selection > { self . 0 } } Selection ([$ crate :: prisma :: language_file :: include ! (@ selections_to_params ; : include { $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) + }) . into_iter () . map (| p | p . to_selection ()) . collect :: < Vec < _ >> () , < $ crate :: prisma :: language_file :: Types as :: prisma_client_rust :: ModelTypes > :: scalar_selections ()] . into_iter () . flatten () . collect :: < Vec < _ >> ()) } } ; (@ definitions ; $ ($ module_name : ident) ? ; $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) +) => { # [allow (warnings)] enum Fields { word } # [allow (warnings)] impl Fields { fn selections () { $ (let _ = Fields :: $ field ;) + } } # [allow (warnings)] # [derive (std :: fmt :: Debug , Clone)] pub struct Data { pub platform : crate :: prisma :: MinecraftPlatform , pub filename : String , pub game_version : String , pub latest_update : :: prisma_client_rust :: chrono :: DateTime < :: prisma_client_rust :: chrono :: FixedOffset , > , pub language : String , $ (pub $ field : $ crate :: prisma :: language_file :: include ! (@ field_type ; $ field $ (: $ selection_mode { $ ($ selections) + }) ?) ,) + } impl :: serde :: Serialize for Data { fn serialize < S > (& self , serializer : S) -> Result < S :: Ok , S :: Error > where S : :: serde :: Serializer , { use :: serde :: ser :: SerializeStruct ; let mut state = serializer . serialize_struct ("Data" , [$ (stringify ! ($ field) ,) + stringify ! (platform) , stringify ! (filename) , stringify ! (game_version) , stringify ! (latest_update) , stringify ! (language)] . len ()) ? ; $ (state . serialize_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; $ field) , & self . $ field) ? ;) * state . serialize_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; platform) , & self . platform) ? ; state . serialize_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; filename) , & self . filename) ? ; state . serialize_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; game_version) , & self . game_version) ? ; state . serialize_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; latest_update) , & self . latest_update) ? ; state . serialize_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; language) , & self . language) ? ; state . end () } } impl < 'de > :: serde :: Deserialize < 'de > for Data { fn deserialize < D > (deserializer : D) -> Result < Self , D :: Error > where D : :: serde :: Deserializer < 'de > , { # [allow (warnings)] enum Field { $ ($ field) , + , platform , filename , game_version , latest_update , language } impl < 'de > :: serde :: Deserialize < 'de > for Field { fn deserialize < D > (deserializer : D) -> Result < Field , D :: Error > where D : :: serde :: Deserializer < 'de > , { struct FieldVisitor ; impl < 'de > :: serde :: de :: Visitor < 'de > for FieldVisitor { type Value = Field ; fn expecting (& self , formatter : & mut :: std :: fmt :: Formatter) -> :: std :: fmt :: Result { formatter . write_str (concat ! ($ ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; $ field) , ", ") , + , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; platform) , ", " , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; filename) , ", " , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; game_version) , ", " , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; latest_update) , ", " , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; language) , ", ")) } fn visit_str < E > (self , value : & str) -> Result < Field , E > where E : :: serde :: de :: Error , { match value { $ ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; $ field) => Ok (Field :: $ field)) , * , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; platform) => Ok (Field :: platform) , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; filename) => Ok (Field :: filename) , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; game_version) => Ok (Field :: game_version) , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; latest_update) => Ok (Field :: latest_update) , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; language) => Ok (Field :: language) , _ => Err (:: serde :: de :: Error :: unknown_field (value , FIELDS)) , } } } deserializer . deserialize_identifier (FieldVisitor) } } struct DataVisitor ; impl < 'de > :: serde :: de :: Visitor < 'de > for DataVisitor { type Value = Data ; fn expecting (& self , formatter : & mut std :: fmt :: Formatter) -> std :: fmt :: Result { formatter . write_str ("struct Data") } fn visit_map < V > (self , mut map : V) -> Result < Data , V :: Error > where V : :: serde :: de :: MapAccess < 'de > , { $ (let mut $ field = None ;) * let mut platform = None ; let mut filename = None ; let mut game_version = None ; let mut latest_update = None ; let mut language = None ; while let Some (key) = map . next_key () ? { match key { Field :: platform => { if platform . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; platform))) ; } platform = Some (map . next_value () ?) ; } Field :: filename => { if filename . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; filename))) ; } filename = Some (map . next_value () ?) ; } Field :: game_version => { if game_version . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; game_version))) ; } game_version = Some (map . next_value () ?) ; } Field :: latest_update => { if latest_update . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; latest_update))) ; } latest_update = Some (map . next_value () ?) ; } Field :: language => { if language . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; language))) ; } language = Some (map . next_value () ?) ; } $ (Field :: $ field => { if $ field . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; $ field))) ; } $ field = Some (map . next_value () ?) ; }) * } } $ (let $ field = $ field . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; $ field))) ? ;) * let platform = platform . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; platform))) ? ; let filename = filename . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; filename))) ? ; let game_version = game_version . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; game_version))) ? ; let latest_update = latest_update . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; latest_update))) ? ; let language = language . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; language))) ? ; Ok (Data { platform , filename , game_version , latest_update , language , $ ($ field) , * }) } } const FIELDS : & 'static [& 'static str] = & ["platform" , "filename" , "game_version" , "latest_update" , "language" , "Word"] ; deserializer . deserialize_struct ("Data" , FIELDS , DataVisitor) } } $ ($ (pub mod $ field { $ crate :: prisma :: language_file :: $ selection_mode ! (@ field_module ; $ field : $ selection_mode { $ ($ selections) + }) ; }) ?) + } ; (@ field_type ; word : $ selection_mode : ident { $ ($ selections : tt) + }) => { Vec < word :: Data > } ; (@ field_type ; word) => { Vec < crate :: prisma :: word :: Data > } ; (@ field_type ; $ field : ident $ ($ tokens : tt) *) => { compile_error ! (stringify ! (Cannot include nonexistent relation $ field on model "LanguageFile" , available relations are "word")) } ; (@ field_module ; word : $ selection_mode : ident { $ ($ selections : tt) + }) => { $ crate :: prisma :: word :: include ! (@ definitions ; ; $ ($ selections) +) ; } ; (@ field_module ; $ ($ tokens : tt) *) => { } ; (@ selection_field_to_selection_param ; word $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? : $ selection_mode : ident { $ ($ selections : tt) + }) => { { Into :: < $ crate :: prisma :: language_file :: IncludeParam > :: into ($ crate :: prisma :: language_file :: word :: Include :: $ selection_mode ($ crate :: prisma :: word :: ManyArgs :: new ($ crate :: prisma :: word :: include ! (@ filters_to_args ; $ ($ ($ filters) +) ?)) $ ($ (. $ arg ($ ($ arg_params) *)) *) ? , $ crate :: prisma :: word :: select ! (@ selections_to_params ; : $ selection_mode { $ ($ selections) + }) . into_iter () . collect ())) } } ; (@ selection_field_to_selection_param ; word $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ?) => { { Into :: < $ crate :: prisma :: language_file :: IncludeParam > :: into ($ crate :: prisma :: language_file :: word :: Include :: Fetch ($ crate :: prisma :: word :: ManyArgs :: new ($ crate :: prisma :: word :: include ! (@ filters_to_args ; $ ($ ($ filters) +) ?)) $ ($ (. $ arg ($ ($ arg_params) *)) *) ?) ,) } } ; (@ selection_field_to_selection_param ; $ ($ tokens : tt) *) => { compile_error ! (stringify ! ($ ($ tokens) *)) } ; (@ selections_to_params ; : $ macro_name : ident { $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { [$ ($ crate :: prisma :: language_file :: $ macro_name ! (@ selection_field_to_selection_param ; $ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) ,) +] } ; (@ filters_to_args ;) => { vec ! [] } ; (@ filters_to_args ; $ ($ t : tt) *) => { $ ($ t) * } ; (@ field_serde_name ; platform) => { "platform" } ; (@ field_serde_name ; filename) => { "filename" } ; (@ field_serde_name ; game_version) => { "game_version" } ; (@ field_serde_name ; latest_update) => { "latest_update" } ; (@ field_serde_name ; language) => { "language" } ; (@ field_serde_name ; word) => { "Word" } ; }
+    macro_rules ! _include_language_file { ($ (($ ($ func_arg : ident : $ func_arg_ty : ty) , +) =>) ? $ module_name : ident { $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { # [allow (warnings)] pub mod $ module_name { $ crate :: prisma :: language_file :: include ! (@ definitions ; $ module_name ; $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) +) ; use super :: * ; pub struct Selection (Vec < :: prisma_client_rust :: Selection >) ; impl :: prisma_client_rust :: IncludeType for Selection { type Data = Data ; type ModelData = $ crate :: prisma :: language_file :: Data ; fn to_selections (self) -> Vec < :: prisma_client_rust :: Selection > { self . 0 } } pub fn include ($ ($ ($ func_arg : $ func_arg_ty) , +) ?) -> Selection { Selection ([$ crate :: prisma :: language_file :: include ! (@ selections_to_params ; : include { $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) + }) . into_iter () . map (| p | p . to_selection ()) . collect :: < Vec < _ >> () , < $ crate :: prisma :: language_file :: Types as :: prisma_client_rust :: ModelTypes > :: scalar_selections ()] . into_iter () . flatten () . collect :: < Vec < _ >> ()) } } } ; ({ $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { { $ crate :: prisma :: language_file :: include ! (@ definitions ; ; $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) +) ; pub struct Selection (Vec < :: prisma_client_rust :: Selection >) ; impl :: prisma_client_rust :: IncludeType for Selection { type Data = Data ; type ModelData = $ crate :: prisma :: language_file :: Data ; fn to_selections (self) -> Vec < :: prisma_client_rust :: Selection > { self . 0 } } Selection ([$ crate :: prisma :: language_file :: include ! (@ selections_to_params ; : include { $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) + }) . into_iter () . map (| p | p . to_selection ()) . collect :: < Vec < _ >> () , < $ crate :: prisma :: language_file :: Types as :: prisma_client_rust :: ModelTypes > :: scalar_selections ()] . into_iter () . flatten () . collect :: < Vec < _ >> ()) } } ; (@ definitions ; $ ($ module_name : ident) ? ; $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) +) => { # [allow (warnings)] enum Fields { word } # [allow (warnings)] impl Fields { fn selections () { $ (let _ = Fields :: $ field ;) + } } # [allow (warnings)] # [derive (std :: fmt :: Debug , Clone)] pub struct Data { pub platform : crate :: prisma :: MinecraftPlatform , pub namespace : String , pub language : String , pub game_version : String , pub latest_update : :: prisma_client_rust :: chrono :: DateTime < :: prisma_client_rust :: chrono :: FixedOffset , > , $ (pub $ field : $ crate :: prisma :: language_file :: include ! (@ field_type ; $ field $ (: $ selection_mode { $ ($ selections) + }) ?) ,) + } impl :: serde :: Serialize for Data { fn serialize < S > (& self , serializer : S) -> Result < S :: Ok , S :: Error > where S : :: serde :: Serializer , { use :: serde :: ser :: SerializeStruct ; let mut state = serializer . serialize_struct ("Data" , [$ (stringify ! ($ field) ,) + stringify ! (platform) , stringify ! (namespace) , stringify ! (language) , stringify ! (game_version) , stringify ! (latest_update)] . len ()) ? ; $ (state . serialize_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; $ field) , & self . $ field) ? ;) * state . serialize_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; platform) , & self . platform) ? ; state . serialize_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; namespace) , & self . namespace) ? ; state . serialize_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; language) , & self . language) ? ; state . serialize_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; game_version) , & self . game_version) ? ; state . serialize_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; latest_update) , & self . latest_update) ? ; state . end () } } impl < 'de > :: serde :: Deserialize < 'de > for Data { fn deserialize < D > (deserializer : D) -> Result < Self , D :: Error > where D : :: serde :: Deserializer < 'de > , { # [allow (warnings)] enum Field { $ ($ field) , + , platform , namespace , language , game_version , latest_update } impl < 'de > :: serde :: Deserialize < 'de > for Field { fn deserialize < D > (deserializer : D) -> Result < Field , D :: Error > where D : :: serde :: Deserializer < 'de > , { struct FieldVisitor ; impl < 'de > :: serde :: de :: Visitor < 'de > for FieldVisitor { type Value = Field ; fn expecting (& self , formatter : & mut :: std :: fmt :: Formatter) -> :: std :: fmt :: Result { formatter . write_str (concat ! ($ ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; $ field) , ", ") , + , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; platform) , ", " , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; namespace) , ", " , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; language) , ", " , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; game_version) , ", " , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; latest_update) , ", ")) } fn visit_str < E > (self , value : & str) -> Result < Field , E > where E : :: serde :: de :: Error , { match value { $ ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; $ field) => Ok (Field :: $ field)) , * , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; platform) => Ok (Field :: platform) , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; namespace) => Ok (Field :: namespace) , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; language) => Ok (Field :: language) , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; game_version) => Ok (Field :: game_version) , $ crate :: prisma :: language_file :: include ! (@ field_serde_name ; latest_update) => Ok (Field :: latest_update) , _ => Err (:: serde :: de :: Error :: unknown_field (value , FIELDS)) , } } } deserializer . deserialize_identifier (FieldVisitor) } } struct DataVisitor ; impl < 'de > :: serde :: de :: Visitor < 'de > for DataVisitor { type Value = Data ; fn expecting (& self , formatter : & mut std :: fmt :: Formatter) -> std :: fmt :: Result { formatter . write_str ("struct Data") } fn visit_map < V > (self , mut map : V) -> Result < Data , V :: Error > where V : :: serde :: de :: MapAccess < 'de > , { $ (let mut $ field = None ;) * let mut platform = None ; let mut namespace = None ; let mut language = None ; let mut game_version = None ; let mut latest_update = None ; while let Some (key) = map . next_key () ? { match key { Field :: platform => { if platform . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; platform))) ; } platform = Some (map . next_value () ?) ; } Field :: namespace => { if namespace . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; namespace))) ; } namespace = Some (map . next_value () ?) ; } Field :: language => { if language . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; language))) ; } language = Some (map . next_value () ?) ; } Field :: game_version => { if game_version . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; game_version))) ; } game_version = Some (map . next_value () ?) ; } Field :: latest_update => { if latest_update . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; latest_update))) ; } latest_update = Some (map . next_value () ?) ; } $ (Field :: $ field => { if $ field . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; $ field))) ; } $ field = Some (map . next_value () ?) ; }) * } } $ (let $ field = $ field . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; $ field))) ? ;) * let platform = platform . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; platform))) ? ; let namespace = namespace . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; namespace))) ? ; let language = language . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; language))) ? ; let game_version = game_version . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; game_version))) ? ; let latest_update = latest_update . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: language_file :: include ! (@ field_serde_name ; latest_update))) ? ; Ok (Data { platform , namespace , language , game_version , latest_update , $ ($ field) , * }) } } const FIELDS : & 'static [& 'static str] = & ["platform" , "namespace" , "language" , "game_version" , "latest_update" , "Word"] ; deserializer . deserialize_struct ("Data" , FIELDS , DataVisitor) } } $ ($ (pub mod $ field { $ crate :: prisma :: language_file :: $ selection_mode ! (@ field_module ; $ field : $ selection_mode { $ ($ selections) + }) ; }) ?) + } ; (@ field_type ; word : $ selection_mode : ident { $ ($ selections : tt) + }) => { Vec < word :: Data > } ; (@ field_type ; word) => { Vec < crate :: prisma :: word :: Data > } ; (@ field_type ; $ field : ident $ ($ tokens : tt) *) => { compile_error ! (stringify ! (Cannot include nonexistent relation $ field on model "LanguageFile" , available relations are "word")) } ; (@ field_module ; word : $ selection_mode : ident { $ ($ selections : tt) + }) => { $ crate :: prisma :: word :: include ! (@ definitions ; ; $ ($ selections) +) ; } ; (@ field_module ; $ ($ tokens : tt) *) => { } ; (@ selection_field_to_selection_param ; word $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? : $ selection_mode : ident { $ ($ selections : tt) + }) => { { Into :: < $ crate :: prisma :: language_file :: IncludeParam > :: into ($ crate :: prisma :: language_file :: word :: Include :: $ selection_mode ($ crate :: prisma :: word :: ManyArgs :: new ($ crate :: prisma :: word :: include ! (@ filters_to_args ; $ ($ ($ filters) +) ?)) $ ($ (. $ arg ($ ($ arg_params) *)) *) ? , $ crate :: prisma :: word :: select ! (@ selections_to_params ; : $ selection_mode { $ ($ selections) + }) . into_iter () . collect ())) } } ; (@ selection_field_to_selection_param ; word $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ?) => { { Into :: < $ crate :: prisma :: language_file :: IncludeParam > :: into ($ crate :: prisma :: language_file :: word :: Include :: Fetch ($ crate :: prisma :: word :: ManyArgs :: new ($ crate :: prisma :: word :: include ! (@ filters_to_args ; $ ($ ($ filters) +) ?)) $ ($ (. $ arg ($ ($ arg_params) *)) *) ?) ,) } } ; (@ selection_field_to_selection_param ; $ ($ tokens : tt) *) => { compile_error ! (stringify ! ($ ($ tokens) *)) } ; (@ selections_to_params ; : $ macro_name : ident { $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { [$ ($ crate :: prisma :: language_file :: $ macro_name ! (@ selection_field_to_selection_param ; $ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) ,) +] } ; (@ filters_to_args ;) => { vec ! [] } ; (@ filters_to_args ; $ ($ t : tt) *) => { $ ($ t) * } ; (@ field_serde_name ; platform) => { "platform" } ; (@ field_serde_name ; namespace) => { "namespace" } ; (@ field_serde_name ; language) => { "language" } ; (@ field_serde_name ; game_version) => { "game_version" } ; (@ field_serde_name ; latest_update) => { "latest_update" } ; (@ field_serde_name ; word) => { "Word" } ; }
     pub use _include_language_file as include;
     pub enum IncludeParam {
         Platform(platform::Include),
-        Filename(filename::Include),
+        Namespace(namespace::Include),
+        Language(language::Include),
         GameVersion(game_version::Include),
         LatestUpdate(latest_update::Include),
-        Language(language::Include),
         Word(word::Include),
     }
     impl IncludeParam {
         pub fn to_selection(self) -> ::prisma_client_rust::Selection {
             match self {
                 Self::Platform(data) => data.to_selection(),
-                Self::Filename(data) => data.to_selection(),
+                Self::Namespace(data) => data.to_selection(),
+                Self::Language(data) => data.to_selection(),
                 Self::GameVersion(data) => data.to_selection(),
                 Self::LatestUpdate(data) => data.to_selection(),
-                Self::Language(data) => data.to_selection(),
                 Self::Word(data) => data.to_selection(),
             }
         }
@@ -637,15 +638,15 @@ pub mod language_file {
     pub struct Data {
         #[serde(rename = "platform")]
         pub platform: MinecraftPlatform,
-        #[serde(rename = "filename")]
-        pub filename: String,
+        #[serde(rename = "namespace")]
+        pub namespace: String,
+        #[serde(rename = "language")]
+        pub language: String,
         #[serde(rename = "game_version")]
         pub game_version: String,
         #[serde(rename = "latest_update")]
         pub latest_update:
             ::prisma_client_rust::chrono::DateTime<::prisma_client_rust::chrono::FixedOffset>,
-        #[serde(rename = "language")]
-        pub language: String,
         #[serde(rename = "Word")]
         pub word: Option<Vec<super::word::Data>>,
     }
@@ -682,12 +683,12 @@ pub mod language_file {
     #[derive(Clone)]
     pub enum SetParam {
         SetPlatform(MinecraftPlatform),
-        SetFilename(String),
+        SetNamespace(String),
+        SetLanguage(String),
         SetGameVersion(String),
         SetLatestUpdate(
             ::prisma_client_rust::chrono::DateTime<::prisma_client_rust::chrono::FixedOffset>,
         ),
-        SetLanguage(String),
         ConnectWord(Vec<super::word::UniqueWhereParam>),
         DisconnectWord(Vec<super::word::UniqueWhereParam>),
         SetWord(Vec<super::word::UniqueWhereParam>),
@@ -699,8 +700,12 @@ pub mod language_file {
                     "platform".to_string(),
                     ::prisma_client_rust::PrismaValue::Enum(value.to_string()),
                 ),
-                SetParam::SetFilename(value) => (
-                    "filename".to_string(),
+                SetParam::SetNamespace(value) => (
+                    "namespace".to_string(),
+                    ::prisma_client_rust::PrismaValue::String(value),
+                ),
+                SetParam::SetLanguage(value) => (
+                    "language".to_string(),
                     ::prisma_client_rust::PrismaValue::String(value),
                 ),
                 SetParam::SetGameVersion(value) => (
@@ -710,10 +715,6 @@ pub mod language_file {
                 SetParam::SetLatestUpdate(value) => (
                     "latest_update".to_string(),
                     ::prisma_client_rust::PrismaValue::DateTime(value),
-                ),
-                SetParam::SetLanguage(value) => (
-                    "language".to_string(),
-                    ::prisma_client_rust::PrismaValue::String(value),
                 ),
                 SetParam::ConnectWord(where_params) => (
                     "Word".to_string(),
@@ -766,10 +767,10 @@ pub mod language_file {
     #[derive(Clone)]
     pub enum OrderByParam {
         Platform(::prisma_client_rust::Direction),
-        Filename(::prisma_client_rust::Direction),
+        Namespace(::prisma_client_rust::Direction),
+        Language(::prisma_client_rust::Direction),
         GameVersion(::prisma_client_rust::Direction),
         LatestUpdate(::prisma_client_rust::Direction),
-        Language(::prisma_client_rust::Direction),
     }
     impl Into<(String, ::prisma_client_rust::PrismaValue)> for OrderByParam {
         fn into(self) -> (String, ::prisma_client_rust::PrismaValue) {
@@ -778,8 +779,12 @@ pub mod language_file {
                     "platform".to_string(),
                     ::prisma_client_rust::PrismaValue::String(direction.to_string()),
                 ),
-                Self::Filename(direction) => (
-                    "filename".to_string(),
+                Self::Namespace(direction) => (
+                    "namespace".to_string(),
+                    ::prisma_client_rust::PrismaValue::String(direction.to_string()),
+                ),
+                Self::Language(direction) => (
+                    "language".to_string(),
                     ::prisma_client_rust::PrismaValue::String(direction.to_string()),
                 ),
                 Self::GameVersion(direction) => (
@@ -790,10 +795,6 @@ pub mod language_file {
                     "latest_update".to_string(),
                     ::prisma_client_rust::PrismaValue::String(direction.to_string()),
                 ),
-                Self::Language(direction) => (
-                    "language".to_string(),
-                    ::prisma_client_rust::PrismaValue::String(direction.to_string()),
-                ),
             }
         }
     }
@@ -802,12 +803,12 @@ pub mod language_file {
         Not(Vec<WhereParam>),
         Or(Vec<WhereParam>),
         And(Vec<WhereParam>),
-        PlatformFilenameEquals(MinecraftPlatform, String),
+        PlatformNamespaceLanguageEquals(MinecraftPlatform, String, String),
         Platform(_prisma::read_filters::MinecraftPlatformFilter),
-        Filename(_prisma::read_filters::StringFilter),
+        Namespace(_prisma::read_filters::StringFilter),
+        Language(_prisma::read_filters::StringFilter),
         GameVersion(_prisma::read_filters::StringFilter),
         LatestUpdate(_prisma::read_filters::DateTimeFilter),
-        Language(_prisma::read_filters::StringFilter),
         WordSome(Vec<super::word::WhereParam>),
         WordEvery(Vec<super::word::WhereParam>),
         WordNone(Vec<super::word::WhereParam>),
@@ -851,24 +852,28 @@ pub mod language_file {
                         ),
                     ),
                 ),
-                Self::PlatformFilenameEquals(platform, filename) => (
-                    "platform_filename",
+                Self::PlatformNamespaceLanguageEquals(platform, namespace, language) => (
+                    "platform_namespace_language",
                     ::prisma_client_rust::SerializedWhereValue::Object(vec![
                         (
                             "platform".to_string(),
                             ::prisma_client_rust::PrismaValue::Enum(platform.to_string()),
                         ),
                         (
-                            "filename".to_string(),
-                            ::prisma_client_rust::PrismaValue::String(filename),
+                            "namespace".to_string(),
+                            ::prisma_client_rust::PrismaValue::String(namespace),
+                        ),
+                        (
+                            "language".to_string(),
+                            ::prisma_client_rust::PrismaValue::String(language),
                         ),
                     ]),
                 ),
                 Self::Platform(value) => ("platform", value.into()),
-                Self::Filename(value) => ("filename", value.into()),
+                Self::Namespace(value) => ("namespace", value.into()),
+                Self::Language(value) => ("language", value.into()),
                 Self::GameVersion(value) => ("game_version", value.into()),
                 Self::LatestUpdate(value) => ("latest_update", value.into()),
-                Self::Language(value) => ("language", value.into()),
                 Self::WordSome(where_params) => (
                     "Word",
                     ::prisma_client_rust::SerializedWhereValue::Object(vec![(
@@ -914,14 +919,16 @@ pub mod language_file {
     }
     #[derive(Clone)]
     pub enum UniqueWhereParam {
-        PlatformFilenameEquals(MinecraftPlatform, String),
+        PlatformNamespaceLanguageEquals(MinecraftPlatform, String, String),
     }
     impl From<UniqueWhereParam> for WhereParam {
         fn from(value: UniqueWhereParam) -> Self {
             match value {
-                UniqueWhereParam::PlatformFilenameEquals(platform, filename) => {
-                    Self::PlatformFilenameEquals(platform, filename)
-                }
+                UniqueWhereParam::PlatformNamespaceLanguageEquals(
+                    platform,
+                    namespace,
+                    language,
+                ) => Self::PlatformNamespaceLanguageEquals(platform, namespace, language),
             }
         }
     }
@@ -947,10 +954,10 @@ pub mod language_file {
         fn scalar_selections() -> Vec<::prisma_client_rust::Selection> {
             [
                 "platform",
-                "filename",
+                "namespace",
+                "language",
                 "game_version",
                 "latest_update",
-                "language",
             ]
             .into_iter()
             .map(::prisma_client_rust::sel)
@@ -987,19 +994,19 @@ pub mod language_file {
         pub fn create(
             self,
             platform: MinecraftPlatform,
-            filename: String,
+            namespace: String,
+            language: String,
             game_version: String,
             latest_update: ::prisma_client_rust::chrono::DateTime<
                 ::prisma_client_rust::chrono::FixedOffset,
             >,
-            language: String,
             mut _params: Vec<SetParam>,
         ) -> Create<'a> {
             _params.push(platform::set(platform));
-            _params.push(filename::set(filename));
+            _params.push(namespace::set(namespace));
+            _params.push(language::set(language));
             _params.push(game_version::set(game_version));
             _params.push(latest_update::set(latest_update));
-            _params.push(language::set(language));
             Create::new(self.client, _params)
         }
         pub fn create_many(
@@ -1008,20 +1015,20 @@ pub mod language_file {
                 MinecraftPlatform,
                 String,
                 String,
-                ::prisma_client_rust::chrono::DateTime<::prisma_client_rust::chrono::FixedOffset>,
                 String,
+                ::prisma_client_rust::chrono::DateTime<::prisma_client_rust::chrono::FixedOffset>,
                 Vec<SetParam>,
             )>,
         ) -> CreateMany<'a> {
             let data = data
                 .into_iter()
                 .map(
-                    |(platform, filename, game_version, latest_update, language, mut _params)| {
+                    |(platform, namespace, language, game_version, latest_update, mut _params)| {
                         _params.push(platform::set(platform));
-                        _params.push(filename::set(filename));
+                        _params.push(namespace::set(namespace));
+                        _params.push(language::set(language));
                         _params.push(game_version::set(game_version));
                         _params.push(latest_update::set(latest_update));
-                        _params.push(language::set(language));
                         _params
                     },
                 )
@@ -1041,21 +1048,21 @@ pub mod language_file {
         pub fn upsert(
             self,
             _where: UniqueWhereParam,
-            (platform, filename, game_version, latest_update, language, mut _params): (
+            (platform, namespace, language, game_version, latest_update, mut _params): (
                 MinecraftPlatform,
                 String,
                 String,
-                ::prisma_client_rust::chrono::DateTime<::prisma_client_rust::chrono::FixedOffset>,
                 String,
+                ::prisma_client_rust::chrono::DateTime<::prisma_client_rust::chrono::FixedOffset>,
                 Vec<SetParam>,
             ),
             _update: Vec<SetParam>,
         ) -> Upsert<'a> {
             _params.push(platform::set(platform));
-            _params.push(filename::set(filename));
+            _params.push(namespace::set(namespace));
+            _params.push(language::set(language));
             _params.push(game_version::set(game_version));
             _params.push(latest_update::set(latest_update));
-            _params.push(language::set(language));
             Upsert::new(self.client, _where.into(), _params, _update)
         }
         pub fn delete(self, _where: UniqueWhereParam) -> Delete<'a> {
@@ -1127,219 +1134,75 @@ pub mod word {
             }
         }
     }
-    pub mod filename {
+    pub mod namespace {
         use super::super::*;
         use super::_prisma::*;
         use super::{OrderByParam, SetParam, UniqueWhereParam, WhereParam, WithParam};
         pub struct Set(pub String);
         impl From<Set> for SetParam {
             fn from(value: Set) -> Self {
-                Self::SetFilename(value.0)
+                Self::SetNamespace(value.0)
             }
         }
         pub fn set<T: From<Set>>(value: String) -> T {
             Set(value).into()
         }
         pub fn order(direction: ::prisma_client_rust::Direction) -> OrderByParam {
-            OrderByParam::Filename(direction)
+            OrderByParam::Namespace(direction)
         }
         pub fn equals(value: String) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::Equals(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::Equals(value))
         }
         pub fn in_vec(value: Vec<String>) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::InVec(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::InVec(value))
         }
         pub fn not_in_vec(value: Vec<String>) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::NotInVec(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::NotInVec(value))
         }
         pub fn lt(value: String) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::Lt(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::Lt(value))
         }
         pub fn lte(value: String) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::Lte(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::Lte(value))
         }
         pub fn gt(value: String) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::Gt(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::Gt(value))
         }
         pub fn gte(value: String) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::Gte(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::Gte(value))
         }
         pub fn contains(value: String) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::Contains(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::Contains(value))
         }
         pub fn starts_with(value: String) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::StartsWith(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::StartsWith(value))
         }
         pub fn ends_with(value: String) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::EndsWith(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::EndsWith(value))
         }
         pub fn not(value: String) -> WhereParam {
-            WhereParam::Filename(_prisma::read_filters::StringFilter::Not(value))
+            WhereParam::Namespace(_prisma::read_filters::StringFilter::Not(value))
         }
         pub struct Include;
         impl Into<super::IncludeParam> for Include {
             fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Filename(self)
+                super::IncludeParam::Namespace(self)
             }
         }
         impl Include {
             pub fn to_selection(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel("filename")
+                ::prisma_client_rust::sel("namespace")
             }
         }
         pub struct Select;
         impl Into<super::SelectParam> for Select {
             fn into(self) -> super::SelectParam {
-                super::SelectParam::Filename(self)
+                super::SelectParam::Namespace(self)
             }
         }
         impl Select {
             pub fn to_selection(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel("filename")
-            }
-        }
-    }
-    pub mod key {
-        use super::super::*;
-        use super::_prisma::*;
-        use super::{OrderByParam, SetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub struct Set(pub String);
-        impl From<Set> for SetParam {
-            fn from(value: Set) -> Self {
-                Self::SetKey(value.0)
-            }
-        }
-        pub fn set<T: From<Set>>(value: String) -> T {
-            Set(value).into()
-        }
-        pub fn order(direction: ::prisma_client_rust::Direction) -> OrderByParam {
-            OrderByParam::Key(direction)
-        }
-        pub fn equals(value: String) -> WhereParam {
-            WhereParam::Key(_prisma::read_filters::StringFilter::Equals(value))
-        }
-        pub fn in_vec(value: Vec<String>) -> WhereParam {
-            WhereParam::Key(_prisma::read_filters::StringFilter::InVec(value))
-        }
-        pub fn not_in_vec(value: Vec<String>) -> WhereParam {
-            WhereParam::Key(_prisma::read_filters::StringFilter::NotInVec(value))
-        }
-        pub fn lt(value: String) -> WhereParam {
-            WhereParam::Key(_prisma::read_filters::StringFilter::Lt(value))
-        }
-        pub fn lte(value: String) -> WhereParam {
-            WhereParam::Key(_prisma::read_filters::StringFilter::Lte(value))
-        }
-        pub fn gt(value: String) -> WhereParam {
-            WhereParam::Key(_prisma::read_filters::StringFilter::Gt(value))
-        }
-        pub fn gte(value: String) -> WhereParam {
-            WhereParam::Key(_prisma::read_filters::StringFilter::Gte(value))
-        }
-        pub fn contains(value: String) -> WhereParam {
-            WhereParam::Key(_prisma::read_filters::StringFilter::Contains(value))
-        }
-        pub fn starts_with(value: String) -> WhereParam {
-            WhereParam::Key(_prisma::read_filters::StringFilter::StartsWith(value))
-        }
-        pub fn ends_with(value: String) -> WhereParam {
-            WhereParam::Key(_prisma::read_filters::StringFilter::EndsWith(value))
-        }
-        pub fn not(value: String) -> WhereParam {
-            WhereParam::Key(_prisma::read_filters::StringFilter::Not(value))
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Key(self)
-            }
-        }
-        impl Include {
-            pub fn to_selection(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel("key")
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Key(self)
-            }
-        }
-        impl Select {
-            pub fn to_selection(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel("key")
-            }
-        }
-    }
-    pub mod value {
-        use super::super::*;
-        use super::_prisma::*;
-        use super::{OrderByParam, SetParam, UniqueWhereParam, WhereParam, WithParam};
-        pub struct Set(pub String);
-        impl From<Set> for SetParam {
-            fn from(value: Set) -> Self {
-                Self::SetValue(value.0)
-            }
-        }
-        pub fn set<T: From<Set>>(value: String) -> T {
-            Set(value).into()
-        }
-        pub fn order(direction: ::prisma_client_rust::Direction) -> OrderByParam {
-            OrderByParam::Value(direction)
-        }
-        pub fn equals(value: String) -> WhereParam {
-            WhereParam::Value(_prisma::read_filters::StringFilter::Equals(value))
-        }
-        pub fn in_vec(value: Vec<String>) -> WhereParam {
-            WhereParam::Value(_prisma::read_filters::StringFilter::InVec(value))
-        }
-        pub fn not_in_vec(value: Vec<String>) -> WhereParam {
-            WhereParam::Value(_prisma::read_filters::StringFilter::NotInVec(value))
-        }
-        pub fn lt(value: String) -> WhereParam {
-            WhereParam::Value(_prisma::read_filters::StringFilter::Lt(value))
-        }
-        pub fn lte(value: String) -> WhereParam {
-            WhereParam::Value(_prisma::read_filters::StringFilter::Lte(value))
-        }
-        pub fn gt(value: String) -> WhereParam {
-            WhereParam::Value(_prisma::read_filters::StringFilter::Gt(value))
-        }
-        pub fn gte(value: String) -> WhereParam {
-            WhereParam::Value(_prisma::read_filters::StringFilter::Gte(value))
-        }
-        pub fn contains(value: String) -> WhereParam {
-            WhereParam::Value(_prisma::read_filters::StringFilter::Contains(value))
-        }
-        pub fn starts_with(value: String) -> WhereParam {
-            WhereParam::Value(_prisma::read_filters::StringFilter::StartsWith(value))
-        }
-        pub fn ends_with(value: String) -> WhereParam {
-            WhereParam::Value(_prisma::read_filters::StringFilter::EndsWith(value))
-        }
-        pub fn not(value: String) -> WhereParam {
-            WhereParam::Value(_prisma::read_filters::StringFilter::Not(value))
-        }
-        pub struct Include;
-        impl Into<super::IncludeParam> for Include {
-            fn into(self) -> super::IncludeParam {
-                super::IncludeParam::Value(self)
-            }
-        }
-        impl Include {
-            pub fn to_selection(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel("value")
-            }
-        }
-        pub struct Select;
-        impl Into<super::SelectParam> for Select {
-            fn into(self) -> super::SelectParam {
-                super::SelectParam::Value(self)
-            }
-        }
-        impl Select {
-            pub fn to_selection(self) -> ::prisma_client_rust::Selection {
-                ::prisma_client_rust::sel("value")
+                ::prisma_client_rust::sel("namespace")
             }
         }
     }
@@ -1494,34 +1357,178 @@ pub mod word {
             }
         }
     }
-    pub fn key_platform_filename<T: From<UniqueWhereParam>>(
-        key: String,
+    pub mod key {
+        use super::super::*;
+        use super::_prisma::*;
+        use super::{OrderByParam, SetParam, UniqueWhereParam, WhereParam, WithParam};
+        pub struct Set(pub String);
+        impl From<Set> for SetParam {
+            fn from(value: Set) -> Self {
+                Self::SetKey(value.0)
+            }
+        }
+        pub fn set<T: From<Set>>(value: String) -> T {
+            Set(value).into()
+        }
+        pub fn order(direction: ::prisma_client_rust::Direction) -> OrderByParam {
+            OrderByParam::Key(direction)
+        }
+        pub fn equals(value: String) -> WhereParam {
+            WhereParam::Key(_prisma::read_filters::StringFilter::Equals(value))
+        }
+        pub fn in_vec(value: Vec<String>) -> WhereParam {
+            WhereParam::Key(_prisma::read_filters::StringFilter::InVec(value))
+        }
+        pub fn not_in_vec(value: Vec<String>) -> WhereParam {
+            WhereParam::Key(_prisma::read_filters::StringFilter::NotInVec(value))
+        }
+        pub fn lt(value: String) -> WhereParam {
+            WhereParam::Key(_prisma::read_filters::StringFilter::Lt(value))
+        }
+        pub fn lte(value: String) -> WhereParam {
+            WhereParam::Key(_prisma::read_filters::StringFilter::Lte(value))
+        }
+        pub fn gt(value: String) -> WhereParam {
+            WhereParam::Key(_prisma::read_filters::StringFilter::Gt(value))
+        }
+        pub fn gte(value: String) -> WhereParam {
+            WhereParam::Key(_prisma::read_filters::StringFilter::Gte(value))
+        }
+        pub fn contains(value: String) -> WhereParam {
+            WhereParam::Key(_prisma::read_filters::StringFilter::Contains(value))
+        }
+        pub fn starts_with(value: String) -> WhereParam {
+            WhereParam::Key(_prisma::read_filters::StringFilter::StartsWith(value))
+        }
+        pub fn ends_with(value: String) -> WhereParam {
+            WhereParam::Key(_prisma::read_filters::StringFilter::EndsWith(value))
+        }
+        pub fn not(value: String) -> WhereParam {
+            WhereParam::Key(_prisma::read_filters::StringFilter::Not(value))
+        }
+        pub struct Include;
+        impl Into<super::IncludeParam> for Include {
+            fn into(self) -> super::IncludeParam {
+                super::IncludeParam::Key(self)
+            }
+        }
+        impl Include {
+            pub fn to_selection(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel("key")
+            }
+        }
+        pub struct Select;
+        impl Into<super::SelectParam> for Select {
+            fn into(self) -> super::SelectParam {
+                super::SelectParam::Key(self)
+            }
+        }
+        impl Select {
+            pub fn to_selection(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel("key")
+            }
+        }
+    }
+    pub mod value {
+        use super::super::*;
+        use super::_prisma::*;
+        use super::{OrderByParam, SetParam, UniqueWhereParam, WhereParam, WithParam};
+        pub struct Set(pub String);
+        impl From<Set> for SetParam {
+            fn from(value: Set) -> Self {
+                Self::SetValue(value.0)
+            }
+        }
+        pub fn set<T: From<Set>>(value: String) -> T {
+            Set(value).into()
+        }
+        pub fn order(direction: ::prisma_client_rust::Direction) -> OrderByParam {
+            OrderByParam::Value(direction)
+        }
+        pub fn equals(value: String) -> WhereParam {
+            WhereParam::Value(_prisma::read_filters::StringFilter::Equals(value))
+        }
+        pub fn in_vec(value: Vec<String>) -> WhereParam {
+            WhereParam::Value(_prisma::read_filters::StringFilter::InVec(value))
+        }
+        pub fn not_in_vec(value: Vec<String>) -> WhereParam {
+            WhereParam::Value(_prisma::read_filters::StringFilter::NotInVec(value))
+        }
+        pub fn lt(value: String) -> WhereParam {
+            WhereParam::Value(_prisma::read_filters::StringFilter::Lt(value))
+        }
+        pub fn lte(value: String) -> WhereParam {
+            WhereParam::Value(_prisma::read_filters::StringFilter::Lte(value))
+        }
+        pub fn gt(value: String) -> WhereParam {
+            WhereParam::Value(_prisma::read_filters::StringFilter::Gt(value))
+        }
+        pub fn gte(value: String) -> WhereParam {
+            WhereParam::Value(_prisma::read_filters::StringFilter::Gte(value))
+        }
+        pub fn contains(value: String) -> WhereParam {
+            WhereParam::Value(_prisma::read_filters::StringFilter::Contains(value))
+        }
+        pub fn starts_with(value: String) -> WhereParam {
+            WhereParam::Value(_prisma::read_filters::StringFilter::StartsWith(value))
+        }
+        pub fn ends_with(value: String) -> WhereParam {
+            WhereParam::Value(_prisma::read_filters::StringFilter::EndsWith(value))
+        }
+        pub fn not(value: String) -> WhereParam {
+            WhereParam::Value(_prisma::read_filters::StringFilter::Not(value))
+        }
+        pub struct Include;
+        impl Into<super::IncludeParam> for Include {
+            fn into(self) -> super::IncludeParam {
+                super::IncludeParam::Value(self)
+            }
+        }
+        impl Include {
+            pub fn to_selection(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel("value")
+            }
+        }
+        pub struct Select;
+        impl Into<super::SelectParam> for Select {
+            fn into(self) -> super::SelectParam {
+                super::SelectParam::Value(self)
+            }
+        }
+        impl Select {
+            pub fn to_selection(self) -> ::prisma_client_rust::Selection {
+                ::prisma_client_rust::sel("value")
+            }
+        }
+    }
+    pub fn platform_namespace_language_key<T: From<UniqueWhereParam>>(
         platform: MinecraftPlatform,
-        filename: String,
+        namespace: String,
+        language: String,
+        key: String,
     ) -> T {
-        UniqueWhereParam::KeyPlatformFilenameEquals(key, platform, filename).into()
+        UniqueWhereParam::PlatformNamespaceLanguageKeyEquals(platform, namespace, language, key)
+            .into()
     }
     pub fn create(
+        file: super::language_file::UniqueWhereParam,
         key: String,
         value: String,
-        language: String,
-        file: super::language_file::UniqueWhereParam,
         _params: Vec<SetParam>,
     ) -> (
-        String,
-        String,
-        String,
         super::language_file::UniqueWhereParam,
+        String,
+        String,
         Vec<SetParam>,
     ) {
-        (key, value, language, file, _params)
+        (file, key, value, _params)
     }
     pub fn create_unchecked(
         platform: MinecraftPlatform,
-        filename: String,
+        namespace: String,
+        language: String,
         key: String,
         value: String,
-        language: String,
         _params: Vec<SetParam>,
     ) -> (
         MinecraftPlatform,
@@ -1531,51 +1538,51 @@ pub mod word {
         String,
         Vec<SetParam>,
     ) {
-        (platform, filename, key, value, language, _params)
+        (platform, namespace, language, key, value, _params)
     }
     #[macro_export]
-    macro_rules ! _select_word { ($ (($ ($ func_arg : ident : $ func_arg_ty : ty) , +) =>) ? $ module_name : ident { $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { # [allow (warnings)] pub mod $ module_name { $ crate :: prisma :: word :: select ! (@ definitions ; $ module_name ; $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) +) ; use super :: * ; pub struct Selection (Vec < :: prisma_client_rust :: Selection >) ; impl :: prisma_client_rust :: SelectType for Selection { type Data = Data ; type ModelData = $ crate :: prisma :: word :: Data ; fn to_selections (self) -> Vec < :: prisma_client_rust :: Selection > { self . 0 } } pub fn select ($ ($ ($ func_arg : $ func_arg_ty) , +) ?) -> Selection { Selection ([$ crate :: prisma :: word :: select ! (@ selections_to_params ; : select { $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) + }) . into_iter () . map (| p | p . to_selection ()) . collect :: < Vec < _ >> () ,] . into_iter () . flatten () . collect :: < Vec < _ >> ()) } } } ; ({ $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { { $ crate :: prisma :: word :: select ! (@ definitions ; ; $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) +) ; pub struct Selection (Vec < :: prisma_client_rust :: Selection >) ; impl :: prisma_client_rust :: SelectType for Selection { type Data = Data ; type ModelData = $ crate :: prisma :: word :: Data ; fn to_selections (self) -> Vec < :: prisma_client_rust :: Selection > { self . 0 } } Selection ([$ crate :: prisma :: word :: select ! (@ selections_to_params ; : select { $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) + }) . into_iter () . map (| p | p . to_selection ()) . collect :: < Vec < _ >> () ,] . into_iter () . flatten () . collect :: < Vec < _ >> ()) } } ; (@ definitions ; $ ($ module_name : ident) ? ; $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) +) => { # [allow (warnings)] enum Fields { platform , filename , key , value , language , file } # [allow (warnings)] impl Fields { fn selections () { $ (let _ = Fields :: $ field ;) + } } # [allow (warnings)] # [derive (std :: fmt :: Debug , Clone)] pub struct Data { $ (pub $ field : $ crate :: prisma :: word :: select ! (@ field_type ; $ field $ (: $ selection_mode { $ ($ selections) + }) ?) ,) + } impl :: serde :: Serialize for Data { fn serialize < S > (& self , serializer : S) -> Result < S :: Ok , S :: Error > where S : :: serde :: Serializer , { use :: serde :: ser :: SerializeStruct ; let mut state = serializer . serialize_struct ("Data" , [$ (stringify ! ($ field) ,) +] . len ()) ? ; $ (state . serialize_field ($ crate :: prisma :: word :: select ! (@ field_serde_name ; $ field) , & self . $ field) ? ;) * state . end () } } impl < 'de > :: serde :: Deserialize < 'de > for Data { fn deserialize < D > (deserializer : D) -> Result < Self , D :: Error > where D : :: serde :: Deserializer < 'de > , { # [allow (warnings)] enum Field { $ ($ field) , + , } impl < 'de > :: serde :: Deserialize < 'de > for Field { fn deserialize < D > (deserializer : D) -> Result < Field , D :: Error > where D : :: serde :: Deserializer < 'de > , { struct FieldVisitor ; impl < 'de > :: serde :: de :: Visitor < 'de > for FieldVisitor { type Value = Field ; fn expecting (& self , formatter : & mut :: std :: fmt :: Formatter) -> :: std :: fmt :: Result { formatter . write_str (concat ! ($ ($ crate :: prisma :: word :: select ! (@ field_serde_name ; $ field) , ", ") , + ,)) } fn visit_str < E > (self , value : & str) -> Result < Field , E > where E : :: serde :: de :: Error , { match value { $ ($ crate :: prisma :: word :: select ! (@ field_serde_name ; $ field) => Ok (Field :: $ field)) , * , _ => Err (:: serde :: de :: Error :: unknown_field (value , FIELDS)) , } } } deserializer . deserialize_identifier (FieldVisitor) } } struct DataVisitor ; impl < 'de > :: serde :: de :: Visitor < 'de > for DataVisitor { type Value = Data ; fn expecting (& self , formatter : & mut std :: fmt :: Formatter) -> std :: fmt :: Result { formatter . write_str ("struct Data") } fn visit_map < V > (self , mut map : V) -> Result < Data , V :: Error > where V : :: serde :: de :: MapAccess < 'de > , { $ (let mut $ field = None ;) * while let Some (key) = map . next_key () ? { match key { $ (Field :: $ field => { if $ field . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: word :: select ! (@ field_serde_name ; $ field))) ; } $ field = Some (map . next_value () ?) ; }) * } } $ (let $ field = $ field . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: word :: select ! (@ field_serde_name ; $ field))) ? ;) * Ok (Data { $ ($ field) , * }) } } const FIELDS : & 'static [& 'static str] = & ["platform" , "filename" , "key" , "value" , "language" , "file"] ; deserializer . deserialize_struct ("Data" , FIELDS , DataVisitor) } } $ ($ (pub mod $ field { $ crate :: prisma :: word :: $ selection_mode ! (@ field_module ; $ field : $ selection_mode { $ ($ selections) + }) ; }) ?) + } ; (@ field_type ; platform) => { crate :: prisma :: MinecraftPlatform } ; (@ field_type ; filename) => { String } ; (@ field_type ; key) => { String } ; (@ field_type ; value) => { String } ; (@ field_type ; language) => { String } ; (@ field_type ; file : $ selection_mode : ident { $ ($ selections : tt) + }) => { file :: Data } ; (@ field_type ; file) => { crate :: prisma :: language_file :: Data } ; (@ field_type ; $ field : ident $ ($ tokens : tt) *) => { compile_error ! (stringify ! (Cannot include nonexistent relation $ field on model "Word" , available relations are "platform, filename, key, value, language, file")) } ; (@ field_module ; file : $ selection_mode : ident { $ ($ selections : tt) + }) => { $ crate :: prisma :: language_file :: select ! (@ definitions ; ; $ ($ selections) +) ; } ; (@ field_module ; $ ($ tokens : tt) *) => { } ; (@ selection_field_to_selection_param ; platform) => { Into :: < $ crate :: prisma :: word :: SelectParam > :: into ($ crate :: prisma :: word :: platform :: Select) } ; (@ selection_field_to_selection_param ; filename) => { Into :: < $ crate :: prisma :: word :: SelectParam > :: into ($ crate :: prisma :: word :: filename :: Select) } ; (@ selection_field_to_selection_param ; key) => { Into :: < $ crate :: prisma :: word :: SelectParam > :: into ($ crate :: prisma :: word :: key :: Select) } ; (@ selection_field_to_selection_param ; value) => { Into :: < $ crate :: prisma :: word :: SelectParam > :: into ($ crate :: prisma :: word :: value :: Select) } ; (@ selection_field_to_selection_param ; language) => { Into :: < $ crate :: prisma :: word :: SelectParam > :: into ($ crate :: prisma :: word :: language :: Select) } ; (@ selection_field_to_selection_param ; file $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? : $ selection_mode : ident { $ ($ selections : tt) + }) => { { Into :: < $ crate :: prisma :: word :: SelectParam > :: into ($ crate :: prisma :: word :: file :: Select :: $ selection_mode ($ crate :: prisma :: language_file :: select ! (@ selections_to_params ; : $ selection_mode { $ ($ selections) + }) . into_iter () . collect ())) } } ; (@ selection_field_to_selection_param ; file $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ?) => { { Into :: < $ crate :: prisma :: word :: SelectParam > :: into ($ crate :: prisma :: word :: file :: Select :: Fetch) } } ; (@ selection_field_to_selection_param ; $ ($ tokens : tt) *) => { compile_error ! (stringify ! ($ ($ tokens) *)) } ; (@ selections_to_params ; : $ macro_name : ident { $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { [$ ($ crate :: prisma :: word :: $ macro_name ! (@ selection_field_to_selection_param ; $ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) ,) +] } ; (@ filters_to_args ;) => { vec ! [] } ; (@ filters_to_args ; $ ($ t : tt) *) => { $ ($ t) * } ; (@ field_serde_name ; platform) => { "platform" } ; (@ field_serde_name ; filename) => { "filename" } ; (@ field_serde_name ; key) => { "key" } ; (@ field_serde_name ; value) => { "value" } ; (@ field_serde_name ; language) => { "language" } ; (@ field_serde_name ; file) => { "file" } ; }
+    macro_rules ! _select_word { ($ (($ ($ func_arg : ident : $ func_arg_ty : ty) , +) =>) ? $ module_name : ident { $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { # [allow (warnings)] pub mod $ module_name { $ crate :: prisma :: word :: select ! (@ definitions ; $ module_name ; $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) +) ; use super :: * ; pub struct Selection (Vec < :: prisma_client_rust :: Selection >) ; impl :: prisma_client_rust :: SelectType for Selection { type Data = Data ; type ModelData = $ crate :: prisma :: word :: Data ; fn to_selections (self) -> Vec < :: prisma_client_rust :: Selection > { self . 0 } } pub fn select ($ ($ ($ func_arg : $ func_arg_ty) , +) ?) -> Selection { Selection ([$ crate :: prisma :: word :: select ! (@ selections_to_params ; : select { $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) + }) . into_iter () . map (| p | p . to_selection ()) . collect :: < Vec < _ >> () ,] . into_iter () . flatten () . collect :: < Vec < _ >> ()) } } } ; ({ $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { { $ crate :: prisma :: word :: select ! (@ definitions ; ; $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) +) ; pub struct Selection (Vec < :: prisma_client_rust :: Selection >) ; impl :: prisma_client_rust :: SelectType for Selection { type Data = Data ; type ModelData = $ crate :: prisma :: word :: Data ; fn to_selections (self) -> Vec < :: prisma_client_rust :: Selection > { self . 0 } } Selection ([$ crate :: prisma :: word :: select ! (@ selections_to_params ; : select { $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) + }) . into_iter () . map (| p | p . to_selection ()) . collect :: < Vec < _ >> () ,] . into_iter () . flatten () . collect :: < Vec < _ >> ()) } } ; (@ definitions ; $ ($ module_name : ident) ? ; $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) +) => { # [allow (warnings)] enum Fields { platform , namespace , language , file , key , value } # [allow (warnings)] impl Fields { fn selections () { $ (let _ = Fields :: $ field ;) + } } # [allow (warnings)] # [derive (std :: fmt :: Debug , Clone)] pub struct Data { $ (pub $ field : $ crate :: prisma :: word :: select ! (@ field_type ; $ field $ (: $ selection_mode { $ ($ selections) + }) ?) ,) + } impl :: serde :: Serialize for Data { fn serialize < S > (& self , serializer : S) -> Result < S :: Ok , S :: Error > where S : :: serde :: Serializer , { use :: serde :: ser :: SerializeStruct ; let mut state = serializer . serialize_struct ("Data" , [$ (stringify ! ($ field) ,) +] . len ()) ? ; $ (state . serialize_field ($ crate :: prisma :: word :: select ! (@ field_serde_name ; $ field) , & self . $ field) ? ;) * state . end () } } impl < 'de > :: serde :: Deserialize < 'de > for Data { fn deserialize < D > (deserializer : D) -> Result < Self , D :: Error > where D : :: serde :: Deserializer < 'de > , { # [allow (warnings)] enum Field { $ ($ field) , + , } impl < 'de > :: serde :: Deserialize < 'de > for Field { fn deserialize < D > (deserializer : D) -> Result < Field , D :: Error > where D : :: serde :: Deserializer < 'de > , { struct FieldVisitor ; impl < 'de > :: serde :: de :: Visitor < 'de > for FieldVisitor { type Value = Field ; fn expecting (& self , formatter : & mut :: std :: fmt :: Formatter) -> :: std :: fmt :: Result { formatter . write_str (concat ! ($ ($ crate :: prisma :: word :: select ! (@ field_serde_name ; $ field) , ", ") , + ,)) } fn visit_str < E > (self , value : & str) -> Result < Field , E > where E : :: serde :: de :: Error , { match value { $ ($ crate :: prisma :: word :: select ! (@ field_serde_name ; $ field) => Ok (Field :: $ field)) , * , _ => Err (:: serde :: de :: Error :: unknown_field (value , FIELDS)) , } } } deserializer . deserialize_identifier (FieldVisitor) } } struct DataVisitor ; impl < 'de > :: serde :: de :: Visitor < 'de > for DataVisitor { type Value = Data ; fn expecting (& self , formatter : & mut std :: fmt :: Formatter) -> std :: fmt :: Result { formatter . write_str ("struct Data") } fn visit_map < V > (self , mut map : V) -> Result < Data , V :: Error > where V : :: serde :: de :: MapAccess < 'de > , { $ (let mut $ field = None ;) * while let Some (key) = map . next_key () ? { match key { $ (Field :: $ field => { if $ field . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: word :: select ! (@ field_serde_name ; $ field))) ; } $ field = Some (map . next_value () ?) ; }) * } } $ (let $ field = $ field . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: word :: select ! (@ field_serde_name ; $ field))) ? ;) * Ok (Data { $ ($ field) , * }) } } const FIELDS : & 'static [& 'static str] = & ["platform" , "namespace" , "language" , "file" , "key" , "value"] ; deserializer . deserialize_struct ("Data" , FIELDS , DataVisitor) } } $ ($ (pub mod $ field { $ crate :: prisma :: word :: $ selection_mode ! (@ field_module ; $ field : $ selection_mode { $ ($ selections) + }) ; }) ?) + } ; (@ field_type ; platform) => { crate :: prisma :: MinecraftPlatform } ; (@ field_type ; namespace) => { String } ; (@ field_type ; language) => { String } ; (@ field_type ; file : $ selection_mode : ident { $ ($ selections : tt) + }) => { file :: Data } ; (@ field_type ; file) => { crate :: prisma :: language_file :: Data } ; (@ field_type ; key) => { String } ; (@ field_type ; value) => { String } ; (@ field_type ; $ field : ident $ ($ tokens : tt) *) => { compile_error ! (stringify ! (Cannot include nonexistent relation $ field on model "Word" , available relations are "platform, namespace, language, file, key, value")) } ; (@ field_module ; file : $ selection_mode : ident { $ ($ selections : tt) + }) => { $ crate :: prisma :: language_file :: select ! (@ definitions ; ; $ ($ selections) +) ; } ; (@ field_module ; $ ($ tokens : tt) *) => { } ; (@ selection_field_to_selection_param ; platform) => { Into :: < $ crate :: prisma :: word :: SelectParam > :: into ($ crate :: prisma :: word :: platform :: Select) } ; (@ selection_field_to_selection_param ; namespace) => { Into :: < $ crate :: prisma :: word :: SelectParam > :: into ($ crate :: prisma :: word :: namespace :: Select) } ; (@ selection_field_to_selection_param ; language) => { Into :: < $ crate :: prisma :: word :: SelectParam > :: into ($ crate :: prisma :: word :: language :: Select) } ; (@ selection_field_to_selection_param ; file $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? : $ selection_mode : ident { $ ($ selections : tt) + }) => { { Into :: < $ crate :: prisma :: word :: SelectParam > :: into ($ crate :: prisma :: word :: file :: Select :: $ selection_mode ($ crate :: prisma :: language_file :: select ! (@ selections_to_params ; : $ selection_mode { $ ($ selections) + }) . into_iter () . collect ())) } } ; (@ selection_field_to_selection_param ; file $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ?) => { { Into :: < $ crate :: prisma :: word :: SelectParam > :: into ($ crate :: prisma :: word :: file :: Select :: Fetch) } } ; (@ selection_field_to_selection_param ; key) => { Into :: < $ crate :: prisma :: word :: SelectParam > :: into ($ crate :: prisma :: word :: key :: Select) } ; (@ selection_field_to_selection_param ; value) => { Into :: < $ crate :: prisma :: word :: SelectParam > :: into ($ crate :: prisma :: word :: value :: Select) } ; (@ selection_field_to_selection_param ; $ ($ tokens : tt) *) => { compile_error ! (stringify ! ($ ($ tokens) *)) } ; (@ selections_to_params ; : $ macro_name : ident { $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { [$ ($ crate :: prisma :: word :: $ macro_name ! (@ selection_field_to_selection_param ; $ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) ,) +] } ; (@ filters_to_args ;) => { vec ! [] } ; (@ filters_to_args ; $ ($ t : tt) *) => { $ ($ t) * } ; (@ field_serde_name ; platform) => { "platform" } ; (@ field_serde_name ; namespace) => { "namespace" } ; (@ field_serde_name ; language) => { "language" } ; (@ field_serde_name ; file) => { "file" } ; (@ field_serde_name ; key) => { "key" } ; (@ field_serde_name ; value) => { "value" } ; }
     pub use _select_word as select;
     pub enum SelectParam {
         Platform(platform::Select),
-        Filename(filename::Select),
-        Key(key::Select),
-        Value(value::Select),
+        Namespace(namespace::Select),
         Language(language::Select),
         File(file::Select),
+        Key(key::Select),
+        Value(value::Select),
     }
     impl SelectParam {
         pub fn to_selection(self) -> ::prisma_client_rust::Selection {
             match self {
                 Self::Platform(data) => data.to_selection(),
-                Self::Filename(data) => data.to_selection(),
-                Self::Key(data) => data.to_selection(),
-                Self::Value(data) => data.to_selection(),
+                Self::Namespace(data) => data.to_selection(),
                 Self::Language(data) => data.to_selection(),
                 Self::File(data) => data.to_selection(),
+                Self::Key(data) => data.to_selection(),
+                Self::Value(data) => data.to_selection(),
             }
         }
     }
     #[macro_export]
-    macro_rules ! _include_word { ($ (($ ($ func_arg : ident : $ func_arg_ty : ty) , +) =>) ? $ module_name : ident { $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { # [allow (warnings)] pub mod $ module_name { $ crate :: prisma :: word :: include ! (@ definitions ; $ module_name ; $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) +) ; use super :: * ; pub struct Selection (Vec < :: prisma_client_rust :: Selection >) ; impl :: prisma_client_rust :: IncludeType for Selection { type Data = Data ; type ModelData = $ crate :: prisma :: word :: Data ; fn to_selections (self) -> Vec < :: prisma_client_rust :: Selection > { self . 0 } } pub fn include ($ ($ ($ func_arg : $ func_arg_ty) , +) ?) -> Selection { Selection ([$ crate :: prisma :: word :: include ! (@ selections_to_params ; : include { $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) + }) . into_iter () . map (| p | p . to_selection ()) . collect :: < Vec < _ >> () , < $ crate :: prisma :: word :: Types as :: prisma_client_rust :: ModelTypes > :: scalar_selections ()] . into_iter () . flatten () . collect :: < Vec < _ >> ()) } } } ; ({ $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { { $ crate :: prisma :: word :: include ! (@ definitions ; ; $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) +) ; pub struct Selection (Vec < :: prisma_client_rust :: Selection >) ; impl :: prisma_client_rust :: IncludeType for Selection { type Data = Data ; type ModelData = $ crate :: prisma :: word :: Data ; fn to_selections (self) -> Vec < :: prisma_client_rust :: Selection > { self . 0 } } Selection ([$ crate :: prisma :: word :: include ! (@ selections_to_params ; : include { $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) + }) . into_iter () . map (| p | p . to_selection ()) . collect :: < Vec < _ >> () , < $ crate :: prisma :: word :: Types as :: prisma_client_rust :: ModelTypes > :: scalar_selections ()] . into_iter () . flatten () . collect :: < Vec < _ >> ()) } } ; (@ definitions ; $ ($ module_name : ident) ? ; $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) +) => { # [allow (warnings)] enum Fields { file } # [allow (warnings)] impl Fields { fn selections () { $ (let _ = Fields :: $ field ;) + } } # [allow (warnings)] # [derive (std :: fmt :: Debug , Clone)] pub struct Data { pub platform : crate :: prisma :: MinecraftPlatform , pub filename : String , pub key : String , pub value : String , pub language : String , $ (pub $ field : $ crate :: prisma :: word :: include ! (@ field_type ; $ field $ (: $ selection_mode { $ ($ selections) + }) ?) ,) + } impl :: serde :: Serialize for Data { fn serialize < S > (& self , serializer : S) -> Result < S :: Ok , S :: Error > where S : :: serde :: Serializer , { use :: serde :: ser :: SerializeStruct ; let mut state = serializer . serialize_struct ("Data" , [$ (stringify ! ($ field) ,) + stringify ! (platform) , stringify ! (filename) , stringify ! (key) , stringify ! (value) , stringify ! (language)] . len ()) ? ; $ (state . serialize_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; $ field) , & self . $ field) ? ;) * state . serialize_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; platform) , & self . platform) ? ; state . serialize_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; filename) , & self . filename) ? ; state . serialize_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; key) , & self . key) ? ; state . serialize_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; value) , & self . value) ? ; state . serialize_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; language) , & self . language) ? ; state . end () } } impl < 'de > :: serde :: Deserialize < 'de > for Data { fn deserialize < D > (deserializer : D) -> Result < Self , D :: Error > where D : :: serde :: Deserializer < 'de > , { # [allow (warnings)] enum Field { $ ($ field) , + , platform , filename , key , value , language } impl < 'de > :: serde :: Deserialize < 'de > for Field { fn deserialize < D > (deserializer : D) -> Result < Field , D :: Error > where D : :: serde :: Deserializer < 'de > , { struct FieldVisitor ; impl < 'de > :: serde :: de :: Visitor < 'de > for FieldVisitor { type Value = Field ; fn expecting (& self , formatter : & mut :: std :: fmt :: Formatter) -> :: std :: fmt :: Result { formatter . write_str (concat ! ($ ($ crate :: prisma :: word :: include ! (@ field_serde_name ; $ field) , ", ") , + , $ crate :: prisma :: word :: include ! (@ field_serde_name ; platform) , ", " , $ crate :: prisma :: word :: include ! (@ field_serde_name ; filename) , ", " , $ crate :: prisma :: word :: include ! (@ field_serde_name ; key) , ", " , $ crate :: prisma :: word :: include ! (@ field_serde_name ; value) , ", " , $ crate :: prisma :: word :: include ! (@ field_serde_name ; language) , ", ")) } fn visit_str < E > (self , value : & str) -> Result < Field , E > where E : :: serde :: de :: Error , { match value { $ ($ crate :: prisma :: word :: include ! (@ field_serde_name ; $ field) => Ok (Field :: $ field)) , * , $ crate :: prisma :: word :: include ! (@ field_serde_name ; platform) => Ok (Field :: platform) , $ crate :: prisma :: word :: include ! (@ field_serde_name ; filename) => Ok (Field :: filename) , $ crate :: prisma :: word :: include ! (@ field_serde_name ; key) => Ok (Field :: key) , $ crate :: prisma :: word :: include ! (@ field_serde_name ; value) => Ok (Field :: value) , $ crate :: prisma :: word :: include ! (@ field_serde_name ; language) => Ok (Field :: language) , _ => Err (:: serde :: de :: Error :: unknown_field (value , FIELDS)) , } } } deserializer . deserialize_identifier (FieldVisitor) } } struct DataVisitor ; impl < 'de > :: serde :: de :: Visitor < 'de > for DataVisitor { type Value = Data ; fn expecting (& self , formatter : & mut std :: fmt :: Formatter) -> std :: fmt :: Result { formatter . write_str ("struct Data") } fn visit_map < V > (self , mut map : V) -> Result < Data , V :: Error > where V : :: serde :: de :: MapAccess < 'de > , { $ (let mut $ field = None ;) * let mut platform = None ; let mut filename = None ; let mut key = None ; let mut value = None ; let mut language = None ; while let Some (key) = map . next_key () ? { match key { Field :: platform => { if platform . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; platform))) ; } platform = Some (map . next_value () ?) ; } Field :: filename => { if filename . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; filename))) ; } filename = Some (map . next_value () ?) ; } Field :: key => { if key . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; key))) ; } key = Some (map . next_value () ?) ; } Field :: value => { if value . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; value))) ; } value = Some (map . next_value () ?) ; } Field :: language => { if language . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; language))) ; } language = Some (map . next_value () ?) ; } $ (Field :: $ field => { if $ field . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; $ field))) ; } $ field = Some (map . next_value () ?) ; }) * } } $ (let $ field = $ field . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; $ field))) ? ;) * let platform = platform . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; platform))) ? ; let filename = filename . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; filename))) ? ; let key = key . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; key))) ? ; let value = value . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; value))) ? ; let language = language . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; language))) ? ; Ok (Data { platform , filename , key , value , language , $ ($ field) , * }) } } const FIELDS : & 'static [& 'static str] = & ["platform" , "filename" , "key" , "value" , "language" , "file"] ; deserializer . deserialize_struct ("Data" , FIELDS , DataVisitor) } } $ ($ (pub mod $ field { $ crate :: prisma :: word :: $ selection_mode ! (@ field_module ; $ field : $ selection_mode { $ ($ selections) + }) ; }) ?) + } ; (@ field_type ; file : $ selection_mode : ident { $ ($ selections : tt) + }) => { file :: Data } ; (@ field_type ; file) => { crate :: prisma :: language_file :: Data } ; (@ field_type ; $ field : ident $ ($ tokens : tt) *) => { compile_error ! (stringify ! (Cannot include nonexistent relation $ field on model "Word" , available relations are "file")) } ; (@ field_module ; file : $ selection_mode : ident { $ ($ selections : tt) + }) => { $ crate :: prisma :: language_file :: include ! (@ definitions ; ; $ ($ selections) +) ; } ; (@ field_module ; $ ($ tokens : tt) *) => { } ; (@ selection_field_to_selection_param ; file $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? : $ selection_mode : ident { $ ($ selections : tt) + }) => { { Into :: < $ crate :: prisma :: word :: IncludeParam > :: into ($ crate :: prisma :: word :: file :: Include :: $ selection_mode ($ crate :: prisma :: language_file :: select ! (@ selections_to_params ; : $ selection_mode { $ ($ selections) + }) . into_iter () . collect ())) } } ; (@ selection_field_to_selection_param ; file $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ?) => { { Into :: < $ crate :: prisma :: word :: IncludeParam > :: into ($ crate :: prisma :: word :: file :: Include :: Fetch) } } ; (@ selection_field_to_selection_param ; $ ($ tokens : tt) *) => { compile_error ! (stringify ! ($ ($ tokens) *)) } ; (@ selections_to_params ; : $ macro_name : ident { $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { [$ ($ crate :: prisma :: word :: $ macro_name ! (@ selection_field_to_selection_param ; $ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) ,) +] } ; (@ filters_to_args ;) => { vec ! [] } ; (@ filters_to_args ; $ ($ t : tt) *) => { $ ($ t) * } ; (@ field_serde_name ; platform) => { "platform" } ; (@ field_serde_name ; filename) => { "filename" } ; (@ field_serde_name ; key) => { "key" } ; (@ field_serde_name ; value) => { "value" } ; (@ field_serde_name ; language) => { "language" } ; (@ field_serde_name ; file) => { "file" } ; }
+    macro_rules ! _include_word { ($ (($ ($ func_arg : ident : $ func_arg_ty : ty) , +) =>) ? $ module_name : ident { $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { # [allow (warnings)] pub mod $ module_name { $ crate :: prisma :: word :: include ! (@ definitions ; $ module_name ; $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) +) ; use super :: * ; pub struct Selection (Vec < :: prisma_client_rust :: Selection >) ; impl :: prisma_client_rust :: IncludeType for Selection { type Data = Data ; type ModelData = $ crate :: prisma :: word :: Data ; fn to_selections (self) -> Vec < :: prisma_client_rust :: Selection > { self . 0 } } pub fn include ($ ($ ($ func_arg : $ func_arg_ty) , +) ?) -> Selection { Selection ([$ crate :: prisma :: word :: include ! (@ selections_to_params ; : include { $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) + }) . into_iter () . map (| p | p . to_selection ()) . collect :: < Vec < _ >> () , < $ crate :: prisma :: word :: Types as :: prisma_client_rust :: ModelTypes > :: scalar_selections ()] . into_iter () . flatten () . collect :: < Vec < _ >> ()) } } } ; ({ $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { { $ crate :: prisma :: word :: include ! (@ definitions ; ; $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) +) ; pub struct Selection (Vec < :: prisma_client_rust :: Selection >) ; impl :: prisma_client_rust :: IncludeType for Selection { type Data = Data ; type ModelData = $ crate :: prisma :: word :: Data ; fn to_selections (self) -> Vec < :: prisma_client_rust :: Selection > { self . 0 } } Selection ([$ crate :: prisma :: word :: include ! (@ selections_to_params ; : include { $ ($ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) + }) . into_iter () . map (| p | p . to_selection ()) . collect :: < Vec < _ >> () , < $ crate :: prisma :: word :: Types as :: prisma_client_rust :: ModelTypes > :: scalar_selections ()] . into_iter () . flatten () . collect :: < Vec < _ >> ()) } } ; (@ definitions ; $ ($ module_name : ident) ? ; $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) +) => { # [allow (warnings)] enum Fields { file } # [allow (warnings)] impl Fields { fn selections () { $ (let _ = Fields :: $ field ;) + } } # [allow (warnings)] # [derive (std :: fmt :: Debug , Clone)] pub struct Data { pub platform : crate :: prisma :: MinecraftPlatform , pub namespace : String , pub language : String , pub key : String , pub value : String , $ (pub $ field : $ crate :: prisma :: word :: include ! (@ field_type ; $ field $ (: $ selection_mode { $ ($ selections) + }) ?) ,) + } impl :: serde :: Serialize for Data { fn serialize < S > (& self , serializer : S) -> Result < S :: Ok , S :: Error > where S : :: serde :: Serializer , { use :: serde :: ser :: SerializeStruct ; let mut state = serializer . serialize_struct ("Data" , [$ (stringify ! ($ field) ,) + stringify ! (platform) , stringify ! (namespace) , stringify ! (language) , stringify ! (key) , stringify ! (value)] . len ()) ? ; $ (state . serialize_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; $ field) , & self . $ field) ? ;) * state . serialize_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; platform) , & self . platform) ? ; state . serialize_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; namespace) , & self . namespace) ? ; state . serialize_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; language) , & self . language) ? ; state . serialize_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; key) , & self . key) ? ; state . serialize_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; value) , & self . value) ? ; state . end () } } impl < 'de > :: serde :: Deserialize < 'de > for Data { fn deserialize < D > (deserializer : D) -> Result < Self , D :: Error > where D : :: serde :: Deserializer < 'de > , { # [allow (warnings)] enum Field { $ ($ field) , + , platform , namespace , language , key , value } impl < 'de > :: serde :: Deserialize < 'de > for Field { fn deserialize < D > (deserializer : D) -> Result < Field , D :: Error > where D : :: serde :: Deserializer < 'de > , { struct FieldVisitor ; impl < 'de > :: serde :: de :: Visitor < 'de > for FieldVisitor { type Value = Field ; fn expecting (& self , formatter : & mut :: std :: fmt :: Formatter) -> :: std :: fmt :: Result { formatter . write_str (concat ! ($ ($ crate :: prisma :: word :: include ! (@ field_serde_name ; $ field) , ", ") , + , $ crate :: prisma :: word :: include ! (@ field_serde_name ; platform) , ", " , $ crate :: prisma :: word :: include ! (@ field_serde_name ; namespace) , ", " , $ crate :: prisma :: word :: include ! (@ field_serde_name ; language) , ", " , $ crate :: prisma :: word :: include ! (@ field_serde_name ; key) , ", " , $ crate :: prisma :: word :: include ! (@ field_serde_name ; value) , ", ")) } fn visit_str < E > (self , value : & str) -> Result < Field , E > where E : :: serde :: de :: Error , { match value { $ ($ crate :: prisma :: word :: include ! (@ field_serde_name ; $ field) => Ok (Field :: $ field)) , * , $ crate :: prisma :: word :: include ! (@ field_serde_name ; platform) => Ok (Field :: platform) , $ crate :: prisma :: word :: include ! (@ field_serde_name ; namespace) => Ok (Field :: namespace) , $ crate :: prisma :: word :: include ! (@ field_serde_name ; language) => Ok (Field :: language) , $ crate :: prisma :: word :: include ! (@ field_serde_name ; key) => Ok (Field :: key) , $ crate :: prisma :: word :: include ! (@ field_serde_name ; value) => Ok (Field :: value) , _ => Err (:: serde :: de :: Error :: unknown_field (value , FIELDS)) , } } } deserializer . deserialize_identifier (FieldVisitor) } } struct DataVisitor ; impl < 'de > :: serde :: de :: Visitor < 'de > for DataVisitor { type Value = Data ; fn expecting (& self , formatter : & mut std :: fmt :: Formatter) -> std :: fmt :: Result { formatter . write_str ("struct Data") } fn visit_map < V > (self , mut map : V) -> Result < Data , V :: Error > where V : :: serde :: de :: MapAccess < 'de > , { $ (let mut $ field = None ;) * let mut platform = None ; let mut namespace = None ; let mut language = None ; let mut key = None ; let mut value = None ; while let Some (key) = map . next_key () ? { match key { Field :: platform => { if platform . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; platform))) ; } platform = Some (map . next_value () ?) ; } Field :: namespace => { if namespace . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; namespace))) ; } namespace = Some (map . next_value () ?) ; } Field :: language => { if language . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; language))) ; } language = Some (map . next_value () ?) ; } Field :: key => { if key . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; key))) ; } key = Some (map . next_value () ?) ; } Field :: value => { if value . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; value))) ; } value = Some (map . next_value () ?) ; } $ (Field :: $ field => { if $ field . is_some () { return Err (:: serde :: de :: Error :: duplicate_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; $ field))) ; } $ field = Some (map . next_value () ?) ; }) * } } $ (let $ field = $ field . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; $ field))) ? ;) * let platform = platform . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; platform))) ? ; let namespace = namespace . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; namespace))) ? ; let language = language . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; language))) ? ; let key = key . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; key))) ? ; let value = value . ok_or_else (|| serde :: de :: Error :: missing_field ($ crate :: prisma :: word :: include ! (@ field_serde_name ; value))) ? ; Ok (Data { platform , namespace , language , key , value , $ ($ field) , * }) } } const FIELDS : & 'static [& 'static str] = & ["platform" , "namespace" , "language" , "file" , "key" , "value"] ; deserializer . deserialize_struct ("Data" , FIELDS , DataVisitor) } } $ ($ (pub mod $ field { $ crate :: prisma :: word :: $ selection_mode ! (@ field_module ; $ field : $ selection_mode { $ ($ selections) + }) ; }) ?) + } ; (@ field_type ; file : $ selection_mode : ident { $ ($ selections : tt) + }) => { file :: Data } ; (@ field_type ; file) => { crate :: prisma :: language_file :: Data } ; (@ field_type ; $ field : ident $ ($ tokens : tt) *) => { compile_error ! (stringify ! (Cannot include nonexistent relation $ field on model "Word" , available relations are "file")) } ; (@ field_module ; file : $ selection_mode : ident { $ ($ selections : tt) + }) => { $ crate :: prisma :: language_file :: include ! (@ definitions ; ; $ ($ selections) +) ; } ; (@ field_module ; $ ($ tokens : tt) *) => { } ; (@ selection_field_to_selection_param ; file $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? : $ selection_mode : ident { $ ($ selections : tt) + }) => { { Into :: < $ crate :: prisma :: word :: IncludeParam > :: into ($ crate :: prisma :: word :: file :: Include :: $ selection_mode ($ crate :: prisma :: language_file :: select ! (@ selections_to_params ; : $ selection_mode { $ ($ selections) + }) . into_iter () . collect ())) } } ; (@ selection_field_to_selection_param ; file $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ?) => { { Into :: < $ crate :: prisma :: word :: IncludeParam > :: into ($ crate :: prisma :: word :: file :: Include :: Fetch) } } ; (@ selection_field_to_selection_param ; $ ($ tokens : tt) *) => { compile_error ! (stringify ! ($ ($ tokens) *)) } ; (@ selections_to_params ; : $ macro_name : ident { $ ($ field : ident $ (($ ($ filters : tt) +) $ (. $ arg : ident ($ ($ arg_params : tt) *)) *) ? $ (: $ selection_mode : ident { $ ($ selections : tt) + }) ?) + }) => { [$ ($ crate :: prisma :: word :: $ macro_name ! (@ selection_field_to_selection_param ; $ field $ (($ ($ filters) +) $ (. $ arg ($ ($ arg_params) *)) *) ? $ (: $ selection_mode { $ ($ selections) + }) ?) ,) +] } ; (@ filters_to_args ;) => { vec ! [] } ; (@ filters_to_args ; $ ($ t : tt) *) => { $ ($ t) * } ; (@ field_serde_name ; platform) => { "platform" } ; (@ field_serde_name ; namespace) => { "namespace" } ; (@ field_serde_name ; language) => { "language" } ; (@ field_serde_name ; file) => { "file" } ; (@ field_serde_name ; key) => { "key" } ; (@ field_serde_name ; value) => { "value" } ; }
     pub use _include_word as include;
     pub enum IncludeParam {
         Platform(platform::Include),
-        Filename(filename::Include),
-        Key(key::Include),
-        Value(value::Include),
+        Namespace(namespace::Include),
         Language(language::Include),
         File(file::Include),
+        Key(key::Include),
+        Value(value::Include),
     }
     impl IncludeParam {
         pub fn to_selection(self) -> ::prisma_client_rust::Selection {
             match self {
                 Self::Platform(data) => data.to_selection(),
-                Self::Filename(data) => data.to_selection(),
-                Self::Key(data) => data.to_selection(),
-                Self::Value(data) => data.to_selection(),
+                Self::Namespace(data) => data.to_selection(),
                 Self::Language(data) => data.to_selection(),
                 Self::File(data) => data.to_selection(),
+                Self::Key(data) => data.to_selection(),
+                Self::Value(data) => data.to_selection(),
             }
         }
     }
@@ -1583,16 +1590,16 @@ pub mod word {
     pub struct Data {
         #[serde(rename = "platform")]
         pub platform: MinecraftPlatform,
-        #[serde(rename = "filename")]
-        pub filename: String,
-        #[serde(rename = "key")]
-        pub key: String,
-        #[serde(rename = "value")]
-        pub value: String,
+        #[serde(rename = "namespace")]
+        pub namespace: String,
         #[serde(rename = "language")]
         pub language: String,
         #[serde(rename = "file")]
         pub file: Option<Box<super::language_file::Data>>,
+        #[serde(rename = "key")]
+        pub key: String,
+        #[serde(rename = "value")]
+        pub value: String,
     }
     impl Data {
         pub fn file(
@@ -1629,11 +1636,11 @@ pub mod word {
     #[derive(Clone)]
     pub enum SetParam {
         SetPlatform(MinecraftPlatform),
-        SetFilename(String),
-        SetKey(String),
-        SetValue(String),
+        SetNamespace(String),
         SetLanguage(String),
         ConnectFile(super::language_file::UniqueWhereParam),
+        SetKey(String),
+        SetValue(String),
     }
     impl Into<(String, ::prisma_client_rust::PrismaValue)> for SetParam {
         fn into(self) -> (String, ::prisma_client_rust::PrismaValue) {
@@ -1642,16 +1649,8 @@ pub mod word {
                     "platform".to_string(),
                     ::prisma_client_rust::PrismaValue::Enum(value.to_string()),
                 ),
-                SetParam::SetFilename(value) => (
-                    "filename".to_string(),
-                    ::prisma_client_rust::PrismaValue::String(value),
-                ),
-                SetParam::SetKey(value) => (
-                    "key".to_string(),
-                    ::prisma_client_rust::PrismaValue::String(value),
-                ),
-                SetParam::SetValue(value) => (
-                    "value".to_string(),
+                SetParam::SetNamespace(value) => (
+                    "namespace".to_string(),
                     ::prisma_client_rust::PrismaValue::String(value),
                 ),
                 SetParam::SetLanguage(value) => (
@@ -1672,16 +1671,24 @@ pub mod word {
                         ),
                     )]),
                 ),
+                SetParam::SetKey(value) => (
+                    "key".to_string(),
+                    ::prisma_client_rust::PrismaValue::String(value),
+                ),
+                SetParam::SetValue(value) => (
+                    "value".to_string(),
+                    ::prisma_client_rust::PrismaValue::String(value),
+                ),
             }
         }
     }
     #[derive(Clone)]
     pub enum OrderByParam {
         Platform(::prisma_client_rust::Direction),
-        Filename(::prisma_client_rust::Direction),
+        Namespace(::prisma_client_rust::Direction),
+        Language(::prisma_client_rust::Direction),
         Key(::prisma_client_rust::Direction),
         Value(::prisma_client_rust::Direction),
-        Language(::prisma_client_rust::Direction),
     }
     impl Into<(String, ::prisma_client_rust::PrismaValue)> for OrderByParam {
         fn into(self) -> (String, ::prisma_client_rust::PrismaValue) {
@@ -1690,8 +1697,12 @@ pub mod word {
                     "platform".to_string(),
                     ::prisma_client_rust::PrismaValue::String(direction.to_string()),
                 ),
-                Self::Filename(direction) => (
-                    "filename".to_string(),
+                Self::Namespace(direction) => (
+                    "namespace".to_string(),
+                    ::prisma_client_rust::PrismaValue::String(direction.to_string()),
+                ),
+                Self::Language(direction) => (
+                    "language".to_string(),
                     ::prisma_client_rust::PrismaValue::String(direction.to_string()),
                 ),
                 Self::Key(direction) => (
@@ -1702,10 +1713,6 @@ pub mod word {
                     "value".to_string(),
                     ::prisma_client_rust::PrismaValue::String(direction.to_string()),
                 ),
-                Self::Language(direction) => (
-                    "language".to_string(),
-                    ::prisma_client_rust::PrismaValue::String(direction.to_string()),
-                ),
             }
         }
     }
@@ -1714,14 +1721,14 @@ pub mod word {
         Not(Vec<WhereParam>),
         Or(Vec<WhereParam>),
         And(Vec<WhereParam>),
-        KeyPlatformFilenameEquals(String, MinecraftPlatform, String),
+        PlatformNamespaceLanguageKeyEquals(MinecraftPlatform, String, String, String),
         Platform(_prisma::read_filters::MinecraftPlatformFilter),
-        Filename(_prisma::read_filters::StringFilter),
-        Key(_prisma::read_filters::StringFilter),
-        Value(_prisma::read_filters::StringFilter),
+        Namespace(_prisma::read_filters::StringFilter),
         Language(_prisma::read_filters::StringFilter),
         FileIs(Vec<super::language_file::WhereParam>),
         FileIsNot(Vec<super::language_file::WhereParam>),
+        Key(_prisma::read_filters::StringFilter),
+        Value(_prisma::read_filters::StringFilter),
     }
     impl ::prisma_client_rust::WhereInput for WhereParam {
         fn serialize(self) -> ::prisma_client_rust::SerializedWhereInput {
@@ -1762,27 +1769,29 @@ pub mod word {
                         ),
                     ),
                 ),
-                Self::KeyPlatformFilenameEquals(key, platform, filename) => (
-                    "key_platform_filename",
+                Self::PlatformNamespaceLanguageKeyEquals(platform, namespace, language, key) => (
+                    "platform_namespace_language_key",
                     ::prisma_client_rust::SerializedWhereValue::Object(vec![
-                        (
-                            "key".to_string(),
-                            ::prisma_client_rust::PrismaValue::String(key),
-                        ),
                         (
                             "platform".to_string(),
                             ::prisma_client_rust::PrismaValue::Enum(platform.to_string()),
                         ),
                         (
-                            "filename".to_string(),
-                            ::prisma_client_rust::PrismaValue::String(filename),
+                            "namespace".to_string(),
+                            ::prisma_client_rust::PrismaValue::String(namespace),
+                        ),
+                        (
+                            "language".to_string(),
+                            ::prisma_client_rust::PrismaValue::String(language),
+                        ),
+                        (
+                            "key".to_string(),
+                            ::prisma_client_rust::PrismaValue::String(key),
                         ),
                     ]),
                 ),
                 Self::Platform(value) => ("platform", value.into()),
-                Self::Filename(value) => ("filename", value.into()),
-                Self::Key(value) => ("key", value.into()),
-                Self::Value(value) => ("value", value.into()),
+                Self::Namespace(value) => ("namespace", value.into()),
                 Self::Language(value) => ("language", value.into()),
                 Self::FileIs(where_params) => (
                     "file",
@@ -1810,20 +1819,25 @@ pub mod word {
                         ),
                     )]),
                 ),
+                Self::Key(value) => ("key", value.into()),
+                Self::Value(value) => ("value", value.into()),
             };
             ::prisma_client_rust::SerializedWhereInput::new(name, value.into())
         }
     }
     #[derive(Clone)]
     pub enum UniqueWhereParam {
-        KeyPlatformFilenameEquals(String, MinecraftPlatform, String),
+        PlatformNamespaceLanguageKeyEquals(MinecraftPlatform, String, String, String),
     }
     impl From<UniqueWhereParam> for WhereParam {
         fn from(value: UniqueWhereParam) -> Self {
             match value {
-                UniqueWhereParam::KeyPlatformFilenameEquals(key, platform, filename) => {
-                    Self::KeyPlatformFilenameEquals(key, platform, filename)
-                }
+                UniqueWhereParam::PlatformNamespaceLanguageKeyEquals(
+                    platform,
+                    namespace,
+                    language,
+                    key,
+                ) => Self::PlatformNamespaceLanguageKeyEquals(platform, namespace, language, key),
             }
         }
     }
@@ -1847,7 +1861,7 @@ pub mod word {
         type Cursor = UniqueWhereParam;
         const MODEL: &'static str = "Word";
         fn scalar_selections() -> Vec<::prisma_client_rust::Selection> {
-            ["platform", "filename", "key", "value", "language"]
+            ["platform", "namespace", "language", "key", "value"]
                 .into_iter()
                 .map(::prisma_client_rust::sel)
                 .collect()
@@ -1882,16 +1896,14 @@ pub mod word {
         }
         pub fn create(
             self,
+            file: super::language_file::UniqueWhereParam,
             key: String,
             value: String,
-            language: String,
-            file: super::language_file::UniqueWhereParam,
             mut _params: Vec<SetParam>,
         ) -> Create<'a> {
+            _params.push(file::connect(file));
             _params.push(key::set(key));
             _params.push(value::set(value));
-            _params.push(language::set(language));
-            _params.push(file::connect(file));
             Create::new(self.client, _params)
         }
         pub fn create_many(
@@ -1907,12 +1919,12 @@ pub mod word {
         ) -> CreateMany<'a> {
             let data = data
                 .into_iter()
-                .map(|(platform, filename, key, value, language, mut _params)| {
+                .map(|(platform, namespace, language, key, value, mut _params)| {
                     _params.push(platform::set(platform));
-                    _params.push(filename::set(filename));
+                    _params.push(namespace::set(namespace));
+                    _params.push(language::set(language));
                     _params.push(key::set(key));
                     _params.push(value::set(value));
-                    _params.push(language::set(language));
                     _params
                 })
                 .collect();
@@ -1931,19 +1943,17 @@ pub mod word {
         pub fn upsert(
             self,
             _where: UniqueWhereParam,
-            (key, value, language, file, mut _params): (
-                String,
-                String,
-                String,
+            (file, key, value, mut _params): (
                 super::language_file::UniqueWhereParam,
+                String,
+                String,
                 Vec<SetParam>,
             ),
             _update: Vec<SetParam>,
         ) -> Upsert<'a> {
+            _params.push(file::connect(file));
             _params.push(key::set(key));
             _params.push(value::set(value));
-            _params.push(language::set(language));
-            _params.push(file::connect(file));
             Upsert::new(self.client, _where.into(), _params, _update)
         }
         pub fn delete(self, _where: UniqueWhereParam) -> Delete<'a> {
@@ -2042,23 +2052,23 @@ pub mod _prisma {
     pub enum LanguageFileScalarFieldEnum {
         #[serde(rename = "platform")]
         Platform,
-        #[serde(rename = "filename")]
-        Filename,
+        #[serde(rename = "namespace")]
+        Namespace,
+        #[serde(rename = "language")]
+        Language,
         #[serde(rename = "game_version")]
         GameVersion,
         #[serde(rename = "latest_update")]
         LatestUpdate,
-        #[serde(rename = "language")]
-        Language,
     }
     impl ToString for LanguageFileScalarFieldEnum {
         fn to_string(&self) -> String {
             match self {
                 Self::Platform => "platform".to_string(),
-                Self::Filename => "filename".to_string(),
+                Self::Namespace => "namespace".to_string(),
+                Self::Language => "language".to_string(),
                 Self::GameVersion => "game_version".to_string(),
                 Self::LatestUpdate => "latest_update".to_string(),
-                Self::Language => "language".to_string(),
             }
         }
     }
@@ -2103,23 +2113,23 @@ pub mod _prisma {
     pub enum WordScalarFieldEnum {
         #[serde(rename = "platform")]
         Platform,
-        #[serde(rename = "filename")]
-        Filename,
+        #[serde(rename = "namespace")]
+        Namespace,
+        #[serde(rename = "language")]
+        Language,
         #[serde(rename = "key")]
         Key,
         #[serde(rename = "value")]
         Value,
-        #[serde(rename = "language")]
-        Language,
     }
     impl ToString for WordScalarFieldEnum {
         fn to_string(&self) -> String {
             match self {
                 Self::Platform => "platform".to_string(),
-                Self::Filename => "filename".to_string(),
+                Self::Namespace => "namespace".to_string(),
+                Self::Language => "language".to_string(),
                 Self::Key => "key".to_string(),
                 Self::Value => "value".to_string(),
-                Self::Language => "language".to_string(),
             }
         }
     }

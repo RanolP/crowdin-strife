@@ -14,8 +14,7 @@ regex = "1.7.1"
 strum = "0.24.1"
 
 [dependencies.prisma-client-rust]
- git = "https://github.com/Brendonovich/prisma-client-rust"
- rev = "1f6474396363bab8c4cdd70c342055779b36909d"
- default-features = false
- features = ["mysql"]
- 
+git = "https://github.com/Brendonovich/prisma-client-rust"
+tag = "0.6.5"
+default-features = false
+features = ["mysql"]

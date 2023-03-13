@@ -20,6 +20,16 @@ workspace = false
 command = "cargo"
 args = ["run", "-p", "update-java-asset"]
 
+[tasks.update-bedrock-asset]
+workspace = false
+command = "cargo"
+args = ["run", "-p", "update-bedrock-asset"]
+
+[tasks.update-dungeons-asset]
+workspace = false
+command = "cargo"
+args = ["run", "-p", "update-dungeons-asset"]
+
 [tasks.app]
 workspace = false
 command = "cargo"

@@ -7,5 +7,7 @@ members = [
     "crates/engine",
     "crates/prisma",
     "crates/update-java-asset",
+    "crates/update-bedrock-asset",
+    "crates/update-dungeons-asset",
     "crates/query",
 ]

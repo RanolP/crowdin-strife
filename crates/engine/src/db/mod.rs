@@ -91,13 +91,13 @@ pub struct TmWord {
 
 pub struct Upload {
     pub platform: MinecraftPlatform,
-    pub filename: String,
     pub language: Language,
     pub game_version: String,
     pub words: Vec<UploadWord>,
 }
 
 pub struct UploadWord {
+    pub namespace: String,
     pub key: String,
     pub value: String,
 }

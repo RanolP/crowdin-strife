@@ -27,7 +27,7 @@ async fn main() -> eyre::Result<()> {
                 take: 10,
             })
             .await?;
-        println!("{}", result.game_version);
+        writeln!(stdout, "{}", result.game_version)?;
 
         for word in result.list.items {
             writeln!(

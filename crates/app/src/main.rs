@@ -1,3 +1,5 @@
+use std::env;
+
 use app::commands::{handle_unknown, RootCommand};
 use engine::{
     db::{PrismaDatabase, TmDatabase},
@@ -69,15 +71,14 @@ where
 
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
-    dotenvy::dotenv().ok();
-    let is_production = dotenvy::var("ENVIRONMENT")
+    let is_production = env::var("ENVIRONMENT")
         .map(|x| x == "production")
         .unwrap_or(false);
     let public_key = is_production
-        .then(|| dotenvy::var("DISCORD_PUBLIC_KEY"))
+        .then(|| env::var("DISCORD_PUBLIC_KEY"))
         .transpose()?;
-    let token = dotenvy::var("DISCORD_TOKEN")?;
-    let application_id: u64 = dotenvy::var("DISCORD_APP_ID")?.parse()?;
+    let token = env::var("DISCORD_TOKEN")?;
+    let application_id: u64 = env::var("DISCORD_APP_ID")?.parse()?;
 
     let database = PrismaDatabase::connect().await?;
 

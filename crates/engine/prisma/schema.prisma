@@ -5,7 +5,7 @@ datasource db {
 }
 
 generator client {
-  provider = "cargo prisma"
+  provider = "cargo run -p prisma"
   output   = "../src/prisma.rs"
 }
 
@@ -16,25 +16,27 @@ enum MinecraftPlatform {
 }
 
 model LanguageFile {
-  platform      MinecraftPlatform
-  filename      String
+  platform  MinecraftPlatform
+  namespace String
+  language  String
+
   game_version  String
   latest_update DateTime
-  language      String
-  Word          Word[]
 
-  @@id([platform, filename])
+  Word Word[]
+
+  @@id([platform, namespace, language])
 }
 
 model Word {
-  platform MinecraftPlatform
-  filename String
-  key      String
-  value    String            @db.Text
-  language String
+  platform  MinecraftPlatform
+  namespace String
+  language  String
+  file      LanguageFile      @relation(fields: [platform, namespace, language], references: [platform, namespace, language])
 
-  file LanguageFile @relation(fields: [platform, filename], references: [platform, filename])
+  key   String
+  value String @db.Text
 
-  @@id([key, platform, filename])
-  @@index([platform, filename])
+  @@id([platform, namespace, language, key])
+  @@index([platform, namespace, language])
 }
