@@ -1,7 +1,27 @@
-env_files = [
-    { path = "./.env.development", profile = "development" },
-    { path = "./.env.production", profile = "production" },
-    { path = "./.env" }
+env_scripts = [
+'''
+#!@duckscript
+handle = map
+
+if is_path_exists ./.env
+    text = readfile ./.env
+    map_load_properties ${handle} ${text}
+end
+
+if eq ${CARGO_MAKE_CARGO_PROFILE} dev
+    if is_path_exists ./.env.development
+        text = readfile ./.env.development
+        map_load_properties ${handle} ${text}
+    end
+else
+    if is_path_exists ./.env.production
+        text = readfile ./.env.production
+        map_load_properties ${handle} ${text}
+    end
+end
+
+set_env --handle ${handle}
+'''
 ]
 
 [config]

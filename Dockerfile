@@ -24,4 +24,7 @@ COPY --from=builder \
     /app/target/release/app \
     /usr/bin/app
 
+RUN apt-get update
+RUN apt-get install -y ca-certificates
+
 ENTRYPOINT [ "/usr/bin/app" ]
