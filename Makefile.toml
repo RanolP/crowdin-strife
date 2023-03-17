@@ -4,33 +4,30 @@ env_files = [
     { path = "./.env" }
 ]
 
+[config]
+default_to_workspace = false
+
 [tasks.prisma]
-workspace = false
 command = "cargo"
 cwd = "crates/engine"
 args = ["run", "-p", "prisma", "--", "${@}"]
 
 [tasks.query]
-workspace = false
 command = "cargo"
 args = ["run", "-p", "query"]
 
 [tasks.update-java-asset]
-workspace = false
 command = "cargo"
 args = ["run", "-p", "update-java-asset"]
 
 [tasks.update-bedrock-asset]
-workspace = false
 command = "cargo"
 args = ["run", "-p", "update-bedrock-asset"]
 
 [tasks.update-dungeons-asset]
-workspace = false
 command = "cargo"
 args = ["run", "-p", "update-dungeons-asset"]
 
 [tasks.app]
-workspace = false
 command = "cargo"
 args = ["run", "-p", "app"]
