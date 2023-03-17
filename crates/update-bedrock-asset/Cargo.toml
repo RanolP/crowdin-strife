@@ -6,6 +6,11 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+eyre = "0.6.8"
+color-eyre = "0.6.2"
+tokio = "1.26.0"
+engine = { path = "../engine" }
+
 serde_json = { version = "1", default-features = false, features = [] }
 java-properties = "1.4.1"
 encoding = "0.2.33"

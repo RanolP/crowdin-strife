@@ -1,3 +1,3 @@
 pub mod db;
 pub mod env;
-pub mod prisma;
+pub(crate) mod prisma;
