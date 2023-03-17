@@ -1,0 +1,53 @@
+env_scripts = [
+'''
+#!@duckscript
+handle = map
+
+if is_path_exists ./.env
+    text = readfile ./.env
+    map_load_properties ${handle} ${text}
+end
+
+if eq ${CARGO_MAKE_CARGO_PROFILE} dev
+    if is_path_exists ./.env.development
+        text = readfile ./.env.development
+        map_load_properties ${handle} ${text}
+    end
+else
+    if is_path_exists ./.env.production
+        text = readfile ./.env.production
+        map_load_properties ${handle} ${text}
+    end
+end
+
+set_env --handle ${handle}
+'''
+]
+
+[config]
+default_to_workspace = false
+
+[tasks.prisma]
+command = "cargo"
+cwd = "crates/engine"
+args = ["run", "-p", "prisma", "--", "${@}"]
+
+[tasks.query]
+command = "cargo"
+args = ["run", "-p", "query"]
+
+[tasks.update-java-asset]
+command = "cargo"
+args = ["run", "-p", "update-java-asset"]
+
+[tasks.update-bedrock-asset]
+command = "cargo"
+args = ["run", "-p", "update-bedrock-asset"]
+
+[tasks.update-dungeons-asset]
+command = "cargo"
+args = ["run", "-p", "update-dungeons-asset"]
+
+[tasks.app]
+command = "cargo"
+args = ["run", "-p", "app"]

@@ -1,0 +1,42 @@
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider = "cargo run -p prisma"
+  output   = "../src/prisma.rs"
+}
+
+enum MinecraftPlatform {
+  Java
+  Bedrock
+  Dungeons
+}
+
+model LanguageFile {
+  platform  MinecraftPlatform
+  namespace String
+  language  String
+
+  game_version  String
+  latest_update DateTime
+
+  Word Word[]
+
+  @@id([platform, namespace, language])
+}
+
+model Word {
+  platform  MinecraftPlatform
+  namespace String
+  language  String
+  file      LanguageFile      @relation(fields: [platform, namespace, language], references: [platform, namespace, language])
+
+  key   String
+  value String @db.Text
+
+  @@id([platform, namespace, language, key])
+  @@index([platform, namespace, language])
+}
