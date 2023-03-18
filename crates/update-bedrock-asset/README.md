@@ -1,5 +1,7 @@
 # # update-bedrock-asset
 
+[Mojang/bedrock-samples](https://github.com/Mojang/bedrock-samples)가 공개되긴 했지만 실험적 기능은 올려주지 않아서 직접 뜯습니다.
+
 베드락 UWP 앱 폴더 구조
 
 
