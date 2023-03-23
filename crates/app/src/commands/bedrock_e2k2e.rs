@@ -27,10 +27,6 @@ pub struct K2E {
     page: Option<i64>,
 }
 
-fn read_lang_file<'a>(src: &'a str) -> eyre::Result<HashMap<String, String>> {
-    Ok(serde_json::from_str(src)?)
-}
-
 impl E2K {
     pub async fn execute(self, api: &(impl TmDatabase + Sync + Send)) -> eyre::Result<String> {
         search_tm(

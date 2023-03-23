@@ -25,18 +25,18 @@ model LanguageFile {
 
   Word Word[]
 
-  @@id([platform, namespace, language])
+  @@id([language, platform, namespace])
 }
 
 model Word {
   platform  MinecraftPlatform
   namespace String
   language  String
-  file      LanguageFile      @relation(fields: [platform, namespace, language], references: [platform, namespace, language])
+  file      LanguageFile      @relation(fields: [language, platform, namespace], references: [language, platform, namespace])
 
   key   String
   value String @db.Text
 
-  @@id([platform, namespace, language, key])
-  @@index([platform, namespace, language])
+  @@id([language, platform, namespace, key])
+  @@index([language, platform, namespace])
 }
