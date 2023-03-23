@@ -23,12 +23,12 @@ model LanguageFile {
   game_version  String
   latest_update DateTime
 
-  Word Word[]
+  entries Entry[]
 
   @@id([language, platform, namespace])
 }
 
-model Word {
+model Entry {
   platform  MinecraftPlatform
   namespace String
   language  String
