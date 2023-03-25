@@ -47,36 +47,43 @@ impl TmDatabase for PrismaDatabase {
         struct QueryResult {
             key: String,
             src: String,
-            dst: String,
+            dst: Option<String>,
         }
         let result: Vec<QueryResult> = self
             .client
             ._query_raw(raw!(
                 r#"
                     SELECT
-                        t1.key,
-                        t1.value AS src,
-                        t2.value AS dst
+                        t1.key AS `key`, src, dst
                     FROM
-                        Entry t1,
-                        Entry t2
-                    WHERE
-                        t1.key = t2.key AND
-                        t1.language = {} AND
-                        t2.language = {} AND
-                        t1.platform = {} AND
-                        t2.platform = {} AND
-                        t1.namespace = t2.namespace AND
-                        t1.value COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', {}, '%')
-                    ORDER BY t1.key ASC
+                        (
+                            SELECT `key`, namespace, value AS src FROM
+                                Entry t1
+                            WHERE
+                                language = {} AND
+                                platform = {} AND
+                                value COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', {}, '%')
+                        ) AS t1
+                        LEFT JOIN
+                        (
+                            SELECT `key`, namespace, value AS dst FROM
+                                Entry t2
+                            WHERE
+                                language = {} AND
+                                platform = {}
+                        ) AS t2
+                        ON
+                            t1.key = t2.key AND
+                            t1.namespace = t2.namespace
+                    ORDER BY `key` ASC
                     LIMIT {}
                     OFFSET {}
                 "#,
                 source.as_str().into(),
-                target.as_str().into(),
-                platform.to_string().into(),
                 platform.to_string().into(),
                 query.text.clone().into(),
+                target.as_str().into(),
+                platform.to_string().into(),
                 query.take.into(),
                 query.skip.into()
             ))
@@ -90,10 +97,14 @@ impl TmDatabase for PrismaDatabase {
                     language: source.clone(),
                     content: res.src,
                 },
-                targets: vec![TmEntry {
-                    language: target.clone(),
-                    content: res.dst,
-                }],
+                targets: res
+                    .dst
+                    .map(|content| TmEntry {
+                        language: target.clone(),
+                        content,
+                    })
+                    .into_iter()
+                    .collect(),
             })
             .collect();
         let game_version = self
