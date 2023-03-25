@@ -27,7 +27,12 @@ pub async fn search_tm(
     for entry in &res.list.items {
         message.push_str(&format!(
             "{} => {}\n",
-            entry.source.content, entry.targets[0].content
+            entry.source.content,
+            entry
+                .targets
+                .get(0)
+                .map(|target| &*target.content)
+                .unwrap_or("*번역 없음*")
         ));
     }
 

@@ -33,7 +33,11 @@ async fn main() -> eyre::Result<()> {
             writeln!(
                 stdout,
                 "{} => {}",
-                word.source.content, word.targets[0].content
+                word.source.content,
+                word.targets
+                    .get(0)
+                    .map(|target| &target.content)
+                    .unwrap_or(&word.source.content)
             )?;
         }
         writeln!(
