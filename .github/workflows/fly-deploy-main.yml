@@ -1,0 +1,17 @@
+name: Fly Deploy Main
+
+on:
+  push:
+    branches: [beta]
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+        with:
+          version: v0.0.498
+      - run: 'flyctl deploy --remote-only --app crowdin-strife'
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
