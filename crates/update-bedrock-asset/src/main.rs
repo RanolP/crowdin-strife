@@ -7,7 +7,7 @@ use std::{
 };
 
 use encoding::codec::utf_8::UTF8Encoding;
-use engine::db::{Language, MinecraftPlatform, PrismaDatabase, TmDatabase, Upload, UploadWord};
+use engine::db::{Language, MinecraftPlatform, PrismaDatabase, TmDatabase, Upload, UploadEntry};
 use eyre::bail;
 
 #[tokio::main]
@@ -74,7 +74,7 @@ async fn main() -> eyre::Result<()> {
         let en_us = fs::read_to_string(en_us)?;
         let en_us = read_lang_file(Cursor::new(en_us))?;
         for (key, value) in en_us {
-            english.push(UploadWord {
+            english.push(UploadEntry {
                 namespace: namespace.clone(),
                 key,
                 value,
@@ -84,7 +84,7 @@ async fn main() -> eyre::Result<()> {
         let ko_kr = fs::read_to_string(ko_kr)?;
         let ko_kr = read_lang_file(Cursor::new(ko_kr))?;
         for (key, value) in ko_kr {
-            korean.push(UploadWord {
+            korean.push(UploadEntry {
                 namespace: namespace.clone(),
                 key,
                 value,
@@ -99,7 +99,7 @@ async fn main() -> eyre::Result<()> {
             platform: MinecraftPlatform::Bedrock,
             language: Language::English,
             game_version: version.clone(),
-            words: english,
+            entries: english,
         })
         .await?;
 
@@ -108,7 +108,7 @@ async fn main() -> eyre::Result<()> {
             platform: MinecraftPlatform::Bedrock,
             language: Language::Korean,
             game_version: version.clone(),
-            words: korean,
+            entries: korean,
         })
         .await?;
     println!(

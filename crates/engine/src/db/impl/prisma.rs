@@ -9,10 +9,10 @@ use serde::Deserialize;
 
 use crate::{
     db::{
-        MinecraftPlatform, Pagination, SearchTmQuery, SearchTmResponse, TmDatabase, TmWord,
-        TmWordPair, Upload,
+        MinecraftPlatform, Pagination, SearchTmQuery, SearchTmResponse, TmDatabase, TmEntry,
+        TmEntryPair, Upload,
     },
-    prisma::{self, language_file, word, PrismaClient},
+    prisma::{self, entry, language_file, PrismaClient},
 };
 
 pub struct PrismaDatabase {
@@ -58,8 +58,8 @@ impl TmDatabase for PrismaDatabase {
                         t1.value AS src,
                         t2.value AS dst
                     FROM
-                        Word t1,
-                        Word t2
+                        Entry t1,
+                        Entry t2
                     WHERE
                         t1.key = t2.key AND
                         t1.language = {} AND
@@ -84,13 +84,13 @@ impl TmDatabase for PrismaDatabase {
             .await?;
         let items = result
             .into_iter()
-            .map(|res| TmWordPair {
+            .map(|res| TmEntryPair {
                 key: res.key,
-                source: TmWord {
+                source: TmEntry {
                     language: source.clone(),
                     content: res.src,
                 },
-                targets: vec![TmWord {
+                targets: vec![TmEntry {
                     language: target.clone(),
                     content: res.dst,
                 }],
@@ -115,11 +115,11 @@ impl TmDatabase for PrismaDatabase {
                     SELECT
                         COUNT(*) AS count
                     FROM
-                        Word
+                        Entry
                     WHERE
-                        Word.language = {} AND
-                        Word.platform = {} AND
-                        Word.value COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', {}, '%')
+                        Entry.language = {} AND
+                        Entry.platform = {} AND
+                        Entry.value COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', {}, '%')
                 "#,
                 source.as_str().into(),
                 platform.to_string().into(),
@@ -143,9 +143,9 @@ impl TmDatabase for PrismaDatabase {
             .from_utc_datetime(&Utc::now().naive_utc());
 
         let namespaces: HashSet<_> = upload
-            .words
+            .entries
             .iter()
-            .map(|word| word.namespace.clone())
+            .map(|entry| entry.namespace.clone())
             .collect();
 
         let (controller, client) = self
@@ -185,27 +185,27 @@ impl TmDatabase for PrismaDatabase {
             .await?;
 
         client
-            .word()
+            .entry()
             .delete_many(vec![
-                word::platform::equals(platform.clone()),
-                word::language::equals(upload.language.as_str().to_string()),
+                entry::platform::equals(platform.clone()),
+                entry::language::equals(upload.language.as_str().to_string()),
             ])
             .exec()
             .await?;
 
         client
-            .word()
+            .entry()
             .create_many(
                 upload
-                    .words
+                    .entries
                     .into_iter()
-                    .map(|word| {
+                    .map(|entry| {
                         (
                             platform.clone(),
-                            word.namespace,
+                            entry.namespace,
                             upload.language.as_str().to_string(),
-                            word.key,
-                            word.value,
+                            entry.key,
+                            entry.value,
                             vec![],
                         )
                     })
