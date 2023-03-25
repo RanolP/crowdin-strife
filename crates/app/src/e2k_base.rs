@@ -1,12 +1,14 @@
 use engine::db::{MinecraftPlatform, SearchTmQuery, SourceLanguage, TmDatabase};
 
+use crate::message::StructuredMessageBox;
+
 pub async fn search_tm(
     api: &(impl TmDatabase + Sync + Send),
     platform: MinecraftPlatform,
     source: SourceLanguage,
     query: String,
     page: Option<i64>,
-) -> eyre::Result<String> {
+) -> eyre::Result<StructuredMessageBox> {
     let query = query.to_lowercase();
     let page = page.unwrap_or(1) - 1;
 
@@ -42,5 +44,5 @@ pub async fn search_tm(
         message.push_str(&format!("페이지 {} / {}", page + 1, total_pages));
     }
 
-    Ok(message)
+    Ok(Box::new(message))
 }

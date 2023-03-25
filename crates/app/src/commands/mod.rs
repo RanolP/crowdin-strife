@@ -3,6 +3,8 @@ use kal::command_group;
 
 pub use unknown::handle_unknown;
 
+use crate::message::StructuredMessageBox;
+
 mod bedrock_e2k2e;
 mod dungeons_e2k2e;
 mod java_e2k2e;
@@ -26,7 +28,7 @@ impl RootCommand {
         self,
         env: &'a (impl Env + Sync + Send),
         api: &'a (impl TmDatabase + Sync + Send),
-    ) -> eyre::Result<String> {
+    ) -> eyre::Result<StructuredMessageBox> {
         match self {
             RootCommand::Version(version) => Ok(version.execute(env).await),
             RootCommand::JavaE2K(java_e2k) => java_e2k.execute(api).await,

@@ -34,9 +34,10 @@ where
                 let message_output = if let Ok(command) = RootCommand::parse(&preflights) {
                     match command.execute(&self.env, &self.database).await {
                         Ok(output) => output,
-                        Err(err) => {
-                            format!("명령어 실행에 실패했습니다:\n```\n{}\n```", err.to_string())
-                        }
+                        Err(err) => Box::new(format!(
+                            "명령어 실행에 실패했습니다:\n```\n{}\n```",
+                            err.to_string()
+                        )),
                     }
                 } else {
                     handle_unknown(&preflights).await
@@ -46,7 +47,9 @@ where
                     .create_interaction_response(&ctx.http, |response| {
                         response
                             .kind(InteractionResponseType::ChannelMessageWithSource)
-                            .interaction_response_data(|data| data.content(message_output))
+                            .interaction_response_data(move |data| {
+                                message_output.write_boxed_into(data)
+                            })
                     })
                     .await
                     .unwrap();
