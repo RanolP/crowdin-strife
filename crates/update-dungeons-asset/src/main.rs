@@ -6,7 +6,7 @@ use std::{
 };
 
 use aes::cipher::KeyInit;
-use engine::db::{Language, MinecraftPlatform, PrismaDatabase, TmDatabase, Upload, UploadWord};
+use engine::db::{Language, MinecraftPlatform, PrismaDatabase, TmDatabase, Upload, UploadEntry};
 use memmap2::Mmap;
 use repak::PakReader;
 
@@ -77,13 +77,13 @@ async fn main() -> eyre::Result<()> {
                 None
             };
 
-            let mut words = Vec::new();
+            let mut entries = Vec::new();
 
             if let Some(language) = language_detected {
                 let len = locres.len();
                 for (i, ns) in locres.into_values().enumerate() {
                     let namespace = ns.name().to_string();
-                    let mut map = HashMap::<String, UploadWord>::new();
+                    let mut map = HashMap::<String, UploadEntry>::new();
                     println!("{}/{} - {:?}", i + 1, len, ns.name());
                     for (key, value) in ns.into_iter() {
                         map.entry(key.to_lowercase())
@@ -95,13 +95,13 @@ async fn main() -> eyre::Result<()> {
                                     );
                                 }
                             })
-                            .or_insert(UploadWord {
+                            .or_insert(UploadEntry {
                                 namespace: namespace.clone(),
                                 key,
                                 value,
                             });
                     }
-                    words.extend(map.into_values());
+                    entries.extend(map.into_values());
                 }
 
                 database
@@ -109,7 +109,7 @@ async fn main() -> eyre::Result<()> {
                         platform: MinecraftPlatform::Dungeons,
                         language: language.clone(),
                         game_version: version.clone(),
-                        words,
+                        entries,
                     })
                     .await?;
             }

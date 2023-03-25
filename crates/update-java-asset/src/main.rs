@@ -2,7 +2,7 @@
 
 use std::{collections::HashMap, io::Cursor, time::Instant};
 
-use engine::db::{Language, MinecraftPlatform, PrismaDatabase, TmDatabase, Upload, UploadWord};
+use engine::db::{Language, MinecraftPlatform, PrismaDatabase, TmDatabase, Upload, UploadEntry};
 use mcapi::launcher::{
     AssetBundle, DownloadAsset, DownloadGame, GetAssetBundle, GetAssetIndex, GetVersionManifest,
     Version,
@@ -26,9 +26,9 @@ async fn main() -> eyre::Result<()> {
             platform: MinecraftPlatform::Java,
             language: Language::English,
             game_version: version.id.clone(),
-            words: en_us
+            entries: en_us
                 .into_iter()
-                .map(|(key, value)| UploadWord {
+                .map(|(key, value)| UploadEntry {
                     namespace: "".to_string(),
                     key,
                     value,
@@ -48,9 +48,9 @@ async fn main() -> eyre::Result<()> {
             platform: MinecraftPlatform::Java,
             language: Language::Korean,
             game_version: version.id.clone(),
-            words: ko_kr
+            entries: ko_kr
                 .into_iter()
-                .map(|(key, value)| UploadWord {
+                .map(|(key, value)| UploadEntry {
                     namespace: "".to_string(),
                     key,
                     value,

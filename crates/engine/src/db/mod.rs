@@ -71,20 +71,20 @@ pub struct SearchTmQuery {
 
 pub struct SearchTmResponse {
     pub game_version: String,
-    pub list: Pagination<TmWordPair>,
+    pub list: Pagination<TmEntryPair>,
 }
 
 pub struct Pagination<T> {
     pub total: usize,
     pub items: Vec<T>,
 }
-pub struct TmWordPair {
+pub struct TmEntryPair {
     pub key: String,
-    pub source: TmWord,
-    pub targets: Vec<TmWord>,
+    pub source: TmEntry,
+    pub targets: Vec<TmEntry>,
 }
 
-pub struct TmWord {
+pub struct TmEntry {
     pub language: Language,
     pub content: String,
 }
@@ -93,10 +93,10 @@ pub struct Upload {
     pub platform: MinecraftPlatform,
     pub language: Language,
     pub game_version: String,
-    pub words: Vec<UploadWord>,
+    pub entries: Vec<UploadEntry>,
 }
 
-pub struct UploadWord {
+pub struct UploadEntry {
     pub namespace: String,
     pub key: String,
     pub value: String,
