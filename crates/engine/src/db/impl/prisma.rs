@@ -156,6 +156,15 @@ impl TmDatabase for PrismaDatabase {
             .await?;
 
         client
+            .entry()
+            .delete_many(vec![
+                entry::platform::equals(platform.clone()),
+                entry::language::equals(upload.language.as_str().to_string()),
+            ])
+            .exec()
+            .await?;
+
+        client
             .language_file()
             .delete_many(vec![
                 language_file::platform::equals(platform.clone()),
@@ -181,15 +190,6 @@ impl TmDatabase for PrismaDatabase {
                     })
                     .collect(),
             )
-            .exec()
-            .await?;
-
-        client
-            .entry()
-            .delete_many(vec![
-                entry::platform::equals(platform.clone()),
-                entry::language::equals(upload.language.as_str().to_string()),
-            ])
             .exec()
             .await?;
 
