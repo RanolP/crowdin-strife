@@ -1,7 +1,8 @@
 use std::io::{stdin, stdout, BufRead, Write};
 
-use engine::db::{
-    MinecraftPlatform, PrismaDatabase, SearchTmQuery, SourceLanguage::Auto, TmDatabase,
+use engine::{
+    db::{MinecraftPlatform, PrismaDatabase, SearchTmQuery, TmDatabase},
+    language::Language,
 };
 
 #[tokio::main]
@@ -18,11 +19,21 @@ async fn main() -> eyre::Result<()> {
         let mut buf = String::new();
         stdin.read_line(&mut buf)?;
 
+        let text = buf.trim();
+
+        let (inferred_source, inferred_target) =
+            if Language::infer_from_text(text).contains(&Language::Korean) {
+                (Language::Korean, Language::English)
+            } else {
+                (Language::English, Language::Korean)
+            };
+
         let result = database
             .search(SearchTmQuery {
-                source: Auto,
+                source: inferred_source,
+                target: inferred_target,
                 platform: MinecraftPlatform::Java,
-                text: buf.trim().to_string(),
+                text: text.to_string(),
                 skip: 0,
                 take: 10,
             })

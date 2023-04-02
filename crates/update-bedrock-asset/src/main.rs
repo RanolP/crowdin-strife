@@ -7,7 +7,10 @@ use std::{
 };
 
 use encoding::codec::utf_8::UTF8Encoding;
-use engine::db::{Language, MinecraftPlatform, PrismaDatabase, TmDatabase, Upload, UploadEntry};
+use engine::{
+    db::{MinecraftPlatform, PrismaDatabase, TmDatabase, Upload, UploadEntry},
+    language::Language,
+};
 use eyre::bail;
 
 pub struct WindowsApp {

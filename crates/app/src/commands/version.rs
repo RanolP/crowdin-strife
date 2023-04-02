@@ -1,7 +1,7 @@
 use engine::env::Env;
 use kal::Command;
 
-use crate::message::StructuredMessageBox;
+use crate::message::BoxedStructuredMessage;
 
 /// 현재 실행 중인 봇의 버전을 가져옵니다.
 #[derive(Command)]
@@ -9,7 +9,7 @@ use crate::message::StructuredMessageBox;
 pub struct Version;
 
 impl Version {
-    pub async fn execute(self, env: &(dyn Env + Sync + Send)) -> StructuredMessageBox {
+    pub async fn execute(self, env: &(dyn Env + Sync + Send)) -> BoxedStructuredMessage {
         Box::new(format!(
             "버전 : {}",
             env.get("VERSION")

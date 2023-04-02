@@ -1,6 +1,6 @@
 use serenity::builder::CreateInteractionResponseData;
 
-pub type StructuredMessageBox = Box<dyn StructuredMessage + Sync + Send>;
+pub type BoxedStructuredMessage = Box<dyn StructuredMessage + Sync + Send>;
 
 pub trait StructuredMessage {
     fn write_boxed_into<'a, 'b>(

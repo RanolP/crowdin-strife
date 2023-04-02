@@ -1,8 +1,8 @@
 use kal::{CommandArgumentValue, CommandFragment};
 
-use crate::message::StructuredMessageBox;
+use crate::message::BoxedStructuredMessage;
 
-pub async fn handle_unknown(preflights: &[CommandFragment]) -> StructuredMessageBox {
+pub async fn handle_unknown(preflights: &[CommandFragment]) -> BoxedStructuredMessage {
     let mut command = String::new();
 
     for preflight in preflights {

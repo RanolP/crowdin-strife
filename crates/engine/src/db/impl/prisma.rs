@@ -41,8 +41,8 @@ impl TmDatabase for PrismaDatabase {
 
     async fn search(&self, query: SearchTmQuery) -> Result<SearchTmResponse, Self::Error> {
         let platform = into_prisma_minecraft_platform(query.platform);
-        let source = query.source.guess(&query.text);
-        let target = source.as_e2k_counterpart();
+        let source = query.source;
+        let target = query.target;
         #[derive(Deserialize)]
         struct QueryResult {
             key: String,
@@ -79,10 +79,10 @@ impl TmDatabase for PrismaDatabase {
                     LIMIT {}
                     OFFSET {}
                 "#,
-                source.as_str().into(),
+                source.id().into(),
                 platform.to_string().into(),
                 query.text.clone().into(),
-                target.as_str().into(),
+                target.id().into(),
                 platform.to_string().into(),
                 query.take.into(),
                 query.skip.into()
@@ -132,7 +132,7 @@ impl TmDatabase for PrismaDatabase {
                         Entry.platform = {} AND
                         Entry.value COLLATE utf8mb4_unicode_ci LIKE CONCAT('%', {}, '%')
                 "#,
-                source.as_str().into(),
+                source.id().into(),
                 platform.to_string().into(),
                 query.text.clone().into()
             ))
@@ -170,7 +170,7 @@ impl TmDatabase for PrismaDatabase {
             .entry()
             .delete_many(vec![
                 entry::platform::equals(platform.clone()),
-                entry::language::equals(upload.language.as_str().to_string()),
+                entry::language::equals(upload.language.id().to_string()),
             ])
             .exec()
             .await?;
@@ -179,7 +179,7 @@ impl TmDatabase for PrismaDatabase {
             .language_file()
             .delete_many(vec![
                 language_file::platform::equals(platform.clone()),
-                language_file::language::equals(upload.language.as_str().to_string()),
+                language_file::language::equals(upload.language.id().to_string()),
             ])
             .exec()
             .await?;
@@ -193,7 +193,7 @@ impl TmDatabase for PrismaDatabase {
                         (
                             platform.clone(),
                             namespace,
-                            upload.language.as_str().to_string(),
+                            upload.language.id().to_string(),
                             upload.game_version.clone(),
                             now.clone(),
                             vec![],
@@ -214,7 +214,7 @@ impl TmDatabase for PrismaDatabase {
                         (
                             platform.clone(),
                             entry.namespace,
-                            upload.language.as_str().to_string(),
+                            upload.language.id().to_string(),
                             entry.key,
                             entry.value,
                             vec![],

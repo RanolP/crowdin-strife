@@ -54,7 +54,25 @@ where
                     .await
                     .unwrap();
             }
-            Interaction::MessageComponent(_) => {}
+            Interaction::MessageComponent(message_component) => {
+                dbg!(
+                    ctx.http
+                        .get_message(
+                            message_component.channel_id.0,
+                            message_component.message.id.0
+                        )
+                        .await
+                        .unwrap()
+                        .interaction
+                );
+                match &*message_component.data.custom_id {
+                    "prev" => {}
+                    "next" => {}
+                    _ => {
+                        println!("wtf");
+                    }
+                }
+            }
             Interaction::Autocomplete(_) => {}
             Interaction::ModalSubmit(_) => {}
         }

@@ -2,7 +2,10 @@
 
 use std::{collections::HashMap, io::Cursor, time::Instant};
 
-use engine::db::{Language, MinecraftPlatform, PrismaDatabase, TmDatabase, Upload, UploadEntry};
+use engine::{
+    db::{MinecraftPlatform, PrismaDatabase, TmDatabase, Upload, UploadEntry},
+    language::Language,
+};
 use mcapi::launcher::{
     AssetBundle, DownloadAsset, DownloadGame, GetAssetBundle, GetAssetIndex, GetVersionManifest,
     Version,
