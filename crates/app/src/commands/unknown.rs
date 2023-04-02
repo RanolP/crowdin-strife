@@ -1,6 +1,8 @@
 use kal::{CommandArgumentValue, CommandFragment};
 
-pub async fn handle_unknown(preflights: &[CommandFragment]) -> String {
+use crate::message::BoxedStructuredMessage;
+
+pub async fn handle_unknown(preflights: &[CommandFragment]) -> BoxedStructuredMessage {
     let mut command = String::new();
 
     for preflight in preflights {
@@ -35,5 +37,5 @@ pub async fn handle_unknown(preflights: &[CommandFragment]) -> String {
             }
         }
     }
-    format!("알 수 없는 명령어입니다: {command}")
+    Box::new(format!("알 수 없는 명령어입니다: {command}"))
 }

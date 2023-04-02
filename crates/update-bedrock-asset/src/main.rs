@@ -7,8 +7,16 @@ use std::{
 };
 
 use encoding::codec::utf_8::UTF8Encoding;
-use engine::db::{Language, MinecraftPlatform, PrismaDatabase, TmDatabase, Upload, UploadEntry};
+use engine::{
+    db::{MinecraftPlatform, PrismaDatabase, TmDatabase, Upload, UploadEntry},
+    language::Language,
+};
 use eyre::bail;
+
+pub struct WindowsApp {
+    id: &'static str,
+    publisher_id: &'static str,
+}
 
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
@@ -18,33 +26,48 @@ async fn main() -> eyre::Result<()> {
 
     let installation = env::var("BEDROCK_INSTALLATION")?;
 
-    let mut found = None;
+    let minecraft = WindowsApp {
+        id: "Microsoft.MinecraftUWP",
+        publisher_id: "8wekyb3d8bbwe",
+    };
+    let minecraft_preview = WindowsApp {
+        id: "Microsoft.MinecraftWindowsBeta",
+        publisher_id: "8wekyb3d8bbwe",
+    };
+
+    // later is preferred
+    let prioritized_minecraft_apps = vec![minecraft, minecraft_preview];
+
+    let mut found = vec![None; prioritized_minecraft_apps.len()];
 
     for folder in fs::read_dir(PathBuf::from(&installation))? {
         let folder = folder?;
         let path = folder.path();
         let filename = folder.file_name();
         let filename = filename.to_string_lossy().to_string();
-        if filename.contains("Microsoft.MinecraftUWP") {
-            let version = filename
-                .replace("Microsoft.MinecraftUWP_", "")
-                .replace("__8wekyb3d8bbwe", "")
-                .replace("_x64", "")
-                .replace("_x86", "");
-            let version_segment = version.split(".").collect::<Vec<_>>();
-            let major = version_segment[0];
-            let minor = version_segment[1];
-            let mut patch = version_segment[2];
-            if patch.len() > 2 {
-                patch = &patch[..2];
-            }
-            let version = format!("{major}.{minor}.{patch}");
+        for (id, app) in prioritized_minecraft_apps.iter().enumerate() {
+            if filename.contains(app.id) {
+                let version = filename
+                    .replace(&format!("{}_", app.id), "")
+                    .replace(&format!("__{}", app.publisher_id), "")
+                    .replace("_x64", "")
+                    .replace("_x86", "");
+                let version_segment = version.split(".").collect::<Vec<_>>();
+                let major = version_segment[0];
+                let minor = version_segment[1];
+                let mut patch = version_segment[2];
+                if patch.len() > 2 {
+                    patch = &patch[..2];
+                }
+                let version = format!("{major}.{minor}.{patch}");
 
-            found = Some((path, filename, version));
+                found[id] = Some((path, filename, version));
+                break;
+            }
         }
     }
 
-    let Some((folder, filename, version)) = found else {
+    let Some((folder, filename, version)) = found.into_iter().flatten().last() else {
         bail!("Cannot found installation of Microsoft.MinecraftUWP")
     };
 
