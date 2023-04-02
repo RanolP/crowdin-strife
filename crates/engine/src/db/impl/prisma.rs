@@ -171,7 +171,6 @@ impl TmDatabase for PrismaDatabase {
             .delete_many(vec![
                 entry::platform::equals(platform.clone()),
                 entry::language::equals(upload.language.id().to_string()),
-            ])
             .exec()
             .await?;
 
