@@ -11,26 +11,35 @@ pub fn serialize(
     target: Language,
     query: String,
     page: i64,
-) -> Vec<String> {
-    vec![
-        platform.name().to_string(),
+    total_pages: i64,
+) -> String {
+    serde_json::to_string(&(
+        platform.id().to_string(),
         source.id().to_string(),
         target.id().to_string(),
         query,
-        page.to_string(),
-    ]
+        page,
+        total_pages,
+    ))
+    .unwrap()
 }
 
 pub fn try_deserialize(
-    values: Vec<String>,
-) -> Option<(MinecraftPlatform, Language, Language, String, i64)> {
-    let platform = MinecraftPlatform::from_name(&values.get(0)?)?;
-    let source = Language::from_id(&values.get(1)?)?;
-    let target = Language::from_id(&values.get(2)?)?;
-    let query = values.get(3)?.clone();
-    let page = values.get(4)?.parse().ok()?;
+    s: &str,
+) -> Option<(MinecraftPlatform, Language, Language, String, i64, i64)> {
+    let (platform, source, target, query, page, total_pages): (
+        String,
+        String,
+        String,
+        String,
+        i64,
+        i64,
+    ) = serde_json::from_str(s).ok()?;
+    let platform = MinecraftPlatform::from_id(&platform)?;
+    let source = Language::from_id(&source)?;
+    let target = Language::from_id(&target)?;
 
-    Some((platform, source, target, query, page))
+    Some((platform, source, target, query, page, total_pages))
 }
 
 pub async fn search_tm(
@@ -48,7 +57,7 @@ pub async fn search_tm(
         .search(SearchTmQuery {
             source: source.clone(),
             target: target.clone(),
-            platform,
+            platform: platform.clone(),
             text: query.clone(),
             skip: 10 * (page - 1) as usize,
             take: 10,
@@ -63,6 +72,7 @@ pub async fn search_tm(
         target_language: target,
 
         game_version: res.game_version,
+        platform,
 
         entries: res.list.items,
 

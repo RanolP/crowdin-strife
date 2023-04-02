@@ -28,8 +28,8 @@ impl Language {
 
     pub fn name(&self) -> &'static str {
         match self {
-            Language::English => "English",
-            Language::Korean => "한국어 (Korean)",
+            Language::English => "English (US)",
+            Language::Korean => "Korean",
         }
     }
 }

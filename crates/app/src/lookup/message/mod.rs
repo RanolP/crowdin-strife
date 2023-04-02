@@ -1,7 +1,17 @@
-use engine::{db::TmEntryPair, language::Language};
-use serenity::{builder::CreateInteractionResponseData, model::prelude::component::ButtonStyle};
+use engine::{
+    db::{MinecraftPlatform, TmEntryPair},
+    language::Language,
+};
+use serenity::model::prelude::component::ButtonStyle;
 
-use crate::message::StructuredMessage;
+use crate::{
+    e2k_base::serialize,
+    message::{
+        ActionRow, ButtonAction, Component, ComponentButton, Embed, EmbedField, EmbedFooter,
+        StructuredMessage,
+    },
+    msgdata::encode_msgdata,
+};
 
 pub struct LookupResult {
     pub query: String,
@@ -10,6 +20,7 @@ pub struct LookupResult {
     pub target_language: Language,
 
     pub game_version: String,
+    pub platform: MinecraftPlatform,
 
     pub entries: Vec<TmEntryPair>,
 
@@ -18,68 +29,83 @@ pub struct LookupResult {
 }
 
 impl StructuredMessage for LookupResult {
-    fn write_boxed_into<'a, 'b>(
-        self: Box<Self>,
-        mut ctx: &'b mut CreateInteractionResponseData<'a>,
-    ) -> &'b mut CreateInteractionResponseData<'a> {
+    fn embed(&self) -> Option<crate::message::Embed> {
+        let mut source_entries = Vec::new();
+        let mut target_entries = Vec::new();
+
+        for entry in &self.entries {
+            source_entries.push(format!(
+                "{}{}",
+                entry.source.content.clone(),
+                encode_msgdata(entry.key.clone())
+            ));
+            target_entries.push(format!(
+                "{}{}",
+                entry
+                    .targets
+                    .get(0)
+                    .map(|entry| &*entry.content)
+                    .unwrap_or("*번역 없음*"),
+                encode_msgdata(entry.key.clone())
+            ));
+        }
+
+        Some(Embed {
+            title: Some(format!("▷ {}", self.query)),
+            description: Some(format!(
+                "{}{}",
+                self.game_version,
+                encode_msgdata(serialize(
+                    self.platform.clone(),
+                    self.source_language.clone(),
+                    self.target_language.clone(),
+                    self.query.clone(),
+                    (self.page - 1).try_into().unwrap(),
+                    self.total_pages.try_into().unwrap(),
+                ))
+            )),
+            fields: vec![
+                EmbedField {
+                    name: self.source_language.name().to_string(),
+                    value: source_entries.join("\n"),
+                    inline: true,
+                },
+                EmbedField {
+                    name: self.target_language.name().to_string(),
+                    value: target_entries.join("\n"),
+                    inline: true,
+                },
+            ],
+            footer: Some(EmbedFooter {
+                text: Some(format!("페이지 {} / {}", self.page, self.total_pages,)),
+            }),
+        })
+    }
+
+    fn components(&self) -> Vec<ActionRow> {
         let is_paged = self.total_pages > 1;
         let page = self.page;
         let total_pages = self.total_pages;
 
-        ctx = ctx.embed(|embed| {
-            let mut embed = embed.title(format!("\"{}\" at {}", self.query, self.game_version,));
-            for entry in self.entries {
-                embed = embed.fields(vec![
-                    ("key", format!("[i](?test=true \"{}\")", entry.key), true),
-                    (
-                        self.source_language.name(),
-                        format!("{}", entry.source.content),
-                        true,
-                    ),
-                    (
-                        self.target_language.name(),
-                        format!(
-                            "{}",
-                            entry
-                                .targets
-                                .get(0)
-                                .map(|entry| &*entry.content)
-                                .unwrap_or("*번역 없음*")
-                        ),
-                        true,
-                    ),
-                ]);
-            }
-            embed.footer(|footer| {
-                footer.text(format!("페이지 {} / {}", self.page, self.total_pages))
-            })
-        });
-
-        if is_paged {
-            ctx = ctx.components(|components| {
-                components.create_action_row(|mut action_row| {
-                    if page > 1 {
-                        action_row = action_row.create_button(|button| {
-                            button
-                                .label("이전 페이지")
-                                .style(ButtonStyle::Secondary)
-                                .custom_id("prev")
-                        })
-                    }
-                    if page < total_pages {
-                        action_row = action_row.create_button(|button| {
-                            button
-                                .label("다음 페이지")
-                                .style(ButtonStyle::Secondary)
-                                .custom_id("next")
-                        })
-                    }
-                    action_row
-                })
-            });
-            ctx
-        } else {
-            ctx
+        if !is_paged {
+            return vec![];
         }
+
+        vec![ActionRow {
+            items: vec![
+                Component::Button(ComponentButton {
+                    label: "이전 페이지".to_string(),
+                    style: Some(ButtonStyle::Secondary),
+                    action: ButtonAction::Id("prev".to_string()),
+                    disabled: Some(page == 1),
+                }),
+                Component::Button(ComponentButton {
+                    label: "다음 페이지".to_string(),
+                    style: Some(ButtonStyle::Secondary),
+                    action: ButtonAction::Id("next".to_string()),
+                    disabled: Some(page == total_pages),
+                }),
+            ],
+        }]
     }
 }

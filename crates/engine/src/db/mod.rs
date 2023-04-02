@@ -13,7 +13,7 @@ pub enum MinecraftPlatform {
 }
 
 impl MinecraftPlatform {
-    pub fn name(&self) -> &'static str {
+    pub fn id(&self) -> &'static str {
         match self {
             MinecraftPlatform::Java => "Java",
             MinecraftPlatform::Bedrock => "Bedrock",
@@ -21,7 +21,7 @@ impl MinecraftPlatform {
         }
     }
 
-    pub fn from_name(s: &str) -> Option<MinecraftPlatform> {
+    pub fn from_id(s: &str) -> Option<MinecraftPlatform> {
         match s {
             "Java" => Some(MinecraftPlatform::Java),
             "Bedrock" => Some(MinecraftPlatform::Bedrock),
