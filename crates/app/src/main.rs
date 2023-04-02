@@ -160,13 +160,12 @@ async fn main() -> eyre::Result<()> {
     ));
     let mut client = Client::builder(token, GatewayIntents::empty())
         .application_id(application_id)
-        .intents(GatewayIntents::MESSAGE_CONTENT)
         .event_handler(Handler { env, database })
         .await?;
 
     println!(
         "Invite bot with https://discord.com/api/oauth2/authorize?client_id={}&permissions={}&intents={}&scope={}",
-        application_id, Permissions::default().bits(), GatewayIntents::MESSAGE_CONTENT.bits(), "bot%20applications.commands",
+        application_id, Permissions::default().bits(), GatewayIntents::default().bits(), "bot%20applications.commands",
     );
 
     client.start().await?;

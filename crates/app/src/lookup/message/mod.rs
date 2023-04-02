@@ -60,7 +60,7 @@ impl StructuredMessage for LookupResult {
                     self.source_language.clone(),
                     self.target_language.clone(),
                     self.query.clone(),
-                    (self.page - 1).try_into().unwrap(),
+                    self.page.try_into().unwrap(),
                     self.total_pages.try_into().unwrap(),
                 ))
             )),
