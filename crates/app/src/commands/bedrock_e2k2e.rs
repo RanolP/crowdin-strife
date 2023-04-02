@@ -1,9 +1,10 @@
-use std::collections::HashMap;
-
-use engine::db::{Language, MinecraftPlatform, SourceLanguage, TmDatabase};
+use engine::{
+    db::{MinecraftPlatform, TmDatabase},
+    language::Language,
+};
 use kal::Command;
 
-use crate::e2k_base::search_tm;
+use crate::{e2k_base::search_tm, message::BoxedStructuredMessage};
 
 /// Minecraft: Bedrock Edition에서 해당 문자열이 포함된 영어 문자열을 검색해 한국어 대응 문자열과 함께 보여줍니다.
 #[derive(Command)]
@@ -28,11 +29,15 @@ pub struct K2E {
 }
 
 impl E2K {
-    pub async fn execute(self, api: &(impl TmDatabase + Sync + Send)) -> eyre::Result<String> {
+    pub async fn execute(
+        self,
+        api: &(impl TmDatabase + Sync + Send),
+    ) -> eyre::Result<BoxedStructuredMessage> {
         search_tm(
             api,
             MinecraftPlatform::Bedrock,
-            SourceLanguage::Specified(Language::English),
+            Language::English,
+            Language::Korean,
             self.query,
             self.page,
         )
@@ -41,11 +46,15 @@ impl E2K {
 }
 
 impl K2E {
-    pub async fn execute(self, api: &(impl TmDatabase + Sync + Send)) -> eyre::Result<String> {
+    pub async fn execute(
+        self,
+        api: &(impl TmDatabase + Sync + Send),
+    ) -> eyre::Result<BoxedStructuredMessage> {
         search_tm(
             api,
             MinecraftPlatform::Bedrock,
-            SourceLanguage::Specified(Language::Korean),
+            Language::Korean,
+            Language::English,
             self.query,
             self.page,
         )

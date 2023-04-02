@@ -1,58 +1,9 @@
 use async_trait::async_trait;
-use once_cell::sync::Lazy;
 pub use r#impl::*;
-use regex::Regex;
+
+use crate::language::Language;
 
 mod r#impl;
-
-#[derive(Debug, Clone)]
-pub enum Language {
-    English,
-    Korean,
-}
-
-impl Language {
-    pub fn as_e2k_counterpart(&self) -> Language {
-        match self {
-            Language::English => Language::Korean,
-            Language::Korean => Language::English,
-        }
-    }
-    pub fn as_str(&self) -> &str {
-        match self {
-            Language::English => "en-US",
-            Language::Korean => "ko-KR",
-        }
-    }
-}
-
-pub enum SourceLanguage {
-    Specified(Language),
-    Auto,
-}
-
-impl Default for SourceLanguage {
-    fn default() -> Self {
-        SourceLanguage::Auto
-    }
-}
-
-static HANGUL: Lazy<Regex> = Lazy::new(|| Regex::new(r#"[가-힣ㄱ-ㅎㅏ-ㅣ]"#).unwrap());
-
-impl SourceLanguage {
-    pub fn guess(self, text: &str) -> Language {
-        match self {
-            SourceLanguage::Specified(language) => language,
-            SourceLanguage::Auto => {
-                if HANGUL.is_match(text) {
-                    Language::Korean
-                } else {
-                    Language::English
-                }
-            }
-        }
-    }
-}
 
 #[derive(Clone)]
 pub enum MinecraftPlatform {
@@ -61,8 +12,28 @@ pub enum MinecraftPlatform {
     Dungeons,
 }
 
+impl MinecraftPlatform {
+    pub fn id(&self) -> &'static str {
+        match self {
+            MinecraftPlatform::Java => "Java",
+            MinecraftPlatform::Bedrock => "Bedrock",
+            MinecraftPlatform::Dungeons => "Dungeons",
+        }
+    }
+
+    pub fn from_id(s: &str) -> Option<MinecraftPlatform> {
+        match s {
+            "Java" => Some(MinecraftPlatform::Java),
+            "Bedrock" => Some(MinecraftPlatform::Bedrock),
+            "Dungeons" => Some(MinecraftPlatform::Dungeons),
+            _ => None,
+        }
+    }
+}
+
 pub struct SearchTmQuery {
-    pub source: SourceLanguage,
+    pub source: Language,
+    pub target: Language,
     pub platform: MinecraftPlatform,
     pub text: String,
     pub skip: usize,
