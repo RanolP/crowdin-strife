@@ -30,32 +30,32 @@ pub struct LookupResult {
 
 impl StructuredMessage for LookupResult {
     fn embed(&self) -> Option<crate::message::Embed> {
-        let mut source_entries = Vec::new();
-        let mut target_entries = Vec::new();
+        let mut fields = Vec::new();
 
         for entry in &self.entries {
-            source_entries.push(format!(
-                "{}{}",
-                entry.source.content.clone(),
-                encode_msgdata(entry.key.clone())
-            ));
-            target_entries.push(format!(
-                "{}{}",
-                entry
-                    .targets
-                    .get(0)
-                    .map(|entry| &*entry.content)
-                    .unwrap_or("*번역 없음*"),
-                encode_msgdata(entry.key.clone())
-            ));
+            fields.push(EmbedField {
+                name: entry.key.clone(),
+                value: format!(
+                    "{} → {}",
+                    entry.source.content,
+                    entry
+                        .targets
+                        .get(0)
+                        .map(|entry| &*entry.content)
+                        .unwrap_or("*번역 없음*")
+                ),
+                inline: false,
+            });
         }
 
         Some(Embed {
             title: Some(format!("▷ {}", self.query)),
             description: Some(format!(
-                "{}{}",
+                "{} {} → {}{}",
                 self.game_version,
-                encode_msgdata(serialize(
+                self.source_language.name(),
+                self.target_language.name(),
+                encode_msgdata(&serialize(
                     self.platform.clone(),
                     self.source_language.clone(),
                     self.target_language.clone(),
@@ -64,18 +64,7 @@ impl StructuredMessage for LookupResult {
                     self.total_pages.try_into().unwrap(),
                 ))
             )),
-            fields: vec![
-                EmbedField {
-                    name: self.source_language.name().to_string(),
-                    value: source_entries.join("\n"),
-                    inline: true,
-                },
-                EmbedField {
-                    name: self.target_language.name().to_string(),
-                    value: target_entries.join("\n"),
-                    inline: true,
-                },
-            ],
+            fields: fields,
             footer: Some(EmbedFooter {
                 text: Some(format!("페이지 {} / {}", self.page, self.total_pages,)),
             }),

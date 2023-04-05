@@ -141,6 +141,7 @@ dependencies = [
  "kal-serenity",
  "log",
  "mcapi",
+ "percent-encoding",
  "pretty_env_logger",
  "reqores",
  "reqores-client-surf",
