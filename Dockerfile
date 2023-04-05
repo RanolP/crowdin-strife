@@ -16,7 +16,7 @@ RUN CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse cargo chef cook --release --recip
 
 COPY . .
 RUN CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse cargo make prisma generate
-RUN CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse cargo build --release
+RUN CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse cargo build --release --package app
 
 FROM --platform=${TARGETARCH} debian:11.6-slim
 
