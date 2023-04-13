@@ -5,7 +5,7 @@ const MAGIC: &str = "https://data.store/";
 
 pub fn encode_msgdata(s: &str) -> String {
     format!(
-        "[]({MAGIC}{})",
+        "[ ]({MAGIC}{})",
         utf8_percent_encode(&s, FRAGMENT).to_string()
     )
 }
