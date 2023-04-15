@@ -2,11 +2,12 @@ use std::collections::HashMap;
 
 use super::Env;
 
+#[derive(Default)]
 pub struct PredefinedEnv(HashMap<String, String>);
 
 impl PredefinedEnv {
     pub fn new() -> Self {
-        PredefinedEnv(HashMap::new())
+        Default::default()
     }
 
     pub fn with(mut self, key: String, value: String) -> PredefinedEnv {

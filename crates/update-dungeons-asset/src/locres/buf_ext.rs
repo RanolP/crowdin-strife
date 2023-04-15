@@ -1,4 +1,4 @@
-use std::{array::TryFromSliceError, string::FromUtf8Error};
+use std::{array::TryFromSliceError, cmp::Ordering, string::FromUtf8Error};
 
 pub trait BufExt {
     fn seek_u8(&self) -> Result<u8, SeekReadError>;
@@ -94,20 +94,24 @@ impl BufMutExt for &[u8] {
 
     fn read_unreal_string(&mut self) -> Result<String, SeekReadError> {
         let length = self.read_i32()?;
-        let result = if length > 0 {
-            // ASCII
-            let res = String::from_utf8(self[0..length as usize].to_vec())?;
-            *self = &self[length as usize..];
-            res
-        } else if length < 0 {
-            // Unicode
-            let res = String::from_utf8(self[0..(length * -2) as usize].to_vec())?;
-            *self = &self[(length * -2) as usize..];
-            res
-        } else {
-            // length == 0
-            return Ok(String::new());
+        let result = match length.cmp(&0) {
+            Ordering::Greater => {
+                // ASCII
+                let res = String::from_utf8(self[0..length as usize].to_vec())?;
+                *self = &self[length as usize..];
+                res
+            }
+            Ordering::Equal => {
+                // length == 0
+                return Ok(String::new());
+            }
+            Ordering::Less => {
+                // Unicode
+                let res = String::from_utf8(self[0..(length * -2) as usize].to_vec())?;
+                *self = &self[(length * -2) as usize..];
+                res
+            }
         };
-        Ok(result.trim_end_matches("\0").to_string())
+        Ok(result.trim_end_matches('\0').to_string())
     }
 }

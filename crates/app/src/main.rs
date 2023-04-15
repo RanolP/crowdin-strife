@@ -42,10 +42,9 @@ where
                 let message_output = if let Ok(command) = RootCommand::parse(&preflights) {
                     match command.execute(&self.env, &self.database).await {
                         Ok(output) => output,
-                        Err(err) => Box::new(format!(
-                            "명령어 실행에 실패했습니다:\n```\n{}\n```",
-                            err.to_string()
-                        )),
+                        Err(err) => {
+                            Box::new(format!("명령어 실행에 실패했습니다:\n```\n{}\n```", err))
+                        }
                     }
                 } else {
                     handle_unknown(&preflights).await
@@ -72,7 +71,7 @@ where
                 };
                 match &*message_component.data.custom_id {
                     "prev" => {
-                        let Some((platform, source, target, query, page, total_pages)) = fetch_msgdata() else {
+                        let Some((platform, source, target, query, page, _)) = fetch_msgdata() else {
                              return
                         };
                         let res = search_tm(

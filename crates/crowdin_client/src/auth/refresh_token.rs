@@ -21,7 +21,7 @@ impl ClientRequest for RefreshToken {
             let key = value
                 .find("CSRF-TOKEN=")
                 .ok_or("Failed to find csrf token cookie".to_string())?;
-            let semi = value[key..].find(";").unwrap_or(value.len());
+            let semi = value[key..].find(';').unwrap_or(value.len());
             Ok(value[key + "CSRF-TOKEN=".len()..semi].to_string())
         } else {
             Err("Failed to receive set-cookie header".to_string())

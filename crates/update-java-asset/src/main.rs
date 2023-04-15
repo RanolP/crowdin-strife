@@ -134,7 +134,7 @@ async fn fetch_ko_kr(
     bundle: &AssetBundle,
 ) -> eyre::Result<HashMap<String, String>> {
     let asset_index = client
-        .call(GetAssetIndex { bundle: &bundle })
+        .call(GetAssetIndex { bundle })
         .await
         .map_err(|e| eyre::eyre!("{}", e))?;
 

@@ -34,14 +34,14 @@ fn parse_unreal_string(s: &[u8]) -> ParseResult<String> {
     if length >= 0 {
         // ASCII
         take(usize::try_from(length).unwrap())
-            .map(|unicode: &[u8]| String::from_utf8_lossy(unicode))
-            .map(|res| res.trim_end_matches("\0").to_string())
+            .map(String::from_utf8_lossy)
+            .map(|res| res.trim_end_matches('\0').to_string())
             .parse_next(s)
     } else {
         // UTF-16 LE
         take(usize::try_from(length * -2).unwrap())
             .map(|unicode: &[u8]| UTF_16LE.decode(unicode).0)
-            .map(|res| res.trim_end_matches("\0").to_string())
+            .map(|res| res.trim_end_matches('\0').to_string())
             .parse_next(s)
     }
 }
@@ -65,7 +65,7 @@ impl LocresFile {
                 let (s, _) = take(offset).parse_next(root)?;
                 let (s, localized_string_count) = le_u32.map_res(usize::try_from).parse_next(s)?;
 
-                let (s, localized_string_arraay): (_, Vec<_>) = count(
+                let (_, localized_string_arraay): (_, Vec<_>) = count(
                     terminated(
                         parse_unreal_string,
                         cond(version >= LocresVersion::Optimized, le_i32),
@@ -82,7 +82,7 @@ impl LocresFile {
         let (s, _) = cond(version >= LocresVersion::Optimized, le_i32).parse_next(s)?; // entriesCount
 
         let (s, namespace_count) = le_i32.map_res(usize::try_from).parse_next(s)?;
-        let mut namespaces = HashMap::with_capacity(namespace_count as usize);
+        let mut namespaces = HashMap::with_capacity(namespace_count);
 
         let (s, entries): (_, Vec<_>) = count(
             |s| {
@@ -118,7 +118,7 @@ impl LocresFile {
                     ns.insert(k, v);
                 }
 
-                Ok((s, (namespace_key.clone(), ns)))
+                Ok((s, (namespace_key, ns)))
             },
             namespace_count,
         )

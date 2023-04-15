@@ -110,7 +110,7 @@ impl TmDatabase for PrismaDatabase {
         let game_version = self
             .client
             .language_file()
-            .find_first(vec![language_file::platform::equals(platform.clone())])
+            .find_first(vec![language_file::platform::equals(platform)])
             .exec()
             .await?
             .map(|language_file| language_file.game_version)
@@ -169,7 +169,7 @@ impl TmDatabase for PrismaDatabase {
         client
             .entry()
             .delete_many(vec![
-                entry::platform::equals(platform.clone()),
+                entry::platform::equals(platform),
                 entry::language::equals(upload.language.id().to_string()),
             ])
             .exec()
@@ -178,7 +178,7 @@ impl TmDatabase for PrismaDatabase {
         client
             .language_file()
             .delete_many(vec![
-                language_file::platform::equals(platform.clone()),
+                language_file::platform::equals(platform),
                 language_file::language::equals(upload.language.id().to_string()),
             ])
             .exec()
@@ -191,11 +191,11 @@ impl TmDatabase for PrismaDatabase {
                     .into_iter()
                     .map(|namespace| {
                         (
-                            platform.clone(),
+                            platform,
                             namespace,
                             upload.language.id().to_string(),
                             upload.game_version.clone(),
-                            now.clone(),
+                            now,
                             vec![],
                         )
                     })
@@ -212,7 +212,7 @@ impl TmDatabase for PrismaDatabase {
                     .into_iter()
                     .map(|entry| {
                         (
-                            platform.clone(),
+                            platform,
                             entry.namespace,
                             upload.language.id().to_string(),
                             entry.key,

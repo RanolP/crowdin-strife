@@ -64,7 +64,7 @@ impl StructuredMessage for LookupResult {
                     self.total_pages.try_into().unwrap(),
                 ))
             )),
-            fields: fields,
+            fields,
             footer: Some(EmbedFooter {
                 text: Some(format!("페이지 {} / {}", self.page, self.total_pages,)),
             }),
