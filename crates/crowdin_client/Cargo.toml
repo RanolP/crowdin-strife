@@ -8,6 +8,6 @@ edition = "2021"
 [dependencies]
 reqores = "0.1"
 serde = { version = "1", default-features = false, features = ["alloc", "derive"] }
-serde_with = "*"
-thiserror = "*"
-url = "2.2.2"
+serde_with = "2"
+thiserror = "1"
+url = "2"

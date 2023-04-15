@@ -8,5 +8,5 @@ edition = "2021"
 [dependencies]
 eyre = "0.6.8"
 color-eyre = "0.6.2"
-tokio = "1.25.0"
+tokio = "1.27.0"
 engine = { path = "../engine" }

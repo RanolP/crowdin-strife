@@ -6,15 +6,15 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-async-trait = "0.1.64"
-thiserror = "1.0.38"
-serde = "1.0.152"
+async-trait = "0.1.68"
+thiserror = "1.0.40"
+serde = "1.0.159"
 once_cell = "1.17.1"
-regex = "1.7.1"
+regex = "1.7.3"
 strum = "0.24.1"
 
 [dependencies.prisma-client-rust]
 git = "https://github.com/Brendonovich/prisma-client-rust"
-tag = "0.6.5"
+tag = "0.6.7"
 default-features = false
 features = ["mysql"]
