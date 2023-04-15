@@ -3,6 +3,15 @@ name: Fly Deploy Beta
 on:
   push:
     branches: [beta]
+    paths:
+      - Cargo.lock
+      - fly.toml
+      - Makefile.toml
+      - crates/app
+      - crates/crowdin_client
+      - crates/engine
+      - crates/kal-serenity
+      - crates/mcapi
 
 concurrency:
   group: 'fly-deploy-beta'
