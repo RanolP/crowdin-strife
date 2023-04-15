@@ -20,7 +20,7 @@ jobs:
       - name: 'PR existence check'
         id: check
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           pr_id=$(gh pr list
             --repo "$GITHUB_REPOSITORY" \
@@ -36,6 +36,8 @@ jobs:
           fi
       - name: 'Edit PR'
         if: '!steps.check.outputs.exist'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh pr edit "{{ step.check.outputs.pr }}" \
             --body `\
