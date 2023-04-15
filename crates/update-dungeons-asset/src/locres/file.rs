@@ -1,4 +1,4 @@
-use std::collections::hash_map::{IntoValues};
+use std::collections::hash_map::IntoValues;
 use std::collections::HashMap;
 
 use encoding_rs::UTF_16LE;
@@ -54,14 +54,15 @@ impl LocresFile {
     pub fn read(s: &[u8]) -> ParseResult<LocresFile> {
         let root = s;
 
-        let (s, version) = opt(preceded(tag(MAGIC), le_u8).map_res(LocresVersion::try_from))(s)?;
+        let (s, version) =
+            opt(preceded(tag(MAGIC), le_u8).map_res(LocresVersion::try_from)).parse_next(s)?;
         let version = version.unwrap_or(LocresVersion::Legacy);
 
         let (s, localized_string_arraay) =
             cond(version >= LocresVersion::Compact, |s| -> ParseResult<_> {
                 let (s, offset) = le_u64(s)?;
                 let recover_point = s;
-                let (s, _) = take(offset)(root)?;
+                let (s, _) = take(offset).parse_next(root)?;
                 let (s, localized_string_count) = le_u32.map_res(usize::try_from).parse_next(s)?;
 
                 let (s, localized_string_arraay): (_, Vec<_>) = count(
@@ -70,20 +71,22 @@ impl LocresFile {
                         cond(version >= LocresVersion::Optimized, le_i32),
                     ),
                     localized_string_count,
-                )(s)?;
+                )
+                .parse_next(s)?;
 
                 Ok((recover_point, localized_string_arraay))
-            })(s)?;
+            })
+            .parse_next(s)?;
         let localized_string_array = localized_string_arraay.unwrap_or_default();
 
-        let (s, _) = cond(version >= LocresVersion::Optimized, le_i32)(s)?; // entriesCount
+        let (s, _) = cond(version >= LocresVersion::Optimized, le_i32).parse_next(s)?; // entriesCount
 
         let (s, namespace_count) = le_i32.map_res(usize::try_from).parse_next(s)?;
         let mut namespaces = HashMap::with_capacity(namespace_count as usize);
 
         let (s, entries): (_, Vec<_>) = count(
             |s| {
-                let (s, _) = cond(version >= LocresVersion::Optimized, le_i32)(s)?; // namespaceKeyHash
+                let (s, _) = cond(version >= LocresVersion::Optimized, le_i32).parse_next(s)?; // namespaceKeyHash
 
                 let (s, namespace_key) = parse_unreal_string(s)?;
                 let (s, key_count) = le_i32.map_res(usize::try_from).parse_next(s)?;
@@ -91,9 +94,10 @@ impl LocresFile {
 
                 let (s, entries): (_, Vec<_>) = count(
                     |s| {
-                        let (s, _) = cond(version >= LocresVersion::Optimized, le_u32)(s)?; // string_key_hash
+                        let (s, _) =
+                            cond(version >= LocresVersion::Optimized, le_u32).parse_next(s)?; // string_key_hash
                         let (s, string_key) = parse_unreal_string(s)?;
-                        let (s, _) = le_u32(s)?; // source_string_hash
+                        let (s, _) = le_u32.parse_next(s)?; // source_string_hash
 
                         let (s, localized_string) = if version >= LocresVersion::Compact {
                             le_i32
@@ -107,7 +111,8 @@ impl LocresFile {
                         Ok((s, (string_key, localized_string)))
                     },
                     key_count,
-                )(s)?;
+                )
+                .parse_next(s)?;
 
                 for (k, v) in entries {
                     ns.insert(k, v);
@@ -116,7 +121,8 @@ impl LocresFile {
                 Ok((s, (namespace_key.clone(), ns)))
             },
             namespace_count,
-        )(s)?;
+        )
+        .parse_next(s)?;
 
         for (k, v) in entries {
             namespaces.insert(k, v);
