@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   make_pr:
-    name: 'Make PR'
+    name: 'List-up PR'
     runs-on: ubuntu-latest
     steps:
       - name: 'PR existence check'
