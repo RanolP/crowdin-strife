@@ -4,7 +4,8 @@ on:
   pull_request:
     branches: ['beta']
     types:
-      - closed
+      - opened
+      - synchronize
 
 jobs:
   make_pr:
@@ -16,25 +17,27 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pr_count=$(gh pr list
+          pr_id=$(gh pr list
             --repo "$GITHUB_REPOSITORY" \
             --base main \
             --head beta \
             --state open \
-            --json title \
-            --jq length \
+            --json number \
+            --jq '.[0].number' \
           )
-          if ((pr_count > 0)); then
-            echo "skip = true" >> "$GITHUB_OUTPUT"
+          if ((pr_id)); then
+            echo "exist = true" >> "$GITHUB_OUTPUT"
+            echo "pr = $pr_id" >> "$GITHUB_OUTPUT"
           fi
-      - name: 'Create PR'
-        if: '!steps.check.outputs.skip'
+      - name: 'Edit PR'
+        if: '!steps.check.outputs.exist'
         run: |
-          url=$(gh pr create \
-            --base main \
-            --head beta \
-            --title "Intend to Ship"
-            --label "Type: Intend to Ship"
-            --no-maintainer-edit \
-          )
-          gh issue pin "$url"
+          gh pr edit "{{ step.check.outputs.pr }}" \
+            --body `\
+              gh pr list \
+                --state closed \
+                --base beta \
+                --label "living on beta" \
+                --json number \
+                --jq '.[].number | tostring | "- #" + .' \
+            `
