@@ -3,6 +3,11 @@ name: Fly Deploy Main
 on:
   push:
     branches: [main]
+
+concurrency:
+  group: 'fly-deploy-main'
+  cancel-in-progress: true
+
 jobs:
   deploy:
     name: Deploy

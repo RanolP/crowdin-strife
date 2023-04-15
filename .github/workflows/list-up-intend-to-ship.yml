@@ -8,6 +8,10 @@ on:
       - synchronize
   workflow_dispatch:
 
+concurrency:
+  group: 'list-up-intend-to-ship'
+  cancel-in-progress: false
+
 jobs:
   make_pr:
     name: 'Make PR'

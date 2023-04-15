@@ -7,6 +7,10 @@ on:
       - closed
   workflow_dispatch:
 
+concurrency:
+  group: 'make-intend-to-ship'
+  cancel-in-progress: false
+
 jobs:
   make_pr:
     name: 'Make PR'
