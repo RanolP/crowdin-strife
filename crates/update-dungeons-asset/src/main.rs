@@ -28,8 +28,6 @@ async fn main() -> eyre::Result<()> {
     let mut key: &str = &key;
     if &key[0..2] == "0x" {
         key = &key[2..];
-    } else {
-        key = &key[..];
     }
     let key = key
         .bytes()

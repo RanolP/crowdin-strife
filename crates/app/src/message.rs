@@ -1,5 +1,5 @@
 use serenity::{
-    builder::{CreateEmbed, CreateInteractionResponseData, EditInteractionResponse},
+    builder::{CreateInteractionResponseData, EditInteractionResponse},
     model::prelude::component::ButtonStyle,
 };
 

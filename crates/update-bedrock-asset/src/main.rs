@@ -52,7 +52,7 @@ async fn main() -> eyre::Result<()> {
                     .replace(&format!("__{}", app.publisher_id), "")
                     .replace("_x64", "")
                     .replace("_x86", "");
-                let version_segment = version.split(".").collect::<Vec<_>>();
+                let version_segment = version.split('.').collect::<Vec<_>>();
                 let major = version_segment[0];
                 let minor = version_segment[1];
                 let mut patch = version_segment[2];
