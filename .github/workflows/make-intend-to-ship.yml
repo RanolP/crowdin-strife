@@ -16,7 +16,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pr_count=$(gh pr list
+          pr_count=$(gh pr list \
             --repo "$GITHUB_REPOSITORY" \
             --base main \
             --head beta \
@@ -32,8 +32,8 @@ jobs:
           url=$(gh pr create \
             --base main \
             --head beta \
-            --title "Intend to Ship"
-            --label "Type: Intend to Ship"
+            --title "Intend to Ship" \
+            --label "Type: Intend to Ship" \
             --no-maintainer-edit \
           )
           gh issue pin "$url"
