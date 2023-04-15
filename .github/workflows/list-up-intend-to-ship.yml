@@ -1,11 +1,12 @@
-name: 'Make "Intend to Ship" PR'
+name: 'List up "Intend to Ship" PR'
 
 on:
   pull_request:
-    branches: ['beta']
+    branches: ['main']
     types:
       - opened
       - synchronize
+  workflow_dispatch:
 
 jobs:
   make_pr:

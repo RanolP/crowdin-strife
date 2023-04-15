@@ -5,6 +5,7 @@ on:
     branches: ['beta']
     types:
       - closed
+  workflow_dispatch:
 
 jobs:
   make_pr:
