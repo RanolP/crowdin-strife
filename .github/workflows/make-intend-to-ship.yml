@@ -16,6 +16,7 @@ jobs:
     name: 'Make PR'
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - name: 'PR existence check'
         id: check
         env:
