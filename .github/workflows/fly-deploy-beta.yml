@@ -12,6 +12,7 @@ on:
       - crates/engine
       - crates/kal-serenity
       - crates/mcapi
+  workflow_dispatch:
 
 concurrency:
   group: 'fly-deploy-beta'
