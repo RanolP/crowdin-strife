@@ -41,6 +41,7 @@ jobs:
             --base main \
             --head beta \
             --title "Intend to Ship" \
+            --body "" \
             --label "Type: Intend to Ship" \
             --no-maintainer-edit \
           )
