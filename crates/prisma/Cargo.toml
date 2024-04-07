@@ -9,6 +9,6 @@ edition = "2021"
 
 [dependencies.prisma-client-rust-cli]
 git = "https://github.com/Brendonovich/prisma-client-rust"
-tag = "0.6.7"
+tag = "0.6.11"
 default-features = false
-features = ["mysql"]
+features = ["postgresql"]
