@@ -1,4 +1,4 @@
-FROM --platform=${TARGETARCH} rust:1.68.0 AS chef
+FROM --platform=${TARGETARCH} rust:1.77.0 AS chef
 
 WORKDIR /app
 RUN CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse cargo install cargo-chef --locked
