@@ -23,7 +23,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          pr_id=$(gh pr list
+          pr_id=$(gh pr list \
             --repo "$GITHUB_REPOSITORY" \
             --base main \
             --head beta \
