@@ -6,7 +6,9 @@ RUN CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse cargo install cargo-make --locked
 
 FROM chef AS planner
 
-COPY . .
+COPY crates crates
+COPY Cargo.lock Cargo.lock
+COPY Cargo.toml Cargo.toml
 RUN cargo chef prepare --recipe-path recipe.json
 
 FROM chef AS builder
@@ -18,7 +20,7 @@ COPY . .
 RUN CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse cargo make prisma generate
 RUN CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse cargo build --release --package app
 
-FROM --platform=${TARGETARCH} debian:11.6-slim
+FROM --platform=${TARGETARCH} debian:12.5-slim
 
 COPY --from=builder \
     /app/target/release/app \
