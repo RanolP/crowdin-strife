@@ -22,7 +22,7 @@ async fn main() -> eyre::Result<()> {
 
     let database = PrismaDatabase::connect().await?;
 
-    let installation = env::var("DUNGEONS_INSTALLATION")?;
+    let pak_directory_str = env::var("DUNGEONS_PAKS")?;
     let version = env::var("DUNGEONS_VERSION")?;
     let key = env::var("DUNGEONS_AES_KEY")?;
     let mut key: &str = &key;
@@ -36,8 +36,7 @@ async fn main() -> eyre::Result<()> {
         .map(|a| u8::from_str_radix(&String::from_utf8_lossy(a), 16).unwrap())
         .collect::<Vec<_>>();
 
-    let pak_directory =
-        PathBuf::from(&installation).join("dungeons/dungeons/Dungeons/Content/Paks");
+    let pak_directory = PathBuf::from(&pak_directory_str);
 
     let suspicious_asset_names = ["ko-kr/game.locres", "en/game.locres"];
 

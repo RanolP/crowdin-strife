@@ -17,4 +17,4 @@ strum = "0.24.1"
 git = "https://github.com/Brendonovich/prisma-client-rust"
 tag = "0.6.7"
 default-features = false
-features = ["mysql"]
+features = ["postgresql"]
