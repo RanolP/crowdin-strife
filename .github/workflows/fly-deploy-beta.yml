@@ -7,11 +7,11 @@ on:
       - Cargo.lock
       - fly.toml
       - Makefile.toml
-      - crates/app
-      - crates/crowdin_client
-      - crates/engine
-      - crates/kal-serenity
-      - crates/mcapi
+      - crates/app/**
+      - crates/crowdin_client/**
+      - crates/engine/**
+      - crates/kal-serenity/**
+      - crates/mcapi/**
       - Dockerfile
       - .github/workflows/fly-deploy-beta.yml
   workflow_dispatch:
