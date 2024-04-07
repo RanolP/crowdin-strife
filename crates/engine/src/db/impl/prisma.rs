@@ -54,10 +54,10 @@ impl TmDatabase for PrismaDatabase {
             ._query_raw(raw!(
                 r#"
                     SELECT
-                        t1.key AS `key`, src, dst
+                        t1.key AS "key", src, dst
                     FROM
                         (
-                            SELECT `key`, namespace, value AS src FROM
+                            SELECT "key", namespace, value AS src FROM
                                 Entry t1
                             WHERE
                                 language = {} AND
@@ -66,7 +66,7 @@ impl TmDatabase for PrismaDatabase {
                         ) AS t1
                         LEFT JOIN
                         (
-                            SELECT `key`, namespace, value AS dst FROM
+                            SELECT "key", namespace, value AS dst FROM
                                 Entry t2
                             WHERE
                                 language = {} AND
@@ -75,7 +75,7 @@ impl TmDatabase for PrismaDatabase {
                         ON
                             t1.key = t2.key AND
                             t1.namespace = t2.namespace
-                    ORDER BY `key` ASC
+                    ORDER BY "key" ASC
                     LIMIT {}
                     OFFSET {}
                 "#,
