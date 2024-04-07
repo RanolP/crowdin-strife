@@ -36,7 +36,7 @@ jobs:
             echo "pr=$pr_id" >> "$GITHUB_OUTPUT"
           fi
       - name: 'Edit PR'
-        if: '!steps.check.outputs.exist'
+        if: 'steps.check.outputs.exist'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
