@@ -32,8 +32,8 @@ jobs:
             --jq '.[0].number' \
           )
           if ((pr_id)); then
-            echo "exist = true" >> "$GITHUB_OUTPUT"
-            echo "pr = $pr_id" >> "$GITHUB_OUTPUT"
+            echo "exist=true" >> "$GITHUB_OUTPUT"
+            echo "pr=$pr_id" >> "$GITHUB_OUTPUT"
           fi
       - name: 'Edit PR'
         if: '!steps.check.outputs.exist'
