@@ -41,11 +41,11 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh pr edit "{{ step.check.outputs.pr }}" \
-            --body `\
+            --body "$(\
               gh pr list \
                 --state closed \
                 --base beta \
                 --label "living on beta" \
                 --json number \
                 --jq '.[].number | tostring | "- #" + .' \
-            `
+            )"
