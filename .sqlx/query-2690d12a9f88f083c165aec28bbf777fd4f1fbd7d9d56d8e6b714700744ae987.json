@@ -1,0 +1,24 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                SELECT\n                    COUNT(*) AS count\n                FROM\n                    \"Entry\"\n                WHERE\n                    language = $1 AND\n                    platform::text = $2 AND\n                    value ILIKE CONCAT('%', $3::text, '%')\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "count",
+        "type_info": "Int8"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": [
+      null
+    ]
+  },
+  "hash": "2690d12a9f88f083c165aec28bbf777fd4f1fbd7d9d56d8e6b714700744ae987"
+}

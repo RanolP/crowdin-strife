@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                DELETE FROM \"LanguageFile\"\n                WHERE\n                    platform::text = $1 AND\n                    language = $2\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "68c8a36f3337b874090c03c23efd2627c7f9741d80f8782e707e667bfaade05b"
+}

@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                DELETE FROM \"Entry\"\n                WHERE\n                    platform::text = $1 AND\n                    language = $2\n            ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "263fac8a5d6ad8adaa5939e4736e97b685cdbdf65fece70e316cc22d0f6acbb7"
+}
