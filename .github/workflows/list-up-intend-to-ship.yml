@@ -2,23 +2,23 @@ name: 'List up "Intend to Ship" PR'
 
 on:
   pull_request:
-    branches: ['main']
+    branches: ["main"]
     types:
       - opened
       - synchronize
   workflow_dispatch:
 
 concurrency:
-  group: 'list-up-intend-to-ship'
+  group: "list-up-intend-to-ship"
   cancel-in-progress: false
 
 jobs:
   make_pr:
-    name: 'List-up PR'
+    name: "List-up PR"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: 'PR existence check'
+      - uses: actions/checkout@v4
+      - name: "PR existence check"
         id: check
         env:
           GH_TOKEN: ${{ github.token }}
@@ -35,8 +35,8 @@ jobs:
             echo "exist=true" >> "$GITHUB_OUTPUT"
             echo "pr=$pr_id" >> "$GITHUB_OUTPUT"
           fi
-      - name: 'Edit PR'
-        if: 'steps.check.outputs.exist'
+      - name: "Edit PR"
+        if: "steps.check.outputs.exist"
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
