@@ -2,10 +2,9 @@ use std::collections::hash_map::IntoValues;
 use std::collections::HashMap;
 
 use encoding_rs::UTF_16LE;
+use winnow::binary::{le_i32, le_u32, le_u64, le_u8};
 use winnow::bytes::{tag, take};
-use winnow::combinator::{cond, opt};
-use winnow::multi::count;
-use winnow::number::{le_i32, le_u32, le_u64, le_u8};
+use winnow::combinator::{cond, opt, repeat};
 use winnow::sequence::{preceded, terminated};
 use winnow::Parser;
 
@@ -55,7 +54,7 @@ impl LocresFile {
         let root = s;
 
         let (s, version) =
-            opt(preceded(tag(MAGIC), le_u8).map_res(LocresVersion::try_from)).parse_next(s)?;
+            opt(preceded(tag(MAGIC), le_u8).try_map(LocresVersion::try_from)).parse_next(s)?;
         let version = version.unwrap_or(LocresVersion::Legacy);
 
         let (s, localized_string_arraay) =
@@ -63,14 +62,14 @@ impl LocresFile {
                 let (s, offset) = le_u64(s)?;
                 let recover_point = s;
                 let (s, _) = take(offset).parse_next(root)?;
-                let (s, localized_string_count) = le_u32.map_res(usize::try_from).parse_next(s)?;
+                let (s, localized_string_count) = le_u32.try_map(usize::try_from).parse_next(s)?;
 
-                let (_, localized_string_arraay): (_, Vec<_>) = count(
+                let (_, localized_string_arraay): (_, Vec<_>) = repeat(
+                    localized_string_count,
                     terminated(
                         parse_unreal_string,
                         cond(version >= LocresVersion::Optimized, le_i32),
                     ),
-                    localized_string_count,
                 )
                 .parse_next(s)?;
 
@@ -81,47 +80,40 @@ impl LocresFile {
 
         let (s, _) = cond(version >= LocresVersion::Optimized, le_i32).parse_next(s)?; // entriesCount
 
-        let (s, namespace_count) = le_i32.map_res(usize::try_from).parse_next(s)?;
+        let (s, namespace_count) = le_i32.try_map(usize::try_from).parse_next(s)?;
         let mut namespaces = HashMap::with_capacity(namespace_count);
 
-        let (s, entries): (_, Vec<_>) = count(
-            |s| {
-                let (s, _) = cond(version >= LocresVersion::Optimized, le_i32).parse_next(s)?; // namespaceKeyHash
+        let (s, entries): (_, Vec<_>) = repeat(namespace_count, |s| {
+            let (s, _) = cond(version >= LocresVersion::Optimized, le_i32).parse_next(s)?; // namespaceKeyHash
 
-                let (s, namespace_key) = parse_unreal_string(s)?;
-                let (s, key_count) = le_i32.map_res(usize::try_from).parse_next(s)?;
-                let mut ns = LocresNamespace::new(namespace_key.clone());
+            let (s, namespace_key) = parse_unreal_string(s)?;
+            let (s, key_count) = le_i32.try_map(usize::try_from).parse_next(s)?;
+            let mut ns = LocresNamespace::new(namespace_key.clone());
 
-                let (s, entries): (_, Vec<_>) = count(
-                    |s| {
-                        let (s, _) =
-                            cond(version >= LocresVersion::Optimized, le_u32).parse_next(s)?; // string_key_hash
-                        let (s, string_key) = parse_unreal_string(s)?;
-                        let (s, _) = le_u32.parse_next(s)?; // source_string_hash
+            let (s, entries): (_, Vec<_>) = repeat(key_count, |s| {
+                let (s, _) = cond(version >= LocresVersion::Optimized, le_u32).parse_next(s)?; // string_key_hash
+                let (s, string_key) = parse_unreal_string(s)?;
+                let (s, _) = le_u32.parse_next(s)?; // source_string_hash
 
-                        let (s, localized_string) = if version >= LocresVersion::Compact {
-                            le_i32
-                                .map_res(usize::try_from)
-                                .map(|i| localized_string_array[i].clone())
-                                .parse_next(s)?
-                        } else {
-                            parse_unreal_string(s)?
-                        };
+                let (s, localized_string) = if version >= LocresVersion::Compact {
+                    le_i32
+                        .try_map(usize::try_from)
+                        .map(|i| localized_string_array[i].clone())
+                        .parse_next(s)?
+                } else {
+                    parse_unreal_string(s)?
+                };
 
-                        Ok((s, (string_key, localized_string)))
-                    },
-                    key_count,
-                )
-                .parse_next(s)?;
+                Ok((s, (string_key, localized_string)))
+            })
+            .parse_next(s)?;
 
-                for (k, v) in entries {
-                    ns.insert(k, v);
-                }
+            for (k, v) in entries {
+                ns.insert(k, v);
+            }
 
-                Ok((s, (namespace_key, ns)))
-            },
-            namespace_count,
-        )
+            Ok((s, (namespace_key, ns)))
+        })
         .parse_next(s)?;
 
         for (k, v) in entries {

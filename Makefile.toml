@@ -1,5 +1,4 @@
-env_scripts = [
-'''
+env_scripts = ['''
 #!@duckscript
 handle = map
 
@@ -21,16 +20,10 @@ else
 end
 
 set_env --handle ${handle}
-'''
-]
+''']
 
 [config]
 default_to_workspace = false
-
-[tasks.prisma]
-command = "cargo"
-cwd = "crates/engine"
-args = ["run", "-p", "prisma", "--", "${@}"]
 
 [tasks.query]
 command = "cargo"

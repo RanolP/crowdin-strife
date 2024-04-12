@@ -12,9 +12,12 @@ serde = "1.0.159"
 once_cell = "1.17.1"
 regex = "1.7.3"
 strum = "0.24.1"
+sqlx = { version = "0.7.4", features = [
+    "postgres",
+    "runtime-tokio",
+    "tls-rustls",
+    "chrono",
+] }
 
-[dependencies.prisma-client-rust]
-git = "https://github.com/Brendonovich/prisma-client-rust"
-tag = "0.6.7"
-default-features = false
-features = ["postgresql"]
+[build-dependencies]
+patch-crate = "0.1"

@@ -7,7 +7,7 @@ use std::{
 
 use aes::cipher::KeyInit;
 use engine::{
-    db::{MinecraftPlatform, PrismaDatabase, TmDatabase, Upload, UploadEntry},
+    db::{MinecraftPlatform, SqlxDatabase, TmDatabase, Upload, UploadEntry},
     language::Language,
 };
 use memmap2::Mmap;
@@ -20,7 +20,7 @@ mod locres;
 async fn main() -> eyre::Result<()> {
     color_eyre::install().ok();
 
-    let database = PrismaDatabase::connect().await?;
+    let database = SqlxDatabase::connect().await?;
 
     let pak_directory_str = env::var("DUNGEONS_PAKS")?;
     let version = env::var("DUNGEONS_VERSION")?;
@@ -58,6 +58,7 @@ async fn main() -> eyre::Result<()> {
             let mut file = File::open(&pak_path)?;
             let mut writer = OpenOptions::new()
                 .create(true)
+                .truncate(true)
                 .write(true)
                 .read(true)
                 .open(".tmp")

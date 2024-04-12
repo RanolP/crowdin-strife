@@ -17,7 +17,6 @@ COPY --from=planner /app/recipe.json .
 RUN CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse cargo chef cook --release --recipe-path recipe.json
 
 COPY . .
-RUN CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse cargo make prisma generate
 RUN CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse cargo build --release --package app
 
 FROM --platform=${TARGETARCH} debian:12.5-slim

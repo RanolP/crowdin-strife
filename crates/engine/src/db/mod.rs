@@ -1,4 +1,5 @@
-use async_trait::async_trait;
+use std::future::Future;
+
 pub use r#impl::*;
 
 use crate::language::Language;
@@ -73,11 +74,13 @@ pub struct UploadEntry {
     pub value: String,
 }
 
-#[async_trait]
 pub trait TmDatabase {
     type Error: std::error::Error + Sync + Send + 'static;
 
-    async fn search(&self, query: SearchTmQuery) -> Result<SearchTmResponse, Self::Error>;
+    fn search(
+        &self,
+        query: SearchTmQuery,
+    ) -> impl Future<Output = Result<SearchTmResponse, Self::Error>> + Send;
 
-    async fn upload(&self, upload: Upload) -> Result<(), Self::Error>;
+    fn upload(&self, upload: Upload) -> impl Future<Output = Result<(), Self::Error>> + Send;
 }

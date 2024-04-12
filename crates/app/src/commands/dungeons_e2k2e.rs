@@ -1,4 +1,7 @@
-use engine::{db::{MinecraftPlatform, TmDatabase}, language::Language};
+use engine::{
+    db::{MinecraftPlatform, TmDatabase},
+    language::Language,
+};
 use kal::Command;
 
 use crate::{e2k_base::search_tm, message::BoxedStructuredMessage};

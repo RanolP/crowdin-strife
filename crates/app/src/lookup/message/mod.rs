@@ -39,8 +39,7 @@ impl StructuredMessage for LookupResult {
                     "{} → {}",
                     entry.source.content,
                     entry
-                        .targets
-                        .get(0)
+                        .targets.first()
                         .map(|entry| &*entry.content)
                         .unwrap_or("*번역 없음*")
                 ),

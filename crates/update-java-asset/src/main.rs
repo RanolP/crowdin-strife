@@ -3,7 +3,7 @@
 use std::{collections::HashMap, io::Cursor, time::Instant};
 
 use engine::{
-    db::{MinecraftPlatform, PrismaDatabase, TmDatabase, Upload, UploadEntry},
+    db::{MinecraftPlatform, SqlxDatabase, TmDatabase, Upload, UploadEntry},
     language::Language,
 };
 use mcapi::launcher::{
@@ -18,7 +18,7 @@ async fn main() -> eyre::Result<()> {
     color_eyre::install().ok();
 
     let client = SurfClient::new();
-    let database = PrismaDatabase::connect().await?;
+    let database = SqlxDatabase::connect().await?;
 
     let (version, bundle) = fetch_snapshot(&client).await?;
     let en_us = fetch_en_us(&client, &bundle).await?;

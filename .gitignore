@@ -8,8 +8,5 @@ target
 
 .env*
 
-# Prisma generated
-crates/engine/src/prisma.rs
-
 # Temp file for locres decoding
 **/.tmp
