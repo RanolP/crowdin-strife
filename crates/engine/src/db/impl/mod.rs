@@ -1,3 +1,3 @@
-pub use prisma::PrismaDatabase;
+pub use sqlx::SqlxDatabase;
 
-mod prisma;
+mod sqlx;

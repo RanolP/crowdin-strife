@@ -1,21 +1,22 @@
 # flyctl launch added from .gitignore
-**/.DS_Store
 
-**/*.rs.bk
+\*\*/.DS_Store
+
+\*_/_.rs.bk
 
 **/build
 **/target
 
-**/.env*
-
-# Prisma generated
-crates/engine/src/prisma.rs
+\*_/.env_
 
 # Temp file for locres decoding
-**/.tmp
+
+\*\*/.tmp
 
 # Not a code
+
 docs/
 
 # Infra
+
 fly.toml

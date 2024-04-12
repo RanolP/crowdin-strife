@@ -7,7 +7,7 @@ use app::{
     msgdata::decode_msgdata,
 };
 use engine::{
-    db::{PrismaDatabase, TmDatabase},
+    db::{SqlxDatabase, TmDatabase},
     env::{Env, LayeredEnv, PredefinedEnv, StdEnv},
 };
 use kal::Command;
@@ -63,16 +63,16 @@ where
                 let fetch_msgdata = || {
                     message_component
                         .message
-                        .embeds
-                        .get(0)
+                        .embeds.first()
                         .and_then(|embed| embed.description.as_ref())
                         .and_then(|raw| decode_msgdata(raw))
                         .and_then(|msgdata| try_deserialize(&msgdata))
                 };
                 match &*message_component.data.custom_id {
                     "prev" => {
-                        let Some((platform, source, target, query, page, _)) = fetch_msgdata() else {
-                             return
+                        let Some((platform, source, target, query, page, _)) = fetch_msgdata()
+                        else {
+                            return;
                         };
                         let res = search_tm(
                             &self.database,
@@ -92,8 +92,10 @@ where
                             .unwrap();
                     }
                     "next" => {
-                        let Some((platform, source, target, query, page, total_pages)) = fetch_msgdata() else {
-                             return
+                        let Some((platform, source, target, query, page, total_pages)) =
+                            fetch_msgdata()
+                        else {
+                            return;
                         };
                         let res = search_tm(
                             &self.database,
@@ -143,7 +145,7 @@ async fn main() -> eyre::Result<()> {
     let is_production = env::var("ENVIRONMENT")
         .map(|x| x == "production")
         .unwrap_or(false);
-    let public_key = is_production
+    let _public_key = is_production
         .then(|| env::var("DISCORD_PUBLIC_KEY"))
         .transpose()?;
     let token = env::var("DISCORD_TOKEN")?;
@@ -151,7 +153,7 @@ async fn main() -> eyre::Result<()> {
 
     let version = env!("CARGO_PKG_VERSION");
 
-    let database = PrismaDatabase::connect().await?;
+    let database = SqlxDatabase::connect().await?;
 
     let env = LayeredEnv((
         PredefinedEnv::new().with("VERSION".to_string(), version.to_string()),
@@ -163,8 +165,8 @@ async fn main() -> eyre::Result<()> {
         .await?;
 
     println!(
-        "Invite bot with https://discord.com/api/oauth2/authorize?client_id={}&permissions={}&intents={}&scope={}",
-        application_id, Permissions::default().bits(), GatewayIntents::default().bits(), "bot%20applications.commands",
+        "Invite bot with https://discord.com/api/oauth2/authorize?client_id={}&permissions={}&intents={}&scope=bot%20applications.commands",
+        application_id, Permissions::default().bits(), GatewayIntents::default().bits(),
     );
 
     client.start().await?;

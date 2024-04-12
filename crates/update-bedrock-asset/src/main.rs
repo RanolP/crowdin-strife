@@ -8,7 +8,7 @@ use std::{
 
 use encoding::codec::utf_8::UTF8Encoding;
 use engine::{
-    db::{MinecraftPlatform, PrismaDatabase, TmDatabase, Upload, UploadEntry},
+    db::{MinecraftPlatform, SqlxDatabase, TmDatabase, Upload, UploadEntry},
     language::Language,
 };
 use eyre::bail;
@@ -22,7 +22,7 @@ pub struct WindowsApp {
 async fn main() -> eyre::Result<()> {
     color_eyre::install().ok();
 
-    let database = PrismaDatabase::connect().await?;
+    let database = SqlxDatabase::connect().await?;
 
     let installation = env::var("BEDROCK_INSTALLATION")?;
 
@@ -36,7 +36,7 @@ async fn main() -> eyre::Result<()> {
     };
 
     // later is preferred
-    let prioritized_minecraft_apps = vec![minecraft, minecraft_preview];
+    let prioritized_minecraft_apps = [minecraft, minecraft_preview];
 
     let mut found = vec![None; prioritized_minecraft_apps.len()];
 

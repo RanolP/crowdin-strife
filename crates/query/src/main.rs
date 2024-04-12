@@ -1,13 +1,13 @@
 use std::io::{stdin, stdout, BufRead, Write};
 
 use engine::{
-    db::{MinecraftPlatform, PrismaDatabase, SearchTmQuery, TmDatabase},
+    db::{MinecraftPlatform, SearchTmQuery, SqlxDatabase, TmDatabase},
     language::Language,
 };
 
 #[tokio::main]
 async fn main() -> eyre::Result<()> {
-    let database = PrismaDatabase::connect().await?;
+    let database = SqlxDatabase::connect().await?;
 
     let stdin = stdin();
     let mut stdin = stdin.lock();
@@ -46,9 +46,9 @@ async fn main() -> eyre::Result<()> {
                 "{} => {}",
                 word.source.content,
                 word.targets
-                    .get(0)
-                    .map(|target| &target.content)
-                    .unwrap_or(&word.source.content)
+                    .first()
+                    .map(|target| target.content.as_ref())
+                    .unwrap_or("\x1B[3m번역 없음\x1B[0m")
             )?;
         }
         writeln!(

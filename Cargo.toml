@@ -1,13 +1,16 @@
 [workspace]
+resolver = "2"
 members = [
     "crates/app",
     "crates/crowdin_client",
     "crates/mcapi",
     "crates/kal-serenity",
     "crates/engine",
-    "crates/prisma",
     "crates/update-java-asset",
     "crates/update-bedrock-asset",
     "crates/update-dungeons-asset",
     "crates/query",
 ]
+
+[profile.dev.package.sqlx-macros]
+opt-level = 3
