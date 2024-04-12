@@ -32,3 +32,4 @@ jobs:
       - run: "flyctl deploy --remote-only --app crowdin-strife-beta"
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
