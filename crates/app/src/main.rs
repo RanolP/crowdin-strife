@@ -63,7 +63,8 @@ where
                 let fetch_msgdata = || {
                     message_component
                         .message
-                        .embeds.first()
+                        .embeds
+                        .first()
                         .and_then(|embed| embed.description.as_ref())
                         .and_then(|raw| decode_msgdata(raw))
                         .and_then(|msgdata| try_deserialize(&msgdata))
@@ -86,7 +87,9 @@ where
                         .unwrap();
                         message_component
                             .create_interaction_response(ctx.http, |response| {
-                                response.interaction_response_data(|data| data.render(&*res))
+                                response
+                                    .kind(InteractionResponseType::UpdateMessage)
+                                    .interaction_response_data(|data| data.render(&*res))
                             })
                             .await
                             .unwrap();
@@ -113,7 +116,9 @@ where
                         .unwrap();
                         message_component
                             .create_interaction_response(ctx.http, |response| {
-                                response.interaction_response_data(|data| data.render(&*res))
+                                response
+                                    .kind(InteractionResponseType::UpdateMessage)
+                                    .interaction_response_data(|data| data.render(&*res))
                             })
                             .await
                             .unwrap();
