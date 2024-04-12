@@ -1,0 +1,44 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                INSERT INTO \"Entry\"\n                (platform, namespace, language, key, value)\n                SELECT * FROM UNNEST($1::\"MinecraftPlatform\"[], $2::text[], $3::text[], $4::text[], $5::text[])\n                RETURNING (platform, namespace, language, key, value)\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "row",
+        "type_info": "Record"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        {
+          "Custom": {
+            "name": "_MinecraftPlatform",
+            "kind": {
+              "Array": {
+                "Custom": {
+                  "name": "MinecraftPlatform",
+                  "kind": {
+                    "Enum": [
+                      "Java",
+                      "Bedrock",
+                      "Dungeons"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "TextArray",
+        "TextArray",
+        "TextArray",
+        "TextArray"
+      ]
+    },
+    "nullable": [
+      null
+    ]
+  },
+  "hash": "565105bcf56dc1c3a84c1722cb698a21f5613c9cb278aba352c5f1587d32053a"
+}

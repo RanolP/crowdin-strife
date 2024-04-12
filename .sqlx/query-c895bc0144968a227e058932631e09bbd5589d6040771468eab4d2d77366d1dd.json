@@ -1,0 +1,39 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                SELECT\n                    t1.key AS \"key\", src, dst AS \"dst?\"\n                FROM\n                    (\n                        SELECT \"key\", namespace, value AS src FROM\n                            public.\"Entry\" t1\n                        WHERE\n                            language = $1 AND\n                            platform::text = $3 AND\n                            value ILIKE CONCAT('%', ($4::text), '%')\n                    ) AS t1\n                    LEFT JOIN\n                    (\n                        SELECT \"key\", namespace, value AS dst FROM\n                            public.\"Entry\" t2\n                        WHERE\n                            language = $2 AND\n                            platform::text = $3\n                    ) AS t2\n                    ON\n                        t1.key = t2.key AND\n                        t1.namespace = t2.namespace\n                ORDER BY \"key\" ASC\n                LIMIT $5\n                OFFSET $6\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "key",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "src",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "dst?",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text",
+        "Text",
+        "Text",
+        "Int8",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "c895bc0144968a227e058932631e09bbd5589d6040771468eab4d2d77366d1dd"
+}

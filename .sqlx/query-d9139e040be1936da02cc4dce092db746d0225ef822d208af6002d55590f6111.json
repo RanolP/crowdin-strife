@@ -1,0 +1,44 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                INSERT INTO \"LanguageFile\"\n                (platform, namespace, language, game_version, latest_update)\n                SELECT * FROM UNNEST($1::\"MinecraftPlatform\"[], $2::text[], $3::text[], $4::text[], $5::timestamp[])\n                RETURNING (platform, namespace, language, game_version, latest_update)\n            ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "row",
+        "type_info": "Record"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        {
+          "Custom": {
+            "name": "_MinecraftPlatform",
+            "kind": {
+              "Array": {
+                "Custom": {
+                  "name": "MinecraftPlatform",
+                  "kind": {
+                    "Enum": [
+                      "Java",
+                      "Bedrock",
+                      "Dungeons"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "TextArray",
+        "TextArray",
+        "TextArray",
+        "TimestampArray"
+      ]
+    },
+    "nullable": [
+      null
+    ]
+  },
+  "hash": "d9139e040be1936da02cc4dce092db746d0225ef822d208af6002d55590f6111"
+}
