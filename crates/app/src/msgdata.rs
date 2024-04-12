@@ -4,7 +4,7 @@ const FRAGMENT: &AsciiSet = &CONTROLS.add(b' ').add(b'"').add(b'<').add(b'>').ad
 const MAGIC: &str = "https://data.store/";
 
 pub fn encode_msgdata(s: &str) -> String {
-    format!("[ ]({MAGIC}{})", utf8_percent_encode(s, FRAGMENT))
+    format!("[\u{2800}]({MAGIC}{})", utf8_percent_encode(s, FRAGMENT))
 }
 
 pub fn decode_msgdata(s: &str) -> Option<String> {
